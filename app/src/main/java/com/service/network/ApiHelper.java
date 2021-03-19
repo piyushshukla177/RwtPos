@@ -1,8 +1,10 @@
 package com.service.network;
 
+import com.service.response_model.BillListModel;
 import com.service.response_model.CommonModel;
 import com.service.response_model.DashboardModel;
 import com.service.response_model.LoginModel;
+import com.service.response_model.ProductByBarcode;
 
 import java.util.Map;
 import java.util.Objects;
@@ -29,4 +31,12 @@ public interface ApiHelper {
     @FormUrlEncoded
     @POST("dashboard")
     Call<CommonModel<DashboardModel>> getDashboardData(@Field("username") String username, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("ouletbillinglist")
+    Call<BillListModel> getBillingList(@Field("username") String username, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("getProductByBarcode")
+    Call<ProductByBarcode> getProductByBarcode(@Field("username") String username, @Field("password") String password, @Field("barcode")String barcode);
 }

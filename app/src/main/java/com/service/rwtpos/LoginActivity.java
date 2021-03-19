@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -30,7 +31,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     Context context;
-    Button login_btn;
+    ImageView login_btn;
     EditText email_id_et, password_et;
     ProgressBar progressbar;
     private ApiHelper apiHelper;

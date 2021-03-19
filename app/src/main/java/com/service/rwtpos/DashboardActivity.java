@@ -7,17 +7,18 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.service.network.ApiHelper;
 import com.service.network.RetrofitClient;
+import com.service.response_model.BillListModel;
 import com.service.response_model.CommonModel;
 import com.service.response_model.DashboardModel;
 import com.service.util.PrefsHelper;
@@ -33,6 +34,8 @@ public class DashboardActivity extends AppCompatActivity {
     private ApiHelper apiHelper;
     ProgressBar progressbar;
     TextView monthly_order_tv, today_order_tv, total_order_tv, total_demand_tv, total_challan_tv, monthly_business_tv, total_business_tv, today_business;
+
+    LinearLayout today_business_linear, monthly_business_linear, total_business_linear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,9 @@ public class DashboardActivity extends AppCompatActivity {
         total_business_tv = findViewById(R.id.total_business_tv);
         today_business = findViewById(R.id.today_business);
         logout_imageview = findViewById(R.id.logout_imageview);
+        today_business_linear = findViewById(R.id.today_business_linear);
+        monthly_business_linear = findViewById(R.id.monthly_business_linear);
+        total_business_linear = findViewById(R.id.total_business_linear);
         logout_imageview.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -82,6 +88,36 @@ public class DashboardActivity extends AppCompatActivity {
                                 .show();
 
 
+                    }
+                }
+        );
+        today_business_linear.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(DashboardActivity.this,OrderListActivity.class);
+                        intent.putExtra("sale","today");
+                        startActivity(intent);
+                    }
+                }
+        );
+        monthly_business_linear.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(DashboardActivity.this,OrderListActivity.class);
+                        intent.putExtra("sale","monthly");
+                        startActivity(intent);
+                    }
+                }
+        );
+        total_business_linear.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(DashboardActivity.this,OrderListActivity.class);
+                        intent.putExtra("sale","total");
+                        startActivity(intent);
                     }
                 }
         );
