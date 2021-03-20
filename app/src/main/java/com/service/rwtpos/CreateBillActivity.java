@@ -285,12 +285,12 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
             float sale_Price = Float.parseFloat(salePrice);
             int tax_percentage = Integer.parseInt(product_list.get(index).getTax_percent());
             float basic_price = ((sale_Price) / (100 + tax_percentage)) * 100;
-            float tax_amount = sale_Price - basic_price;
+            float tax_amount = (sale_Price - basic_price) * Integer.parseInt(qty);
             float cgst = tax_amount / 2;
             float sgst = tax_amount / 2;
 
             float total_basic = basic_price * Integer.parseInt(qty);
-            float discount_amount = (total_basic * Integer.parseInt(discount)) / 100;
+            float discount_amount = ((total_basic * Integer.parseInt(discount)) / 100) * Integer.parseInt(qty);
             product_list.get(index).setSelected_qty(qty);
             product_list.get(index).setSale_price(salePrice);
             product_list.get(index).setDiscount_percentage(discount);
@@ -420,7 +420,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         int i = 0;
         while (i < product_list.size()) {
             sum_discount_amount = sum_discount_amount + Float.parseFloat(product_list.get(i).getTotal_discount_amount());
-            sum_taxable = sum_taxable + (Float.parseFloat(product_list.get(i).getBasic_price()) * Integer.parseInt(product_list.get(i).getSelected_qty()));
+            sum_taxable = sum_taxable + (Float.parseFloat(product_list.get(i).getBasic_price()));
             tax_total = tax_total + Float.parseFloat(product_list.get(i).getTotal_tax());
             i++;
         }
