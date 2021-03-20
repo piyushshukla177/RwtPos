@@ -10,5 +10,8 @@
     <color name="light_gray">#D9DADC</color>
     <color name="green">#0CCA92</color>
     <color name="yellow">#FCB913</color>
-</resources>
-<!--    #194D81-->
+    <color name="dark_white">#F2F2F2</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="light_blue">#F2F0FD</color>
+    <color name="gray">#939496</color>
+</resources><!--    #194D81-->

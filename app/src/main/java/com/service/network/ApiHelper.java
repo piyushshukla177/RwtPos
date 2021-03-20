@@ -1,5 +1,6 @@
 package com.service.network;
 
+import com.service.response_model.AddCustomerResponse;
 import com.service.response_model.BillListModel;
 import com.service.response_model.CommonModel;
 import com.service.response_model.DashboardModel;
@@ -38,5 +39,11 @@ public interface ApiHelper {
 
     @FormUrlEncoded
     @POST("getProductByBarcode")
-    Call<ProductByBarcode> getProductByBarcode(@Field("username") String username, @Field("password") String password, @Field("barcode")String barcode);
+    Call<ProductByBarcode> getProductByBarcode(@Field("username") String username, @Field("password") String password, @Field("barcode") String barcode);
+
+    @FormUrlEncoded
+    @POST("addcustomer")
+    Call<AddCustomerResponse> addCustomer(@Field("username") String username, @Field("password") String password, @Field("name") String name,
+                                          @Field("email") String email, @Field("mobile") String mobile, @Field("address") String address
+    );
 }

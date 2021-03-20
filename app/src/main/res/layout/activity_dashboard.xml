@@ -328,6 +328,147 @@
 
             </HorizontalScrollView>
 
+            <RelativeLayout
+                android:id="@+id/create_bill_relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_10sdp">
+
+                <ImageView
+                    android:id="@+id/icon_ar"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/choices">
+
+                </ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/icon_ar"
+                    android:text="Create Bill"
+                    android:textColor="#202020"
+                    android:textSize="@dimen/_15sdp"></TextView>
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/arrow_dark">
+
+                </ImageView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_10sdp">
+
+                <ImageView
+                    android:id="@+id/icon_arr"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/demand"
+                    app:tint="@color/green">
+
+                </ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/icon_arr"
+                    android:text="Create Demand"
+                    android:textColor="#202020"
+                    android:textSize="@dimen/_15sdp"></TextView>
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/arrow_dark">
+
+                </ImageView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_10sdp">
+
+                <ImageView
+                    android:id="@+id/icon_a"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/demand">
+
+                </ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/icon_a"
+                    android:text="Create Challan"
+                    android:textColor="#202020"
+                    android:textSize="@dimen/_15sdp"></TextView>
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/arrow_dark">
+
+                </ImageView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_10sdp">
+
+                <ImageView
+                    android:id="@+id/icon_arrr"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/settings">
+
+                </ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/icon_arrr"
+                    android:text="Settings"
+                    android:textColor="#202020"
+                    android:textSize="@dimen/_15sdp"></TextView>
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/arrow_dark">
+
+                </ImageView>
+            </RelativeLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

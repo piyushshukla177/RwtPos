@@ -15,10 +15,47 @@ public class ProductListModel {
     private String sgst;
     private String total_tax;
     private String gst;
+    private String basic_price;
     private String Minmum_stock;
     private String tax_percent;
     private String intStock;
+    private String selected_qty;
+    private String selected_batch;
+    private String discount_percentage;
+    private String total_discount_amount;
     private ArrayList<Batch> batch_list;
+
+    public String getSelected_qty() {
+        return selected_qty;
+    }
+
+    public String getSelected_batch() {
+        return selected_batch;
+    }
+
+    public void setSelected_batch(String selected_batch) {
+        this.selected_batch = selected_batch;
+    }
+
+    public void setSelected_qty(String selected_qty) {
+        this.selected_qty = selected_qty;
+    }
+
+    public String getDiscount_percentage() {
+        return discount_percentage;
+    }
+
+    public void setDiscount_percentage(String discount_percentage) {
+        this.discount_percentage = discount_percentage;
+    }
+
+    public String getBasic_price() {
+        return basic_price;
+    }
+
+    public void setBasic_price(String basic_price) {
+        this.basic_price = basic_price;
+    }
 
     public String getPro_print_name() {
         return pro_print_name;
@@ -167,5 +204,13 @@ public class ProductListModel {
         public void setQty(String qty) {
             this.qty = qty;
         }
+    }
+
+    public String getTotal_discount_amount() {
+        return total_discount_amount;
+    }
+
+    public void setTotal_discount_amount(String total_discount_amount) {
+        this.total_discount_amount = total_discount_amount;
     }
 }

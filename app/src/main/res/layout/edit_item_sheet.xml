@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:orientation="vertical">
+
+<!--        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner-->
+<!--            android:id="@+id/select_batch_spinner"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="@dimen/_10sdp"-->
+<!--            android:layout_weight="0.5"-->
+<!--            android:hint="Select Batch"-->
+<!--            android:textSize="@dimen/_10sdp">-->
+
+<!--        </com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner>-->
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/select_batch_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/spinner_background"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dicount_linear" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <EditText
+                android:id="@+id/sale_price_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Sale Price"
+                android:inputType="numberDecimal"
+                android:textSize="@dimen/_10sdp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <EditText
+                android:id="@+id/qty_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Quantity"
+                android:inputType="number"
+                android:textSize="@dimen/_10sdp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <EditText
+                android:id="@+id/discont_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Discount %"
+                android:inputType="numberDecimal"
+                android:textSize="@dimen/_10sdp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/edit_item_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/round_btn_shape"
+            android:text="Edit Item" />
+
+    </LinearLayout>
+</RelativeLayout>

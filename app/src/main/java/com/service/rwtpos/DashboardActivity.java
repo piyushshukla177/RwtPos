@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,7 @@ public class DashboardActivity extends AppCompatActivity {
     private ApiHelper apiHelper;
     ProgressBar progressbar;
     TextView monthly_order_tv, today_order_tv, total_order_tv, total_demand_tv, total_challan_tv, monthly_business_tv, total_business_tv, today_business;
-
+    RelativeLayout create_bill_relative;
     LinearLayout today_business_linear, monthly_business_linear, total_business_linear;
 
     @Override
@@ -60,6 +61,7 @@ public class DashboardActivity extends AppCompatActivity {
         today_business_linear = findViewById(R.id.today_business_linear);
         monthly_business_linear = findViewById(R.id.monthly_business_linear);
         total_business_linear = findViewById(R.id.total_business_linear);
+        create_bill_relative = findViewById(R.id.create_bill_relative);
         logout_imageview.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -95,8 +97,8 @@ public class DashboardActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(DashboardActivity.this,OrderListActivity.class);
-                        intent.putExtra("sale","today");
+                        Intent intent = new Intent(DashboardActivity.this, OrderListActivity.class);
+                        intent.putExtra("sale", "today");
                         startActivity(intent);
                     }
                 }
@@ -105,8 +107,8 @@ public class DashboardActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(DashboardActivity.this,OrderListActivity.class);
-                        intent.putExtra("sale","monthly");
+                        Intent intent = new Intent(DashboardActivity.this, OrderListActivity.class);
+                        intent.putExtra("sale", "monthly");
                         startActivity(intent);
                     }
                 }
@@ -115,8 +117,17 @@ public class DashboardActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(DashboardActivity.this,OrderListActivity.class);
-                        intent.putExtra("sale","total");
+                        Intent intent = new Intent(DashboardActivity.this, OrderListActivity.class);
+                        intent.putExtra("sale", "total");
+                        startActivity(intent);
+                    }
+                }
+        );
+        create_bill_relative.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(DashboardActivity.this, CreateBillActivity.class);
                         startActivity(intent);
                     }
                 }
