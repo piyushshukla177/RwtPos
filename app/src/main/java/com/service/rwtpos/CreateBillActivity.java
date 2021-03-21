@@ -2,6 +2,7 @@ package com.service.rwtpos;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,6 +10,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -64,13 +67,15 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
     ArrayList<ProductListModel> product_list = new ArrayList<>();
     private ProductListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    ImageView back_image, add_customer_imageview;
+    ImageView back_image, add_customer_imageview, scan_barcode_imageview;
     Spinner payment_mode_spinner;
     TextInputLayout transaction_id_input_layout, wallet_name_layout, transaction_date_input_layout;
     ArrayList paymentMode_list = new ArrayList();
     Button add_items_btn;
     RelativeLayout dicount_relative, taxable_relative, cgst_relative, sgst_relative, total_relative, net_payable_relative;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
+    CardView save_cardview;
+    EditText transaction_id_et, transaction_date_et, wallet_name_et;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +102,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         transaction_date_input_layout = findViewById(R.id.transaction_date_input_layout);
         total_items_tv = findViewById(R.id.total_items_tv);
         add_items_btn = findViewById(R.id.add_items_btn);
+        save_cardview = findViewById(R.id.save_cardview);
 
         dicount_relative = findViewById(R.id.dicount_relative);
         taxable_relative = findViewById(R.id.taxable_relative);
@@ -110,6 +116,10 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         sgst_tv = findViewById(R.id.sgst_tv);
         total_amt_tv = findViewById(R.id.total_amt_tv);
         net_payable_tv = findViewById(R.id.net_payable_tv);
+        scan_barcode_imageview = findViewById(R.id.scan_barcode_imageview);
+        transaction_id_et = findViewById(R.id.transaction_id_et);
+        transaction_date_et = findViewById(R.id.transaction_date_et);
+        wallet_name_et = findViewById(R.id.wallet_name_et);
 
         invoice_date_tv.setText(date_format.format(new Date()));
         add_product_tv.setOnClickListener(
@@ -189,6 +199,25 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                     }
                 }
         );
+        scan_barcode_imageview.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(CreateBillActivity.this, ScanBarcodeActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+        save_cardview.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (check()) {
+
+                        }
+                    }
+                }
+        );
     }
 
     @Override
@@ -201,7 +230,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         }
     }
 
-    private void getProductBybarcode(String barcode) {
+    public void getProductBybarcode(String barcode) {
         progressbar.setVisibility(View.VISIBLE);
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         Call<ProductByBarcode> loginCall = apiHelper.getProductByBarcode(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), barcode);
@@ -285,18 +314,23 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
             float sale_Price = Float.parseFloat(salePrice);
             int tax_percentage = Integer.parseInt(product_list.get(index).getTax_percent());
             float basic_price = ((sale_Price) / (100 + tax_percentage)) * 100;
-            float tax_amount = (sale_Price - basic_price) * Integer.parseInt(qty);
-            float cgst = tax_amount / 2;
-            float sgst = tax_amount / 2;
+//            float tax_amount = (sale_Price - basic_price);
+
 
             float total_basic = basic_price * Integer.parseInt(qty);
-            float discount_amount = ((total_basic * Integer.parseInt(discount)) / 100) * Integer.parseInt(qty);
+            float discount_amount = ((total_basic * Integer.parseInt(discount)) / 100);
+
+            float total_taxable_amount = total_basic - discount_amount;
+            float total_tax_amount = (total_taxable_amount * Integer.parseInt(product_list.get(index).getTax_percent())) / 100;
+            float cgst = total_tax_amount / 2;
+            float sgst = total_tax_amount / 2;
+
             product_list.get(index).setSelected_qty(qty);
             product_list.get(index).setSale_price(salePrice);
             product_list.get(index).setDiscount_percentage(discount);
             product_list.get(index).setSelected_batch(selectedbatch);
             product_list.get(index).setBasic_price(String.valueOf(basic_price));
-            product_list.get(index).setTotal_tax(String.valueOf(tax_amount));
+            product_list.get(index).setTotal_tax(String.valueOf(total_tax_amount));
             product_list.get(index).setCgst(String.valueOf(cgst));
             product_list.get(index).setSgst(String.valueOf(sgst));
             product_list.get(index).setTotal_discount_amount(String.valueOf(discount_amount));
@@ -410,7 +444,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         cgst_relative.setVisibility(View.VISIBLE);
         sgst_relative.setVisibility(View.VISIBLE);
         net_payable_relative.setVisibility(View.VISIBLE);
-        total_relative.setVisibility(View.VISIBLE);
+        total_relative.setVisibility(View.GONE);
         taxable_relative.setVisibility(View.VISIBLE);
 
         float sum_discount_amount = 0;
@@ -420,16 +454,55 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         int i = 0;
         while (i < product_list.size()) {
             sum_discount_amount = sum_discount_amount + Float.parseFloat(product_list.get(i).getTotal_discount_amount());
-            sum_taxable = sum_taxable + (Float.parseFloat(product_list.get(i).getBasic_price()));
+            sum_taxable = sum_taxable + ((Float.parseFloat(product_list.get(i).getBasic_price())) * Integer.parseInt(product_list.get(i).getSelected_qty()));
             tax_total = tax_total + Float.parseFloat(product_list.get(i).getTotal_tax());
             i++;
         }
-        net_payable = (sum_taxable - sum_discount_amount) + tax_total;
+        sum_taxable = sum_taxable - sum_discount_amount;
+        net_payable = (sum_taxable) + tax_total;
         discount_amount_tv.setText(String.valueOf(df2.format(sum_discount_amount)));
         cgst_tv.setText(String.valueOf(df2.format(tax_total / 2)));
         sgst_tv.setText(String.valueOf(df2.format(tax_total / 2)));
-        total_amt_tv.setText(String.valueOf(df2.format(sum_taxable - sum_discount_amount)));
+        total_amt_tv.setText(String.valueOf(net_payable));
         net_payable_tv.setText(String.valueOf(df2.format(net_payable)));
         taxable_amount_tv.setText(String.valueOf(df2.format(sum_taxable)));
+    }
+
+    boolean check() {
+        boolean b = true;
+        if (payment_mode_spinner.getSelectedItemPosition() == 0) {
+            b = false;
+            return b;
+        } else if (payment_mode_spinner.getSelectedItemPosition() == 2) {
+            if (transaction_id_et.getText().toString().isEmpty()) {
+                b = false;
+                Toast.makeText(context, "Enter Transaction Id", Toast.LENGTH_SHORT).show();
+                transaction_id_et.requestFocus();
+                return b;
+            } else if (transaction_date_et.getText().toString().isEmpty()) {
+                b = false;
+                Toast.makeText(context, "Select Transaction Date", Toast.LENGTH_SHORT).show();
+                transaction_date_et.requestFocus();
+                return b;
+            } else if (wallet_name_et.getText().toString().isEmpty()) {
+                b = false;
+                Toast.makeText(context, "Enter Wallet Name", Toast.LENGTH_SHORT).show();
+                wallet_name_et.requestFocus();
+                return b;
+            }
+        } else if (payment_mode_spinner.getSelectedItemPosition() == 3 | payment_mode_spinner.getSelectedItemPosition() == 4 | payment_mode_spinner.getSelectedItemPosition() == 5) {
+            if (transaction_id_et.getText().toString().isEmpty()) {
+                b = false;
+                Toast.makeText(context, "Enter Transaction Id", Toast.LENGTH_SHORT).show();
+                transaction_id_et.requestFocus();
+                return b;
+            } else if (transaction_date_et.getText().toString().isEmpty()) {
+                b = false;
+                Toast.makeText(context, "Select Transaction Date", Toast.LENGTH_SHORT).show();
+                transaction_id_et.requestFocus();
+                return b;
+            }
+        }
+        return b;
     }
 }

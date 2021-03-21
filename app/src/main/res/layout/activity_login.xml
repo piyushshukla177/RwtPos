@@ -115,14 +115,21 @@
                     android:textColor="#d5d5d5"
                     android:textSize="12.3sp" />
 
-                <ImageView
-                    android:id="@+id/login_btn"
-                    android:layout_width="18.7dp"
-                    android:layout_height="15.3dp"
+                <RelativeLayout
+                    android:id="@+id/login_relative"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
                     android:layout_gravity="right"
                     android:layout_marginTop="17.3dp"
                     android:layout_marginRight="44.3dp"
-                    android:src="@drawable/black_arrow" />
+                    android:background="@drawable/dashboard_circular_blue">
+
+                    <ImageView
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="15dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/black_arrow" />
+                </RelativeLayout>
             </LinearLayout>
 
             <RelativeLayout
@@ -196,33 +203,15 @@
         android:layout_marginBottom="30dp"
         android:orientation="vertical">
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:gravity="center_horizontal"
-                android:text="Powered By Radiance"
-                android:textColor="#ffffff"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:fontFamily="@font/poppins_regular"
-                android:gravity="center_horizontal"
-                android:text="Signup"
-                android:textColor="#ffffff"
-                android:textSize="15sp" />
-
-        </LinearLayout>
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center_horizontal"
+            android:text="Powered By Radiance"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
@@ -235,3 +224,4 @@
         android:background="@drawable/progressbar_background"
         android:visibility="gone" />
 </RelativeLayout>
+

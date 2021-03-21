@@ -36,6 +36,7 @@
             android:textSize="@dimen/_15sdp" />
 
         <ImageView
+            android:id="@+id/scan_barcode_imageview"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_25sdp"
             android:layout_alignParentRight="true"
@@ -43,6 +44,7 @@
             android:layout_gravity="center"
             android:src="@drawable/barcode"
             app:tint="@color/yellow" />
+
     </RelativeLayout>
 
     <View
@@ -264,7 +266,6 @@
                         android:textSize="@dimen/_10sdp"></EditText>
                 </com.google.android.material.textfield.TextInputLayout>
 
-
                 <RelativeLayout
                     android:id="@+id/dicount_relative"
                     android:layout_width="match_parent"
@@ -339,7 +340,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="-2dp"
                         android:text="CGST ₹ "
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10sdp" />
@@ -370,7 +370,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="-2dp"
                         android:text="CGST ₹ "
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10sdp" />
@@ -387,7 +386,6 @@
 
                 </RelativeLayout>
 
-
                 <RelativeLayout
                     android:id="@+id/total_relative"
                     android:layout_width="match_parent"
@@ -402,7 +400,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="-2dp"
                         android:text="Total Amount ₹ "
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10sdp" />
@@ -426,16 +423,17 @@
                     android:layout_marginLeft="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="-2dp"
                         android:text="Net Payable ₹ "
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/net_payable_tv"
@@ -444,7 +442,8 @@
                         android:layout_alignParentRight="true"
                         android:text="Rs 0.0"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.service.rwtpos"
     xmlns:tools="http://schemas.android.com/tools"
-    >
+    package="com.service.rwtpos">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,13 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RwtPos"
         android:usesCleartextTraffic="true"
-        tools:replace="android:theme"
-        >
+        tools:replace="android:theme">
+        <activity
+            android:name=".ScanBarcodeActivity"
+            android:theme="@style/SplashTheme.RwtPos"></activity>
         <activity
             android:name=".CreateBillActivity"
-            android:theme="@style/SplashTheme.RwtPos">
-
-        </activity>
+            android:theme="@style/SplashTheme.RwtPos"></activity>
         <activity
             android:name=".OrderListActivity"
             android:theme="@style/SplashTheme.RwtPos" />
@@ -33,11 +35,11 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/SplashTheme.RwtPos">
-                        <intent-filter>
-                            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-                            <category android:name="android.intent.category.LAUNCHER" />
-                        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

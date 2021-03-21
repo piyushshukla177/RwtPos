@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.service.network.ApiHelper;
@@ -31,7 +32,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     Context context;
-    ImageView login_btn;
+    RelativeLayout login_relative;
     EditText email_id_et, password_et;
     ProgressBar progressbar;
     private ApiHelper apiHelper;
@@ -51,8 +52,8 @@ public class LoginActivity extends AppCompatActivity {
         progressbar = findViewById(R.id.progressbar);
         email_id_et = findViewById(R.id.email_id_et);
         password_et = findViewById(R.id.password_et);
-        login_btn = findViewById(R.id.login_btn);
-        login_btn.setOnClickListener(
+        login_relative = findViewById(R.id.login_relative);
+        login_relative.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

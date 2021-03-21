@@ -78,6 +78,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                                     bottomSheetDialogFragment.product_name_txt = currentItem.getPro_print_name();
                                     bottomSheetDialogFragment.price_txt = currentItem.getSale_price();
                                     bottomSheetDialogFragment.qty_txt = currentItem.getSelected_qty();
+                                    bottomSheetDialogFragment.discount_percentage_txt = currentItem.getDiscount_percentage();
                                     bottomSheetDialogFragment.batch_list = currentItem.getBatch_list();
                                     bottomSheetDialogFragment.index = i;
                                     bottomSheetDialogFragment.show(((CreateBillActivity) context).getSupportFragmentManager(), bottomSheetDialogFragment.getTag());

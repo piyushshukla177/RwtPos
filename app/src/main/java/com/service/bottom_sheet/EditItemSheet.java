@@ -24,6 +24,7 @@ public class EditItemSheet extends BottomSheetDialogFragment {
     public ArrayList<ProductListModel.Batch> batch_list;
     public String product_name_txt;
     public String qty_txt;
+    public String discount_percentage_txt;
     public String price_txt;
     public int index = 0;
 
@@ -67,7 +68,7 @@ public class EditItemSheet extends BottomSheetDialogFragment {
 
         sale_price_et.setText(price_txt);
         qty_et.setText(qty_txt);
-        discont_et.setText(String.valueOf(0));
+        discont_et.setText(discount_percentage_txt);
 
         select_batch_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
