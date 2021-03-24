@@ -35,7 +35,7 @@ public class DashboardActivity extends AppCompatActivity {
     private ApiHelper apiHelper;
     ProgressBar progressbar;
     TextView monthly_order_tv, today_order_tv, total_order_tv, total_demand_tv, total_challan_tv, monthly_business_tv, total_business_tv, today_business;
-    RelativeLayout create_bill_relative;
+    RelativeLayout create_bill_relative, settings_relative;
     LinearLayout today_business_linear, monthly_business_linear, total_business_linear;
 
     @Override
@@ -62,6 +62,7 @@ public class DashboardActivity extends AppCompatActivity {
         monthly_business_linear = findViewById(R.id.monthly_business_linear);
         total_business_linear = findViewById(R.id.total_business_linear);
         create_bill_relative = findViewById(R.id.create_bill_relative);
+        settings_relative = findViewById(R.id.settings_relative);
         logout_imageview.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -88,8 +89,6 @@ public class DashboardActivity extends AppCompatActivity {
                                 .setNegativeButton(android.R.string.no, null)
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .show();
-
-
                     }
                 }
         );
@@ -132,22 +131,30 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 }
         );
+        settings_relative.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(DashboardActivity.this, OutletSettingActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
         getDashboarddata();
     }
 
     private void getDashboarddata() {
         progressbar.setVisibility(View.VISIBLE);
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
-        Call<CommonModel<DashboardModel>> loginCall = apiHelper.getDashboardData(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"));
-        loginCall.enqueue(new Callback<CommonModel<DashboardModel>>() {
+        Call<DashboardModel> loginCall = apiHelper.getDashboardData(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"));
+        loginCall.enqueue(new Callback<DashboardModel>() {
             @Override
-            public void onResponse(@NonNull Call<CommonModel<DashboardModel>> call,
-                                   @NonNull Response<CommonModel<DashboardModel>> response) {
+            public void onResponse(@NonNull Call<DashboardModel> call,
+                                   @NonNull Response<DashboardModel> response) {
                 progressbar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
-
                     if (response != null) {
-                        CommonModel<DashboardModel> m = response.body();
+                        DashboardModel m = response.body();
                         if (m.getStatus().equalsIgnoreCase("success")) {
                             monthly_order_tv.setText(m.getData().getMonthly_order() + "");
                             today_order_tv.setText(m.getData().getToday_order() + "");
@@ -157,7 +164,7 @@ public class DashboardActivity extends AppCompatActivity {
                             monthly_business_tv.setText("₹ " + m.getData().getMonthly_business() + "");
                             total_business_tv.setText("₹ " + m.getData().getTotal_business() + "");
                             today_business.setText("₹ " + m.getData().getToday_business() + "");
-                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -168,7 +175,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<CommonModel<DashboardModel>> call,
+            public void onFailure(@NonNull Call<DashboardModel> call,
                                   @NonNull Throwable t) {
                 progressbar.setVisibility(View.GONE);
                 if (!call.isCanceled()) {

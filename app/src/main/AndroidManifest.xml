@@ -18,11 +18,14 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
         <activity
-            android:name=".ScanBarcodeActivity"
+            android:name=".OutletSettingActivity"
             android:theme="@style/SplashTheme.RwtPos"></activity>
         <activity
+            android:name=".ScanBarcodeActivity"
+            android:theme="@style/SplashTheme.RwtPos" />
+        <activity
             android:name=".CreateBillActivity"
-            android:theme="@style/SplashTheme.RwtPos"></activity>
+            android:theme="@style/SplashTheme.RwtPos" />
         <activity
             android:name=".OrderListActivity"
             android:theme="@style/SplashTheme.RwtPos" />
@@ -37,10 +40,8 @@
             android:theme="@style/SplashTheme.RwtPos">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -57,6 +58,7 @@ public class OrderListActivity extends AppCompatActivity {
     String sale_type;
 
     void init() {
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = this;
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         progressbar = findViewById(R.id.progressbar);
@@ -147,7 +149,7 @@ public class OrderListActivity extends AppCompatActivity {
                                     order_list.add(model);
                                 }
                             }
-                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -161,6 +163,7 @@ public class OrderListActivity extends AppCompatActivity {
                     progressbar.setVisibility(View.GONE);
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<BillListModel> call,
                                   @NonNull Throwable t) {

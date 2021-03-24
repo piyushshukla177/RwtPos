@@ -23,6 +23,8 @@ public class ProductListModel {
     private String selected_batch;
     private String discount_percentage;
     private String total_discount_amount;
+    private String single_tax;
+    private String single_discount_amount;
     private ArrayList<Batch> batch_list;
 
     public String getSelected_qty() {
@@ -212,5 +214,21 @@ public class ProductListModel {
 
     public void setTotal_discount_amount(String total_discount_amount) {
         this.total_discount_amount = total_discount_amount;
+    }
+
+    public String getSingle_tax() {
+        return single_tax;
+    }
+
+    public void setSingle_tax(String single_tax) {
+        this.single_tax = single_tax;
+    }
+
+    public String getSingle_discount_amount() {
+        return single_discount_amount;
+    }
+
+    public void setSingle_discount_amount(String single_discount_amount) {
+        this.single_discount_amount = single_discount_amount;
     }
 }

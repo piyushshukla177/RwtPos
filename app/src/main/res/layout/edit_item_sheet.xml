@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,16 +10,16 @@
         android:layout_margin="@dimen/_10sdp"
         android:orientation="vertical">
 
-<!--        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner-->
-<!--            android:id="@+id/select_batch_spinner"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="@dimen/_10sdp"-->
-<!--            android:layout_weight="0.5"-->
-<!--            android:hint="Select Batch"-->
-<!--            android:textSize="@dimen/_10sdp">-->
+        <!--        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner-->
+        <!--            android:id="@+id/select_batch_spinner"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="@dimen/_10sdp"-->
+        <!--            android:layout_weight="0.5"-->
+        <!--            android:hint="Select Batch"-->
+        <!--            android:textSize="@dimen/_10sdp">-->
 
-<!--        </com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner>-->
+        <!--        </com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner>-->
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/select_batch_spinner"
@@ -44,23 +43,42 @@
                 android:layout_height="wrap_content"
                 android:hint="Sale Price"
                 android:inputType="numberDecimal"
+                android:maxLength="10"
                 android:textSize="@dimen/_10sdp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp">
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/qty_et"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Quantity"
-                android:inputType="number"
+                android:layout_weight="0.5">
+
+                <EditText
+                    android:id="@+id/qty_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Quantity"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:textSize="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/max_qty_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_weight="0.5"
+                android:text=""
                 android:textSize="@dimen/_10sdp" />
-        </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -74,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Discount %"
                 android:inputType="numberDecimal"
+                android:maxLength="3"
                 android:textSize="@dimen/_10sdp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,7 +100,7 @@
             android:id="@+id/edit_item_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-           android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/round_btn_shape"
             android:text="Edit Item" />
 
