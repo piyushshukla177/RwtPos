@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.service.network.ApiHelper;
 import com.service.network.RetrofitClient;
 import com.service.response_model.AddCustomerResponse;
+import com.service.response_model.GetOutLetSettings;
 import com.service.response_model.OutletSettingModel;
 import com.service.util.PrefsHelper;
 
@@ -35,6 +37,7 @@ public class OutletSettingActivity extends AppCompatActivity {
     Button save_btn;
     ProgressBar progressbar;
     private ApiHelper apiHelper;
+    ImageView back_arrow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class OutletSettingActivity extends AppCompatActivity {
         address_et = findViewById(R.id.address_et);
         save_btn = findViewById(R.id.save_btn);
         progressbar = findViewById(R.id.progressbar);
+        back_arrow = findViewById(R.id.back_arrow);
 
         save_btn.setOnClickListener(
                 new View.OnClickListener() {
@@ -67,6 +71,15 @@ public class OutletSettingActivity extends AppCompatActivity {
                     }
                 }
         );
+        back_arrow.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        OutletSettingActivity.super.onBackPressed();
+                    }
+                }
+        );
+        getSettings();
     }
 
     boolean check() {
@@ -138,6 +151,56 @@ public class OutletSettingActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<OutletSettingModel> call,
+                                  @NonNull Throwable t) {
+                progressbar.setVisibility(View.GONE);
+                if (!call.isCanceled()) {
+                }
+                t.printStackTrace();
+            }
+        });
+    }
+
+
+    private void getSettings() {
+        progressbar.setVisibility(View.VISIBLE);
+        apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
+        Call<GetOutLetSettings> loginCall = apiHelper.getOutLetSettings(PrefsHelper.getString(context, "username"),
+                PrefsHelper.getString(context, "password"));
+        loginCall.enqueue(new Callback<GetOutLetSettings>() {
+            @Override
+            public void onResponse(@NonNull Call<GetOutLetSettings> call,
+                                   @NonNull Response<GetOutLetSettings> response) {
+                progressbar.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+
+                    if (response != null) {
+                        GetOutLetSettings m = response.body();
+                        if (m.getStatus().equalsIgnoreCase("success")) {
+
+                            owner_name_et.setText(m.getData().getOwner_name());
+                            store_name_et.setText(m.getData().getStore_name());
+                            email_et.setText(m.getData().getEmail());
+                            mobile_et.setText(m.getData().getMobile());
+                            address_et.setText(m.getData().getAddress());
+                            if (m.getData().getIs_header().equals(String.valueOf(1))) {
+                                header_switch.setChecked(true);
+                            }
+                            if (m.getData().getIs_footer().equals(String.valueOf(1))) {
+                                footer_switch.setChecked(true);
+                            }
+//                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } else {
+                    progressbar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GetOutLetSettings> call,
                                   @NonNull Throwable t) {
                 progressbar.setVisibility(View.GONE);
                 if (!call.isCanceled()) {

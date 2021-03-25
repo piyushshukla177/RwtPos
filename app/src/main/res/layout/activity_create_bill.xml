@@ -73,27 +73,26 @@
                 android:background="@color/white"
                 android:padding="@dimen/_10sdp">
 
-                <TextView
-                    android:id="@+id/invoice_type_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="Invoice #"
-                    android:textColor="@color/teal_200" />
+                <!--                <TextView-->
+                <!--                    android:id="@+id/invoice_type_tv"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_alignParentLeft="true"-->
+                <!--                    android:text="Invoice #"-->
+                <!--                    android:textColor="@color/teal_200" />-->
 
-                <TextView
-                    android:id="@+id/invoice_number_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/invoice_type_tv"
-                    android:text="1"
-                    android:textColor="@color/teal_200" />
+                <!--                <TextView-->
+                <!--                    android:id="@+id/invoice_number_tv"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_toRightOf="@+id/invoice_type_tv"-->
+                <!--                    android:text="1"-->
+                <!--                    android:textColor="@color/teal_200" />-->
 
                 <TextView
                     android:id="@+id/invoice_date_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/invoice_number_tv"
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="" />
@@ -270,6 +269,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Transaction Date *"
+                        android:focusable="false"
                         android:textSize="@dimen/_10sdp"></EditText>
                 </com.google.android.material.textfield.TextInputLayout>
 

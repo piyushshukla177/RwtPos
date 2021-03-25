@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray3"
-    tools:context=".OrderListActivity">
+    tools:context=".DemandListActivity"
+    android:background="@color/light_gray3">
 
     <RelativeLayout
         android:id="@+id/linear_toolbar"
@@ -24,14 +24,13 @@
             android:src="@drawable/back" />
 
         <TextView
-            android:id="@+id/sale_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_toRightOf="@+id/back_arrow"
-            android:text="Sale"
+            android:text="Demand List"
             android:textColor="@color/black"
             android:textSize="@dimen/_15sdp" />
     </RelativeLayout>
@@ -44,9 +43,10 @@
         android:background="@color/light_gray" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/order_list_recyclerview"
+        android:id="@+id/demand_list_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/create_new_demand_card"
         android:layout_below="@+id/view"
         android:layout_marginTop="@dimen/_10sdp" />
 
@@ -56,4 +56,41 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/create_new_demand_card"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/_10sdp"
+        app:cardBackgroundColor="@color/teal_200"
+        app:cardCornerRadius="@dimen/_15sdp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/corner_round_btn_shape">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:src="@drawable/plus" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:text="Add Demand"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

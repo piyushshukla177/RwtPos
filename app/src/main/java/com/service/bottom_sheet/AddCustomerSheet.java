@@ -17,7 +17,6 @@ import com.service.rwtpos.R;
 public class AddCustomerSheet extends BottomSheetDialogFragment {
     private AddCustomerSheetListener mListener;
 
-
     EditText customer_name_et, customer_mobile_et, email_et, address_et;
     Button add_customer_btn;
 

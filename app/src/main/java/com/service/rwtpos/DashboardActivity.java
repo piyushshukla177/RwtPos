@@ -35,7 +35,7 @@ public class DashboardActivity extends AppCompatActivity {
     private ApiHelper apiHelper;
     ProgressBar progressbar;
     TextView monthly_order_tv, today_order_tv, total_order_tv, total_demand_tv, total_challan_tv, monthly_business_tv, total_business_tv, today_business;
-    RelativeLayout create_bill_relative, settings_relative;
+    RelativeLayout create_bill_relative, settings_relative,create_demand_relative;
     LinearLayout today_business_linear, monthly_business_linear, total_business_linear;
 
     @Override
@@ -63,6 +63,7 @@ public class DashboardActivity extends AppCompatActivity {
         total_business_linear = findViewById(R.id.total_business_linear);
         create_bill_relative = findViewById(R.id.create_bill_relative);
         settings_relative = findViewById(R.id.settings_relative);
+        create_demand_relative = findViewById(R.id.create_demand_relative);
         logout_imageview.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -136,6 +137,15 @@ public class DashboardActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(DashboardActivity.this, OutletSettingActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+        create_demand_relative.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(DashboardActivity.this, DemandListActivity.class);
                         startActivity(intent);
                     }
                 }

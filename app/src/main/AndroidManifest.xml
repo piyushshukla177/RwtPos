@@ -18,30 +18,50 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
         <activity
-            android:name=".OutletSettingActivity"
+            android:name=".ChallanListActivity"
             android:theme="@style/SplashTheme.RwtPos"></activity>
         <activity
+            android:name=".DemandListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme.RwtPos" />
+        <activity
+            android:name=".CreateDemandActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme.RwtPos" />
+        <activity
+            android:name=".OutletSettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme.RwtPos" />
+        <activity
             android:name=".ScanBarcodeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme.RwtPos" />
         <activity
             android:name=".CreateBillActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme.RwtPos" />
         <activity
             android:name=".OrderListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme.RwtPos" />
         <activity
             android:name=".DashboardActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme.RwtPos" />
         <activity
             android:name=".LoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme.RwtPos" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme.RwtPos">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

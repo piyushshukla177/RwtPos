@@ -6,6 +6,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,21 +32,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.service.adapter.OrderListAdapter;
 import com.service.adapter.ProductListAdapter;
 import com.service.bottom_sheet.AddCustomerSheet;
 import com.service.bottom_sheet.AddProductByBarcodeSheet;
 import com.service.bottom_sheet.DiscardChangesSheet;
 import com.service.bottom_sheet.EditItemSheet;
-import com.service.model.OrderListModel;
 import com.service.model.ProductListModel;
 import com.service.network.ApiHelper;
 import com.service.network.RetrofitClient;
 import com.service.response_model.AddCustomerResponse;
-import com.service.response_model.BillListModel;
-import com.service.response_model.CommonModel;
 import com.service.response_model.CreateBillModel;
-import com.service.response_model.DashboardModel;
 import com.service.response_model.GetCustomerModel;
 import com.service.response_model.ProductByBarcode;
 import com.service.util.PrefsHelper;
@@ -53,9 +50,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -85,13 +82,20 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
     CardView save_cardview;
     EditText transaction_id_et, transaction_date_et, wallet_name_et, customer_mobile_et;
     LinearLayout customer_name_linear;
+    public static CreateBillActivity cbb;
 
+    DatePickerDialog datePickerDialog;
+    int year;
+    int month;
+    int dayOfMonth;
+    Calendar calendar;
+    String todate = null, fromdate = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_bill);
-
+        cbb = this;
         init();
     }
 
@@ -190,6 +194,14 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
 
             }
         });
+        transaction_date_et.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        datePicker(transaction_date_et);
+                    }
+                }
+        );
         mAdapter = new ProductListAdapter(context, product_list);
 
         paymentMode_list.add("-- Select Payment Mode --");
@@ -249,6 +261,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+//                        test();
                         if (check()) {
                             SaveBill();
                         }
@@ -259,7 +272,6 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
 
     @Override
     public void onBarcodeAdded(String barcode) {
-        barcode = "35345345345353";
         if (checkBarcodeAlready(barcode)) {
             getProductBybarcode(barcode);
         } else {
@@ -268,6 +280,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
     }
 
     public void getProductBybarcode(String barcode) {
+
         progressbar.setVisibility(View.VISIBLE);
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         Call<ProductByBarcode> loginCall = apiHelper.getProductByBarcode(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), barcode);
@@ -280,7 +293,13 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                     if (response != null) {
                         ProductByBarcode m = response.body();
                         if (m.getStatus().equalsIgnoreCase("success")) {
-                            ProductListModel model = new ProductListModel();
+                            ProductListModel model = null;
+                            try {
+                                model = new ProductListModel();
+                            } catch (Exception ex) {
+                                Toast.makeText(context, "Product Not Found", Toast.LENGTH_SHORT).show();
+                                ex.printStackTrace();
+                            }
                             model.setBarcode(m.getData().getProduct_details().getBarcode());
                             model.setCgst(m.getData().getProduct_details().getCgst());
                             model.setSgst(m.getData().getProduct_details().getSgst());
@@ -534,24 +553,26 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                     obj.put("Total_Tax_Amt", String.valueOf(0));
                 }
                 if (product_list.get(i).getCgst() != null) {
-                    obj.put("Total_CGST", product_list.get(i).getCgst());
+                    obj.put("Total_CGST", df2.format(Float.parseFloat(product_list.get(i).getCgst())));
                     total_cgst = total_cgst + Float.parseFloat(product_list.get(i).getCgst());
                 } else {
                     obj.put("Total_CGST", String.valueOf(0));
                 }
                 if (product_list.get(i).getSgst() != null) {
-                    obj.put("Total_SGST", product_list.get(i).getSgst());
+                    obj.put("Total_SGST", df2.format(Float.parseFloat(product_list.get(i).getSgst())));
                     total_sgst = total_sgst + Float.parseFloat(product_list.get(i).getSgst());
                 } else {
                     obj.put("Total_SGST", String.valueOf(0));
                 }
                 if (product_list.get(i).getBasic_price() != null && product_list.get(i).getSelected_qty() != null) {
-                    obj.put("Total_Basic_price", String.valueOf(Float.parseFloat(product_list.get(i).getBasic_price()) * Integer.parseInt(product_list.get(i).getSelected_qty())));
+                    float total_basic_price = Float.parseFloat(product_list.get(i).getBasic_price()) * Integer.parseInt(product_list.get(i).getSelected_qty()) - Float.parseFloat(product_list.get(i).getTotal_discount_amount());
+                    obj.put("Total_Basic_price", String.valueOf(df2.format(total_basic_price)));
                 } else {
                     obj.put("Total_Basic_price", String.valueOf(0));
                 }
                 if (net_payable_tv.getText().toString() != null) {
-                    obj.put("Final_Price", net_payable_tv.getText().toString());
+                    float final_price = (Integer.parseInt(product_list.get(i).getSelected_qty()) * Float.parseFloat(product_list.get(i).getBasic_price()) + Float.parseFloat(product_list.get(i).getTotal_tax())) - Float.parseFloat(product_list.get(i).getTotal_discount_amount());
+                    obj.put("Final_Price", String.valueOf(final_price));
                 } else {
                     obj.put("Final_Price", String.valueOf(0));
                 }
@@ -561,11 +582,10 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                     obj.put("SingleTaxRatePer", String.valueOf(0));
                 }
                 if (product_list.get(i).getSingle_discount_amount() != null) {
-                    obj.put("SingleDiscountAmt", product_list.get(i).getSingle_discount_amount());
+                    obj.put("SingleDiscountAmt", df2.format(Float.parseFloat(product_list.get(i).getSingle_discount_amount())));
                 } else {
                     obj.put("SingleDiscountAmt", String.valueOf(0));
                 }
-
                 if (product_list.get(i).getDiscount_percentage() != null) {
                     obj.put("SingleDiscountPer", product_list.get(i).getDiscount_percentage());
                 } else {
@@ -646,6 +666,8 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         net_payable_relative.setVisibility(View.GONE);
         round_off_relative.setVisibility(View.GONE);
         total_relative.setVisibility(View.GONE);
+        total_items_tv.setText("ITEMS ( " + product_list.size() + " )");
+        calculate_Total();
     }
 
     @Override
@@ -680,6 +702,8 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         return b;
     }
 
+    NumberFormat formatter = new DecimalFormat("##.00");
+
     void calculate_Total() {
         dicount_relative.setVisibility(View.VISIBLE);
         cgst_relative.setVisibility(View.VISIBLE);
@@ -702,11 +726,11 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         }
         sum_taxable = sum_taxable - sum_discount_amount;
         net_payable = (sum_taxable) + tax_total;
-        float round_off = net_payable - Float.parseFloat(String.valueOf(Math.round(net_payable)));
+        float round_off = Float.parseFloat(String.valueOf(Math.round(net_payable))) - Float.parseFloat(formatter.format(net_payable));
         discount_amount_tv.setText(String.valueOf(df2.format(sum_discount_amount)));
         cgst_tv.setText(String.valueOf(df2.format(tax_total / 2)));
         sgst_tv.setText(String.valueOf(df2.format(tax_total / 2)));
-        total_amt_tv.setText(String.valueOf(net_payable));
+        total_amt_tv.setText(String.valueOf(formatter.format(net_payable)));
         net_payable_tv.setText(String.valueOf(Math.round(net_payable)));
         taxable_amount_tv.setText(String.valueOf(df2.format(sum_taxable)));
         round_off_tv.setText(String.valueOf(round_off));
@@ -757,5 +781,166 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
             return b;
         }
         return b;
+    }
+
+    public void datePicker(final EditText date) {
+        calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        datePickerDialog = new DatePickerDialog(context,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        month = month + 1;
+                        String value = convertMonth(month);
+                        if (value != (null)) {
+                            String edit = String.valueOf(date);
+
+                            String[] separated = edit.split("/");
+                            String variable = separated[1];
+
+                            if (variable.equals("edt_to_date}")) {
+                                todate = (year + "-" + month + "-" + day);
+                            } else {
+                                fromdate = (year + "-" + month + "-" + day);
+                            }
+                            //date.setText(day + "-" + month + 1  + "-" + year);
+                            transaction_date_et.setText(day + "-" + value + "-" + year);
+
+                            if ((fromdate != null) && (todate != null)) {
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+                                Date date1 = null;
+                                Date date2 = null;
+                                try {
+                                    date1 = format.parse(fromdate);
+                                    date2 = format.parse(todate);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                }, year, month, dayOfMonth);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        datePickerDialog.show();
+    }
+
+    public String convertMonth(int month) {
+        String value = null;
+        if (month == 1) {
+            value = "Jan";
+        } else if (month == 2) {
+            value = "Feb";
+        } else if (month == 3) {
+            value = "Mar";
+        } else if (month == 4) {
+            value = "Apr";
+        } else if (month == 5) {
+            value = "May";
+        } else if (month == 6) {
+            value = "Jun";
+        } else if (month == 7) {
+            value = "Jul";
+        } else if (month == 8) {
+            value = "Aug";
+        } else if (month == 9) {
+            value = "Sep";
+        } else if (month == 10) {
+            value = "Oct";
+        } else if (month == 11) {
+            value = "Nov";
+        } else if (month == 12) {
+            value = "Dec";
+        }
+        return value;
+    }
+
+    void test() {
+        JSONArray array = new JSONArray();
+        JSONObject obj = null;
+        float total_cgst = 0;
+        float total_sgst = 0;
+        try {
+            int i = 0;
+            while (i < product_list.size()) {
+                obj = new JSONObject();
+                obj.put("Product_Id", product_list.get(i).getId());
+                obj.put("Batch", product_list.get(i).getSelected_batch());
+                obj.put("Quantity", product_list.get(i).getSelected_qty());
+                obj.put("Sale_Price", product_list.get(i).getSelected_batch());
+                if (product_list.get(i).getSingle_tax() != null) {
+                    obj.put("Single_Tax_Amt", df2.format(Float.parseFloat(product_list.get(i).getSingle_tax())));
+                } else {
+                    obj.put("Single_Tax_Amt", String.valueOf(0));
+                }
+                if (product_list.get(i).getSingle_tax() != null) {
+                    obj.put("Single_CGST", String.valueOf(df2.format(Float.parseFloat(product_list.get(i).getSingle_tax()) / 2)));
+                } else {
+                    obj.put("Single_CGST", String.valueOf(0));
+                }
+                if (product_list.get(i).getSingle_tax() != null) {
+                    obj.put("Single_SGST", String.valueOf(df2.format(Float.parseFloat(product_list.get(i).getSingle_tax()) / 2)));
+                } else {
+                    obj.put("Single_SGST", String.valueOf(0));
+                }
+                if (product_list.get(i).getBasic_price() != null) {
+                    obj.put("Single_Basic_Price", df2.format(Float.parseFloat(product_list.get(i).getBasic_price())));
+                } else {
+                    obj.put("Single_Basic_Price", String.valueOf(0));
+                }
+                if (product_list.get(i).getTotal_tax() != null) {
+                    obj.put("Total_Tax_Amt", df2.format(Float.parseFloat(product_list.get(i).getTotal_tax())));
+                } else {
+                    obj.put("Total_Tax_Amt", String.valueOf(0));
+                }
+                if (product_list.get(i).getCgst() != null) {
+                    obj.put("Total_CGST", df2.format(Float.parseFloat(product_list.get(i).getCgst())));
+                    total_cgst = total_cgst + Float.parseFloat(product_list.get(i).getCgst());
+                } else {
+                    obj.put("Total_CGST", String.valueOf(0));
+                }
+                if (product_list.get(i).getSgst() != null) {
+                    obj.put("Total_SGST", df2.format(Float.parseFloat(product_list.get(i).getSgst())));
+                    total_sgst = total_sgst + Float.parseFloat(product_list.get(i).getSgst());
+                } else {
+                    obj.put("Total_SGST", String.valueOf(0));
+                }
+                if (product_list.get(i).getBasic_price() != null && product_list.get(i).getSelected_qty() != null) {
+                    float total_basic_price = Float.parseFloat(product_list.get(i).getBasic_price()) * Integer.parseInt(product_list.get(i).getSelected_qty()) - Float.parseFloat(product_list.get(i).getTotal_discount_amount());
+                    obj.put("Total_Basic_price", String.valueOf(df2.format(total_basic_price)));
+                } else {
+                    obj.put("Total_Basic_price", String.valueOf(0));
+                }
+                if (net_payable_tv.getText().toString() != null) {
+                    float final_price = (Integer.parseInt(product_list.get(i).getSelected_qty()) * Float.parseFloat(product_list.get(i).getBasic_price()) + Float.parseFloat(product_list.get(i).getTotal_tax())) - Float.parseFloat(product_list.get(i).getTotal_discount_amount());
+                    obj.put("Final_Price", String.valueOf(final_price));
+                } else {
+                    obj.put("Final_Price", String.valueOf(0));
+                }
+                if (product_list.get(i).getTax_percent() != null) {
+                    obj.put("SingleTaxRatePer", product_list.get(i).getTax_percent());
+                } else {
+                    obj.put("SingleTaxRatePer", String.valueOf(0));
+                }
+                if (product_list.get(i).getSingle_discount_amount() != null) {
+                    obj.put("SingleDiscountAmt", product_list.get(i).getSingle_discount_amount());
+                } else {
+                    obj.put("SingleDiscountAmt", String.valueOf(0));
+                }
+                if (product_list.get(i).getDiscount_percentage() != null) {
+                    obj.put("SingleDiscountPer", product_list.get(i).getDiscount_percentage());
+                } else {
+                    obj.put("SingleDiscountPer", String.valueOf(0));
+                }
+                array.put(obj);
+                i++;
+            }
+            Log.e("json_array", array.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

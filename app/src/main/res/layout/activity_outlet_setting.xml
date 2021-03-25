@@ -54,13 +54,12 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
                 android:background="@android:color/transparent"
-                app:boxBackgroundColor="@android:color/transparent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                >
+                app:boxBackgroundColor="@android:color/transparent">
 
                 <EditText
                     android:id="@+id/owner_name_et"
@@ -71,13 +70,12 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
                 android:background="@android:color/transparent"
-                app:boxBackgroundColor="@android:color/transparent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                >
+                app:boxBackgroundColor="@android:color/transparent">
 
                 <EditText
                     android:id="@+id/store_name_et"
@@ -88,13 +86,12 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
                 android:background="@android:color/transparent"
-                app:boxBackgroundColor="@android:color/transparent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                >
+                app:boxBackgroundColor="@android:color/transparent">
 
                 <EditText
                     android:id="@+id/email_et"
@@ -106,13 +103,12 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
                 android:background="@android:color/transparent"
-                app:boxBackgroundColor="@android:color/transparent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                >
+                app:boxBackgroundColor="@android:color/transparent">
 
                 <EditText
                     android:id="@+id/mobile_et"
@@ -124,13 +120,12 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
                 android:background="@android:color/transparent"
-                app:boxBackgroundColor="@android:color/transparent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                >
+                app:boxBackgroundColor="@android:color/transparent">
 
                 <EditText
                     android:id="@+id/address_et"
@@ -145,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:text="Header"
+                android:text="Show Header in invoice"
                 app:switchPadding="@dimen/_10sdp" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -153,7 +148,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:text="Footer"
+                android:text="Show Footer in invoice"
                 app:switchPadding="@dimen/_10sdp" />
 
             <Button
@@ -161,6 +156,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_30sdp"
                 android:background="@drawable/round_btn_shape"
                 android:text="Save Settings"
                 android:textAllCaps="false"

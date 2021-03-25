@@ -14,9 +14,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.service.bottom_sheet.EditDemandSheet;
 import com.service.bottom_sheet.EditItemSheet;
 import com.service.model.ProductListModel;
 import com.service.rwtpos.CreateBillActivity;
+import com.service.rwtpos.CreateDemandActivity;
 import com.service.rwtpos.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -74,14 +76,21 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                                 if (item.getTitle().equals("Delete")) {
                                     removeAt(i);
                                 } else if (item.getTitle().equals("Edit")) {
-                                    EditItemSheet bottomSheetDialogFragment = new EditItemSheet();
-                                    bottomSheetDialogFragment.product_name_txt = currentItem.getPro_print_name();
-                                    bottomSheetDialogFragment.price_txt = currentItem.getSale_price();
-                                    bottomSheetDialogFragment.qty_txt = currentItem.getSelected_qty();
-                                    bottomSheetDialogFragment.discount_percentage_txt = currentItem.getDiscount_percentage();
-                                    bottomSheetDialogFragment.batch_list = currentItem.getBatch_list();
-                                    bottomSheetDialogFragment.index = i;
-                                    bottomSheetDialogFragment.show(((CreateBillActivity) context).getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+                                    if (context instanceof CreateBillActivity) {
+                                        EditItemSheet bottomSheetDialogFragment = new EditItemSheet();
+                                        bottomSheetDialogFragment.product_name_txt = currentItem.getPro_print_name();
+                                        bottomSheetDialogFragment.price_txt = currentItem.getSale_price();
+                                        bottomSheetDialogFragment.qty_txt = currentItem.getSelected_qty();
+                                        bottomSheetDialogFragment.discount_percentage_txt = currentItem.getDiscount_percentage();
+                                        bottomSheetDialogFragment.batch_list = currentItem.getBatch_list();
+                                        bottomSheetDialogFragment.index = i;
+                                        bottomSheetDialogFragment.show(((CreateBillActivity) context).getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+                                    } else if (context instanceof CreateDemandActivity) {
+                                        EditDemandSheet bottomSheetDialogFragment = new EditDemandSheet();
+                                        bottomSheetDialogFragment.qty_txt = currentItem.getSelected_qty();
+                                        bottomSheetDialogFragment.index = i;
+                                        bottomSheetDialogFragment.show(((CreateDemandActivity) context).getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+                                    }
                                 }
                                 return true;
                             }
@@ -97,9 +106,12 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public void removeAt(int position) {
         product_list.remove(position);
         notifyDataSetChanged();
-//        ((CreateBillActivity) context).setTotal(product_list, position);
         if (product_list.size() == 0) {
-            ((CreateBillActivity) context).hideAdditionalFields();
+            if (context instanceof CreateBillActivity) {
+                ((CreateBillActivity) context).hideAdditionalFields();
+            } else if (context instanceof CreateDemandActivity) {
+                ((CreateDemandActivity) context).hideAdditionalFields();
+            }
 
         }
     }
@@ -108,5 +120,4 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public int getItemCount() {
         return product_list.size();
     }
-
 }

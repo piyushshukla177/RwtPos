@@ -2,10 +2,14 @@ package com.service.network;
 
 import com.service.response_model.AddCustomerResponse;
 import com.service.response_model.BillListModel;
+import com.service.response_model.ChallanListModel;
 import com.service.response_model.CommonModel;
 import com.service.response_model.CreateBillModel;
+import com.service.response_model.CreateDemandModel;
 import com.service.response_model.DashboardModel;
+import com.service.response_model.DemandListModel;
 import com.service.response_model.GetCustomerModel;
+import com.service.response_model.GetOutLetSettings;
 import com.service.response_model.LoginModel;
 import com.service.response_model.OutletSettingModel;
 import com.service.response_model.ProductByBarcode;
@@ -62,13 +66,8 @@ public interface ApiHelper {
 
     @FormUrlEncoded
     @POST("adddemand")
-    Call<CreateBillModel> addDemand(@Field("username") String username, @Field("password") String password, @Field("cust_mobile") String cust_mobile,
-                                    @Field("cust_name") String cust_name, @Field("cust_id") String cust_id, @Field("pay_mode") String pay_mode,
-                                    @Field("bill_date") String bill_date, @Field("product_list") String product_list, @Field("dis_amt") String dis_amt,
-                                    @Field("taxable_amt") String taxable_amt, @Field("round_off") String round_off, @Field("total") String total, @Field("cgst") String cgst,
-                                    @Field("sgst") String sgst,
-                                    @Field("net_payable") String net_payable
-    );
+    Call<CreateDemandModel> addDemand(@Field("username") String username, @Field("password") String password, @Field("product_list") String product_list);
+
 
     @FormUrlEncoded
     @POST("getoutletcustomerbymobile")
@@ -83,4 +82,17 @@ public interface ApiHelper {
                                                @Field("is_footer") String is_footer
 
     );
+
+    @FormUrlEncoded
+    @POST("getoutletsetting")
+    Call<GetOutLetSettings> getOutLetSettings(@Field("username") String username, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("demandlist")
+    Call<DemandListModel> getDemandList(@Field("username") String username, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("challanlist")
+    Call<ChallanListModel> getChallanList(@Field("username") String username, @Field("password") String password);
+
 }

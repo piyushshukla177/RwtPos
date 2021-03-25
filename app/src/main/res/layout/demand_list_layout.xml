@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp">
+    android:layout_margin="@dimen/_10sdp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,31 +32,29 @@
                         android:layout_width="0dp"
                         android:layout_height="25dp"
                         android:layout_weight="0.5"
-                        android:src="@drawable/choices"
-                        app:tint="@color/teal_200" />
+                        android:src="@drawable/owner" />
 
                     <TextView
-                        android:id="@+id/bill_number_tv"
+                        android:id="@+id/outlet_name_tv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:text="# 000001" />
+                        android:text="Outlet Name" />
 
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="25dp"
                         android:layout_weight="0.5"
-                        android:src="@drawable/calendar"
-                        app:tint="@color/teal_200" />
+                        android:src="@drawable/outlet" />
 
                     <TextView
-                        android:id="@+id/date_tv"
+                        android:id="@+id/owner_name_tv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:text="22-004-2020" />
+                        android:text="Owner Name" />
 
                 </LinearLayout>
 
@@ -71,31 +69,29 @@
                         android:layout_width="0dp"
                         android:layout_height="25dp"
                         android:layout_weight="0.5"
-                        android:src="@drawable/hand"
-                        app:tint="@color/teal_200" />
+                        android:src="@drawable/calendar" />
 
                     <TextView
-                        android:id="@+id/total_tv"
+                        android:id="@+id/on_date_tv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:text="Rs 6000" />
+                        android:text="On date" />
 
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="25dp"
                         android:layout_weight="0.5"
-                        android:src="@drawable/card"
-                        app:tint="@color/teal_200" />
+                        android:src="@drawable/delivery" />
 
                     <TextView
-                        android:id="@+id/payment_mode_tv"
+                        android:id="@+id/delivery_status_tv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:text="Cash" />
+                        android:text="Delivery Status" />
 
                 </LinearLayout>
 
