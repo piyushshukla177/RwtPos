@@ -86,7 +86,6 @@ public class DemandListActivity extends AppCompatActivity {
                 }
         );
         getSettings();
-        getDemandList();
     }
 
     private void getDemandList() {

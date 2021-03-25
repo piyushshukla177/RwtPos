@@ -402,12 +402,13 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/challan_list_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_30sdp"
                 android:layout_marginRight="@dimen/_10sdp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/icon_a"
@@ -423,7 +424,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
                     android:layout_toRightOf="@id/icon_a"
-                    android:text="Create Challan"
+                    android:text="Challan List"
                     android:textColor="#202020"
                     android:textSize="@dimen/_15sdp"></TextView>
 
