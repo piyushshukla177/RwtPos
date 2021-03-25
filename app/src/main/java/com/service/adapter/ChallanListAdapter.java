@@ -38,7 +38,7 @@ public class ChallanListAdapter extends RecyclerView.Adapter<ChallanListAdapter.
     @NonNull
     @Override
     public ChallanListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.demand_list_layout, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_challan_list, parent, false);
         ChallanListViewHolder evh = new ChallanListViewHolder(v);
         return evh;
     }
