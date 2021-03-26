@@ -71,7 +71,7 @@
                         android:layout_width="0dp"
                         android:layout_height="25dp"
                         android:layout_weight="0.5"
-                        android:src="@drawable/rupee" />
+                        android:src="@drawable/hand" />
 
                     <TextView
                         android:id="@+id/Netpayable_tv"

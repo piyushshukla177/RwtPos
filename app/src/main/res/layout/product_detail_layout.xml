@@ -26,15 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/product_name_tv"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="Kg"
+        android:text=""
         android:textSize="@dimen/_10sdp" />
 
-    <ImageView
-        android:id="@+id/menu_imageview"
-        android:layout_width="@dimen/_15sdp"
-        android:layout_height="@dimen/_15sdp"
-        android:layout_below="@+id/total_tv"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:src="@drawable/vertical_menu" />
 </RelativeLayout>

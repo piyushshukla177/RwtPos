@@ -38,7 +38,7 @@ public class ChallanListAdapter extends RecyclerView.Adapter<ChallanListAdapter.
     @NonNull
     @Override
     public ChallanListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_challan_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.challan_list_layout, parent, false);
         ChallanListViewHolder evh = new ChallanListViewHolder(v);
         return evh;
     }
@@ -50,7 +50,6 @@ public class ChallanListAdapter extends RecyclerView.Adapter<ChallanListAdapter.
         holder.challan_date_tv.setText(currentItem.getChallan_date());
         holder.Netpayable_tv.setText(currentItem.getNet_payable());
         holder.payment_mode_tv.setText(currentItem.getMode_of_transport());
-
     }
 
     @Override

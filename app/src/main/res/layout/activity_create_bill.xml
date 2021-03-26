@@ -394,7 +394,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:text="CGST ₹ "
+                        android:text="SGST ₹ "
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10sdp" />
 
