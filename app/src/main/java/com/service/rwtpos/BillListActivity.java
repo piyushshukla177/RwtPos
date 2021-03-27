@@ -44,7 +44,6 @@ public class BillListActivity extends AppCompatActivity {
     RecyclerView bill_list_recyclerview;
     private OrderListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
     ProgressBar progressbar;
     private ApiHelper apiHelper;
     ArrayList<OrderListModel> order_list = new ArrayList<>();
@@ -82,6 +81,7 @@ public class BillListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(BillListActivity.this, CreateBillActivity.class);
+                        intent.putExtra("bill_type", "newbill");
                         startActivity(intent);
                         finish();
                     }
@@ -107,10 +107,10 @@ public class BillListActivity extends AppCompatActivity {
                         BillListModel m = response.body();
                         if (m.getStatus().equalsIgnoreCase("success")) {
                             OrderListModel model;
-                            ArrayList<Products> array_list = new ArrayList<>();
+                            ArrayList<Products> array_list;
                             Products d;
                             for (int i = 0; i < m.getData().size(); i++) {
-                                array_list.clear();
+                                array_list = new ArrayList<>();
                                 model = new OrderListModel();
                                 model.setBill_no(m.getData().get(i).getBill_no());
                                 model.setBill_date(m.getData().get(i).getBill_date());
@@ -120,6 +120,7 @@ public class BillListActivity extends AppCompatActivity {
                                 model.setSgst(m.getData().get(i).getSgst());
                                 model.setNet_payable(m.getData().get(i).getNet_payable());
                                 model.setTotal(m.getData().get(i).getTotal());
+                                model.setPayment_mode(m.getData().get(i).getPayment_mode());
                                 model.setPayment_type(m.getData().get(i).getPayment_type());
                                 model.setCustomer_id(m.getData().get(i).getCustomer_id());
                                 model.setOutlet_id(m.getData().get(i).getOutlet_id());
@@ -166,6 +167,7 @@ public class BillListActivity extends AppCompatActivity {
                     progressbar.setVisibility(View.GONE);
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<BillListModel> call,
                                   @NonNull Throwable t) {

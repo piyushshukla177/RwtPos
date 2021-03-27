@@ -18,25 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.service.adapter.BillDetailAdapter;
-import com.service.adapter.OrderListAdapter;
-import com.service.model.OrderListModel;
 import com.service.model.ProductDetailModel;
 import com.service.model.Products;
 import com.service.network.ApiHelper;
 import com.service.network.RetrofitClient;
-import com.service.response_model.BillByIdModel;
-import com.service.response_model.BillListModel;
-import com.service.response_model.CommonModel;
-import com.service.response_model.LoginModel;
+import com.service.response_model.ViewOutletBillModel;
 import com.service.util.PrefsHelper;
 
-import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -132,16 +121,16 @@ public class BillDetailsAcitvity extends AppCompatActivity {
     }
 
     private void GetBIllById(String id) {
-        Call<BillByIdModel> loginCall = apiHelper.getBillById(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), id);
-        loginCall.enqueue(new Callback<BillByIdModel>() {
+        Call<ViewOutletBillModel> loginCall = apiHelper.ViewOutletBill(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), id);
+        loginCall.enqueue(new Callback<ViewOutletBillModel>() {
             @Override
-            public void onResponse(@NonNull Call<BillByIdModel> call,
-                                   @NonNull Response<BillByIdModel> response) {
+            public void onResponse(@NonNull Call<ViewOutletBillModel> call,
+                                   @NonNull Response<ViewOutletBillModel> response) {
                 progressbar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
 
                     if (response != null) {
-                        BillByIdModel m = response.body();
+                        ViewOutletBillModel m = response.body();
                         if (m.getStatus().equalsIgnoreCase("success")) {
                             Log.e("id", "list size " + products_list.size() + " id =" + id + " data szie " + m.getData().size());
                             for (int j = 0; j < m.getData().size(); j++) {
@@ -156,9 +145,8 @@ public class BillDetailsAcitvity extends AppCompatActivity {
                     progressbar.setVisibility(View.GONE);
                 }
             }
-
             @Override
-            public void onFailure(@NonNull Call<BillByIdModel> call,
+            public void onFailure(@NonNull Call<ViewOutletBillModel> call,
                                   @NonNull Throwable t) {
                 progressbar.setVisibility(View.GONE);
                 if (!call.isCanceled()) {

@@ -1,6 +1,9 @@
 package com.service.model;
 
+import com.service.response_model.ProductByBarcode;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Products implements Serializable {
     private String SingleDiscountPer;
@@ -20,7 +23,24 @@ public class Products implements Serializable {
     private String Batch;
     private String Product_Id;
     private String Product_Name;
+    private String barcode;
+    private ArrayList<ProductByBarcode.Inventory> inventory;
 
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    public ArrayList<ProductByBarcode.Inventory> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(ArrayList<ProductByBarcode.Inventory> inventory) {
+        this.inventory = inventory;
+    }
 
     public String getSingleDiscountPer() {
         return SingleDiscountPer;

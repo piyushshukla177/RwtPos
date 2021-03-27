@@ -1,28 +1,26 @@
 package com.service.adapter;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.service.model.OrderListModel;
-import com.service.response_model.BillListModel;
 import com.service.rwtpos.BillDetailsAcitvity;
+import com.service.rwtpos.CreateBillActivity;
 import com.service.rwtpos.OrderListActivity;
 import com.service.rwtpos.R;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 
 public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.OrderListViewHolder> {
 
     private ArrayList<OrderListModel> category_list;
     private Context context;
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public class OrderListViewHolder extends RecyclerView.ViewHolder {
         public TextView bill_number_tv, date_tv, total_tv, payment_mode_tv, edit_bill_tv, view_detail_tv;
@@ -59,6 +57,14 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         holder.payment_mode_tv.setText(currentItem.getPayment_type() + "");
         holder.total_tv.setText(currentItem.getNet_payable() + "");
 
+        LocalDate date1 = LocalDate.parse(currentItem.getBill_date(), dtf);
+        if (date1.equals(LocalDate.now())) {
+            holder.edit_bill_tv.setVisibility(View.VISIBLE);
+        } else {
+            holder.edit_bill_tv.setVisibility(View.GONE);
+        }
+//      if () {
+//      }
         if (context instanceof OrderListActivity) {
             holder.edit_bill_tv.setVisibility(View.GONE);
             holder.view_detail_tv.setVisibility(View.GONE);
@@ -83,6 +89,33 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                         intent.putExtra("taxable", currentItem.getTaxable());
                         intent.putExtra("discount", currentItem.getTotal_discount());
                         intent.putExtra("id", currentItem.getId());
+                        context.startActivity(intent);
+                    }
+                }
+        );
+
+        holder.edit_bill_tv.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, CreateBillActivity.class);
+                        intent.putExtra("bill_type", "edit");
+                        intent.putExtra("productlist", currentItem.getProduct_list());
+                        intent.putExtra("customer_name", currentItem.getCustomer_name());
+                        intent.putExtra("customer_mobile", currentItem.getCustomer_mobile());
+                        intent.putExtra("date", currentItem.getBill_date());
+                        intent.putExtra("bill_id", currentItem.getId());
+                        intent.putExtra("bill_no", currentItem.getBill_no());
+                        intent.putExtra("payment_mode", currentItem.getPayment_mode());
+                        intent.putExtra("discount_amt", currentItem.getTotal_discount());
+                        intent.putExtra("taxable_amt", currentItem.getTaxable());
+                        intent.putExtra("cgst", currentItem.getCgst());
+                        intent.putExtra("sgst", currentItem.getSgst());
+                        intent.putExtra("total", currentItem.getTotal());
+                        intent.putExtra("round_off", currentItem.getRound_off());
+                        intent.putExtra("net_payable", currentItem.getNet_payable());
+
+
                         context.startActivity(intent);
                     }
                 }

@@ -1,7 +1,8 @@
 package com.service.network;
 
 import com.service.response_model.AddCustomerResponse;
-import com.service.response_model.BillByIdModel;
+import com.service.response_model.GetEditDataOutletBill;
+import com.service.response_model.ViewOutletBillModel;
 import com.service.response_model.BillListModel;
 import com.service.response_model.ChallanListModel;
 import com.service.response_model.CommonModel;
@@ -86,5 +87,17 @@ public interface ApiHelper {
 
     @FormUrlEncoded
     @POST("viewoutletbill")
-    Call<BillByIdModel> getBillById(@Field("username") String username, @Field("password") String password, @Field("view_id") String view_id);
+    Call<ViewOutletBillModel> ViewOutletBill(@Field("username") String username, @Field("password") String password, @Field("view_id") String view_id);
+
+    @FormUrlEncoded
+    @POST("getProductByid")
+    Call<ViewOutletBillModel> getProductByid(@Field("username") String username, @Field("password") String password, @Field("pro_id") String pro_id);
+
+    @FormUrlEncoded
+    @POST("editdataoutletbill")
+    Call<GetEditDataOutletBill> geteditdataoutletbill(@Field("username") String username, @Field("password") String password, @Field("view_id") String pro_id);
+
+    @FormUrlEncoded
+    @POST("editoutletbill")
+    Call<GetEditDataOutletBill> editInvoice(@Field("username") String username, @Field("password") String password, @Field("edit_id") String pro_id);
 }

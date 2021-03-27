@@ -7,7 +7,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -17,12 +20,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.service.network.ApiHelper;
 import com.service.network.RetrofitClient;
 import com.service.response_model.BillListModel;
 import com.service.response_model.CommonModel;
 import com.service.response_model.DashboardModel;
 import com.service.util.PrefsHelper;
+import com.service.util.VolleyMultipartRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -170,6 +187,7 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 }
         );
+//      getBillPdf();
         getDashboarddata();
     }
 
@@ -194,7 +212,7 @@ public class DashboardActivity extends AppCompatActivity {
                             monthly_business_tv.setText("₹ " + m.getData().getMonthly_business() + "");
                             total_business_tv.setText("₹ " + m.getData().getTotal_business() + "");
                             today_business.setText("₹ " + m.getData().getToday_business() + "");
-//                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+//                          Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -214,4 +232,47 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
     }
+
+
+  /*  void getBillPdf() {
+        progressbar.setVisibility(View.VISIBLE);
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, "http://192.168.29.191/rwtpos/Api/billinvoice",
+                new com.android.volley.Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        try {
+                            progressbar.setVisibility(View.GONE);
+                            Log.e("response",response.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressbar.setVisibility(View.GONE);
+                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("username", "RPO424843");
+                params.put("password", "972739");
+                params.put("bill_id", String.valueOf(45));
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                return params;
+            }
+        };
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(10 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
+        //adding the request to volley
+        Volley.newRequestQueue(context).add(volleyMultipartRequest);
+    }*/
 }

@@ -2,7 +2,7 @@ package com.service.response_model;
 
 import java.util.List;
 
-public class BillByIdModel {
+public class ViewOutletBillModel {
 
 
     private List<Data> data;

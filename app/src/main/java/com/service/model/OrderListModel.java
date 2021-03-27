@@ -9,6 +9,7 @@ public class OrderListModel {
     private String bill_date;
     private String bill_no;
     private String payment_type;
+    private String payment_mode;
     private String customer_name;
     private String customer_mobile;
     private String net_payable;
@@ -20,6 +21,14 @@ public class OrderListModel {
     private String taxable;
     private String total_discount;
     private String id;
+
+    public String getPayment_mode() {
+        return payment_mode;
+    }
+
+    public void setPayment_mode(String payment_mode) {
+        this.payment_mode = payment_mode;
+    }
 
     public String getId() {
         return id;

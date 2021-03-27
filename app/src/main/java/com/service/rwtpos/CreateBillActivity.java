@@ -38,11 +38,13 @@ import com.service.bottom_sheet.AddProductByBarcodeSheet;
 import com.service.bottom_sheet.DiscardChangesSheet;
 import com.service.bottom_sheet.EditItemSheet;
 import com.service.model.ProductListModel;
+import com.service.model.Products;
 import com.service.network.ApiHelper;
 import com.service.network.RetrofitClient;
 import com.service.response_model.AddCustomerResponse;
 import com.service.response_model.CreateBillModel;
 import com.service.response_model.GetCustomerModel;
+import com.service.response_model.GetEditDataOutletBill;
 import com.service.response_model.ProductByBarcode;
 import com.service.util.PrefsHelper;
 
@@ -70,6 +72,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
     private ApiHelper apiHelper;
     RecyclerView item_list_recyclerview;
     ArrayList<ProductListModel> product_list = new ArrayList<>();
+    public ArrayList<Products> edit_tem_list = new ArrayList();
     private ProductListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     ImageView back_image, add_customer_imageview, scan_barcode_imageview;
@@ -261,13 +264,29 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        test();
                         if (check()) {
                             SaveBill();
                         }
                     }
                 }
         );
+        Intent intent = getIntent();
+        String bill_type = intent.getStringExtra("bill_type");
+        if (bill_type.equals("edit")) {
+            customer_mobile_et.setText(intent.getStringExtra("customer_mobile"));
+            customer_name_tv.setText(intent.getStringExtra("customer_name"));
+            invoice_date_tv.setText(intent.getStringExtra("date"));
+            edit_tem_list = (ArrayList<Products>) intent.getSerializableExtra("productlist");
+            GetBIllById(intent.getStringExtra("bill_id"));
+
+            net_payable_tv.setText(intent.getStringExtra("net_payable"));
+            total_amt_tv.setText(intent.getStringExtra("total"));
+            round_off_tv.setText(intent.getStringExtra("round_off"));
+            sgst_tv.setText(intent.getStringExtra("sgst"));
+            cgst_tv.setText(intent.getStringExtra("cgst"));
+            taxable_amount_tv.setText(intent.getStringExtra("taxable_amt"));
+            discount_amount_tv.setText(intent.getStringExtra("discount_amt"));
+        }
     }
 
     @Override
@@ -280,7 +299,6 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
     }
 
     public void getProductBybarcode(String barcode) {
-
         progressbar.setVisibility(View.VISIBLE);
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         Call<ProductByBarcode> loginCall = apiHelper.getProductByBarcode(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), barcode);
@@ -858,89 +876,100 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         return value;
     }
 
-    void test() {
-        JSONArray array = new JSONArray();
-        JSONObject obj = null;
-        float total_cgst = 0;
-        float total_sgst = 0;
-        try {
-            int i = 0;
-            while (i < product_list.size()) {
-                obj = new JSONObject();
-                obj.put("Product_Id", product_list.get(i).getId());
-                obj.put("Batch", product_list.get(i).getSelected_batch());
-                obj.put("Quantity", product_list.get(i).getSelected_qty());
-                obj.put("Sale_Price", product_list.get(i).getSelected_batch());
-                if (product_list.get(i).getSingle_tax() != null) {
-                    obj.put("Single_Tax_Amt", df2.format(Float.parseFloat(product_list.get(i).getSingle_tax())));
+
+    private void GetBIllById(String id) {
+        Call<GetEditDataOutletBill> loginCall = apiHelper.geteditdataoutletbill(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), id);
+        loginCall.enqueue(new Callback<GetEditDataOutletBill>() {
+            @Override
+            public void onResponse(@NonNull Call<GetEditDataOutletBill> call,
+                                   @NonNull Response<GetEditDataOutletBill> response) {
+                progressbar.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+
+                    if (response != null) {
+                        GetEditDataOutletBill m = response.body();
+                        if (m.getStatus().equalsIgnoreCase("success")) {
+                            ArrayList<ProductByBarcode.Inventory> inventory_list;
+
+                            for (int i = 0; i < m.getData().size(); i++) {
+                                inventory_list = new ArrayList<>();
+                                ProductByBarcode.Inventory inventory_model;
+                                edit_tem_list.get(i).setProduct_Name(m.getData().get(i).getProduct());
+                                edit_tem_list.get(i).setBarcode(m.getData().get(i).getBarcode());
+                                for (int j = 0; j < m.getData().get(i).getInventory().size(); j++) {
+                                    inventory_model = new ProductByBarcode.Inventory();
+                                    inventory_model.setOutlet_id(m.getData().get(i).getInventory().get(j).getOutlet_id());
+                                    inventory_model.setPrice(m.getData().get(i).getInventory().get(j).getPrice());
+                                    inventory_model.setQty(m.getData().get(i).getInventory().get(j).getQty());
+                                    inventory_list.add(inventory_model);
+                                }
+                                edit_tem_list.get(i).setInventory(inventory_list);
+                            }
+                            setEditList();
+                        } else {
+                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 } else {
-                    obj.put("Single_Tax_Amt", String.valueOf(0));
+                    progressbar.setVisibility(View.GONE);
                 }
-                if (product_list.get(i).getSingle_tax() != null) {
-                    obj.put("Single_CGST", String.valueOf(df2.format(Float.parseFloat(product_list.get(i).getSingle_tax()) / 2)));
-                } else {
-                    obj.put("Single_CGST", String.valueOf(0));
-                }
-                if (product_list.get(i).getSingle_tax() != null) {
-                    obj.put("Single_SGST", String.valueOf(df2.format(Float.parseFloat(product_list.get(i).getSingle_tax()) / 2)));
-                } else {
-                    obj.put("Single_SGST", String.valueOf(0));
-                }
-                if (product_list.get(i).getBasic_price() != null) {
-                    obj.put("Single_Basic_Price", df2.format(Float.parseFloat(product_list.get(i).getBasic_price())));
-                } else {
-                    obj.put("Single_Basic_Price", String.valueOf(0));
-                }
-                if (product_list.get(i).getTotal_tax() != null) {
-                    obj.put("Total_Tax_Amt", df2.format(Float.parseFloat(product_list.get(i).getTotal_tax())));
-                } else {
-                    obj.put("Total_Tax_Amt", String.valueOf(0));
-                }
-                if (product_list.get(i).getCgst() != null) {
-                    obj.put("Total_CGST", df2.format(Float.parseFloat(product_list.get(i).getCgst())));
-                    total_cgst = total_cgst + Float.parseFloat(product_list.get(i).getCgst());
-                } else {
-                    obj.put("Total_CGST", String.valueOf(0));
-                }
-                if (product_list.get(i).getSgst() != null) {
-                    obj.put("Total_SGST", df2.format(Float.parseFloat(product_list.get(i).getSgst())));
-                    total_sgst = total_sgst + Float.parseFloat(product_list.get(i).getSgst());
-                } else {
-                    obj.put("Total_SGST", String.valueOf(0));
-                }
-                if (product_list.get(i).getBasic_price() != null && product_list.get(i).getSelected_qty() != null) {
-                    float total_basic_price = Float.parseFloat(product_list.get(i).getBasic_price()) * Integer.parseInt(product_list.get(i).getSelected_qty()) - Float.parseFloat(product_list.get(i).getTotal_discount_amount());
-                    obj.put("Total_Basic_price", String.valueOf(df2.format(total_basic_price)));
-                } else {
-                    obj.put("Total_Basic_price", String.valueOf(0));
-                }
-                if (net_payable_tv.getText().toString() != null) {
-                    float final_price = (Integer.parseInt(product_list.get(i).getSelected_qty()) * Float.parseFloat(product_list.get(i).getBasic_price()) + Float.parseFloat(product_list.get(i).getTotal_tax())) - Float.parseFloat(product_list.get(i).getTotal_discount_amount());
-                    obj.put("Final_Price", String.valueOf(final_price));
-                } else {
-                    obj.put("Final_Price", String.valueOf(0));
-                }
-                if (product_list.get(i).getTax_percent() != null) {
-                    obj.put("SingleTaxRatePer", product_list.get(i).getTax_percent());
-                } else {
-                    obj.put("SingleTaxRatePer", String.valueOf(0));
-                }
-                if (product_list.get(i).getSingle_discount_amount() != null) {
-                    obj.put("SingleDiscountAmt", product_list.get(i).getSingle_discount_amount());
-                } else {
-                    obj.put("SingleDiscountAmt", String.valueOf(0));
-                }
-                if (product_list.get(i).getDiscount_percentage() != null) {
-                    obj.put("SingleDiscountPer", product_list.get(i).getDiscount_percentage());
-                } else {
-                    obj.put("SingleDiscountPer", String.valueOf(0));
-                }
-                array.put(obj);
-                i++;
             }
-            Log.e("json_array", array.toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
+            @Override
+            public void onFailure(@NonNull Call<GetEditDataOutletBill> call,
+                                  @NonNull Throwable t) {
+                progressbar.setVisibility(View.GONE);
+                if (!call.isCanceled()) {
+                }
+                t.printStackTrace();
+            }
+        });
+    }
+
+    void setEditList() {
+        ProductListModel model;
+        int i = 0;
+        while (i < edit_tem_list.size()) {
+            model = new ProductListModel();
+            Products d = edit_tem_list.get(i);
+            model.setBarcode(d.getBarcode());
+            model.setCgst(d.getSingle_CGST());
+            model.setSgst(d.getSingle_SGST());
+            model.setHsn("");
+            model.setId(d.getProduct_Id());
+            model.setGst(d.getSingle_Tax_Amt());
+            model.setIntStock(String.valueOf(0));
+            model.setMinmum_stock(String.valueOf(0));
+            model.setPro_print_name(d.getProduct_Name());
+            model.setSale_price(d.getSale_Price());
+//          model.setPurchase_price(d.getP);
+            model.setTax_percent(d.getSingleTaxRatePer());
+            model.setTotal_tax(d.getTotal_Tax_Amt());
+//            model.setProduct_pic(m.getData().getProduct_details().getProduct_pic());
+            model.setStr_product(d.getProduct_Name());
+            model.setBasic_price(d.getSingle_Basic_Price());
+            model.setTotal_discount_amount(d.getSingleDiscountAmt());
+            model.setSelected_batch(d.getBatch());
+            model.setSelected_qty(d.getQuantity());
+            model.setSingle_discount_amount(d.getSingleDiscountAmt());
+            model.setSingle_tax(d.getSingle_Tax_Amt());
+            model.setDiscount_percentage(d.getSingleDiscountPer());
+            product_list.add(model);
+            i++;
         }
+        item_list_recyclerview.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(context);
+        item_list_recyclerview.setLayoutManager(mLayoutManager);
+        item_list_recyclerview.setAdapter(mAdapter);
+
+        dicount_relative.setVisibility(View.VISIBLE);
+        cgst_relative.setVisibility(View.VISIBLE);
+        sgst_relative.setVisibility(View.VISIBLE);
+        net_payable_relative.setVisibility(View.VISIBLE);
+        round_off_relative.setVisibility(View.VISIBLE);
+        total_relative.setVisibility(View.VISIBLE);
+        taxable_relative.setVisibility(View.VISIBLE);
+
+
     }
 }
