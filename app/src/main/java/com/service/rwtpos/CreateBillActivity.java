@@ -876,7 +876,6 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         return value;
     }
 
-
     private void GetBIllById(String id) {
         Call<GetEditDataOutletBill> loginCall = apiHelper.geteditdataoutletbill(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), id);
         loginCall.enqueue(new Callback<GetEditDataOutletBill>() {
@@ -969,7 +968,5 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         round_off_relative.setVisibility(View.VISIBLE);
         total_relative.setVisibility(View.VISIBLE);
         taxable_relative.setVisibility(View.VISIBLE);
-
-
     }
 }
