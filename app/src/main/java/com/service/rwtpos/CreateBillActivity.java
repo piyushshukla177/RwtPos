@@ -3,9 +3,12 @@ package com.service.rwtpos;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -13,6 +16,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -31,6 +35,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
 import com.service.adapter.ProductListAdapter;
 import com.service.bottom_sheet.AddCustomerSheet;
@@ -46,11 +55,15 @@ import com.service.response_model.CreateBillModel;
 import com.service.response_model.GetCustomerModel;
 import com.service.response_model.GetEditDataOutletBill;
 import com.service.response_model.ProductByBarcode;
+import com.service.util.ByteVolleyRequest;
 import com.service.util.PrefsHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -58,6 +71,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,8 +86,6 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
     SimpleDateFormat date_format = new SimpleDateFormat("dd-MMM-yyyy");
     private ApiHelper apiHelper;
     RecyclerView item_list_recyclerview;
-    ArrayList<ProductListModel> product_list = new ArrayList<>();
-    public ArrayList<Products> edit_tem_list = new ArrayList();
     private ProductListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     ImageView back_image, add_customer_imageview, scan_barcode_imageview;
@@ -93,6 +106,10 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
     int dayOfMonth;
     Calendar calendar;
     String todate = null, fromdate = null;
+    ArrayList<ProductListModel> product_list = new ArrayList<>();
+    public ArrayList<Products> edit_tem_list = new ArrayList();
+
+    String bill_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,25 +277,16 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                     }
                 }
         );
-        save_cardview.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (check()) {
-                            SaveBill();
-                        }
-                    }
-                }
-        );
+
         Intent intent = getIntent();
         String bill_type = intent.getStringExtra("bill_type");
         if (bill_type.equals("edit")) {
+            bill_id = intent.getStringExtra("bill_id");
             customer_mobile_et.setText(intent.getStringExtra("customer_mobile"));
             customer_name_tv.setText(intent.getStringExtra("customer_name"));
             invoice_date_tv.setText(intent.getStringExtra("date"));
             edit_tem_list = (ArrayList<Products>) intent.getSerializableExtra("productlist");
             GetBIllById(intent.getStringExtra("bill_id"));
-
             net_payable_tv.setText(intent.getStringExtra("net_payable"));
             total_amt_tv.setText(intent.getStringExtra("total"));
             round_off_tv.setText(intent.getStringExtra("round_off"));
@@ -287,6 +295,44 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
             taxable_amount_tv.setText(intent.getStringExtra("taxable_amt"));
             discount_amount_tv.setText(intent.getStringExtra("discount_amt"));
         }
+
+        save_cardview.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (check()) {
+                            if (bill_type.equals("edit")) {
+                                if (checkBatchPrice()) {
+                                    EditBill();
+                                } else {
+                                    Toast.makeText(context, "Please Select Batch", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                if (checkBatchPrice()) {
+                                    SaveBill();
+                                } else {
+                                    Toast.makeText(context, "Please Select Batch", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    }
+                }
+        );
+        try {
+            requestPermissionForReadExtertalStorage();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void requestPermissionForReadExtertalStorage() throws Exception {
+        try {
+            ActivityCompat.requestPermissions((Activity) this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    10);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     @Override
@@ -294,7 +340,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         if (checkBarcodeAlready(barcode)) {
             getProductBybarcode(barcode);
         } else {
-            Toast.makeText(CreateBillActivity.this, "Barcode Already Added", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CreateBillActivity.this, "Product Already Added", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -327,7 +373,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                             model.setIntStock(m.getData().getProduct_details().getIntStock());
                             model.setMinmum_stock(m.getData().getProduct_details().getMinmum_stock());
                             model.setPro_print_name(m.getData().getProduct_details().getPro_print_name());
-                            model.setSale_price(m.getData().getProduct_details().getSale_price());
+                            model.setSale_price(String.valueOf(0));
                             model.setPurchase_price(m.getData().getProduct_details().getPurchase_price());
                             model.setTax_percent(m.getData().getProduct_details().getTax_percent());
                             model.setTotal_tax(m.getData().getProduct_details().getTotal_tax());
@@ -365,7 +411,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                             } else {
                                 mAdapter.notifyDataSetChanged();
                             }
-                            calculate_Total();
+//                            calculate_Total();
                         } else {
                             Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -645,6 +691,145 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                     if (response != null) {
                         CreateBillModel m = response.body();
                         if (m.getStatus().equalsIgnoreCase("success")) {
+                            downloadPdfByVolley(m.getData().getId());
+                            Toast.makeText(CreateBillActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            Toast.makeText(CreateBillActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } else {
+                    progressbar.setVisibility(View.GONE);
+                    mProgressDialog.hide();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CreateBillModel> call,
+                                  @NonNull Throwable t) {
+                progressbar.setVisibility(View.GONE);
+                mProgressDialog.hide();
+                if (!call.isCanceled()) {
+                }
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void EditBill() {
+        JSONArray array = new JSONArray();
+        JSONObject obj = null;
+        float total_cgst = 0;
+        float total_sgst = 0;
+        try {
+            int i = 0;
+            while (i < product_list.size()) {
+                obj = new JSONObject();
+                obj.put("Product_Id", product_list.get(i).getId());
+                obj.put("Batch", product_list.get(i).getSelected_batch());
+                obj.put("Quantity", product_list.get(i).getSelected_qty());
+                obj.put("Sale_Price", product_list.get(i).getSelected_batch());
+                if (product_list.get(i).getSingle_tax() != null) {
+                    obj.put("Single_Tax_Amt", product_list.get(i).getSingle_tax());
+                } else {
+                    obj.put("Single_Tax_Amt", String.valueOf(0));
+                }
+                if (product_list.get(i).getSingle_tax() != null) {
+                    obj.put("Single_CGST", String.valueOf(Float.parseFloat(product_list.get(i).getSingle_tax()) / 2));
+                } else {
+                    obj.put("Single_CGST", String.valueOf(0));
+                }
+                if (product_list.get(i).getSingle_tax() != null) {
+                    obj.put("Single_SGST", String.valueOf(Float.parseFloat(product_list.get(i).getSingle_tax()) / 2));
+                } else {
+                    obj.put("Single_SGST", String.valueOf(0));
+                }
+                if (product_list.get(i).getBasic_price() != null) {
+                    obj.put("Single_Basic_Price", product_list.get(i).getBasic_price());
+                } else {
+                    obj.put("Single_Basic_Price", String.valueOf(0));
+                }
+                if (product_list.get(i).getTotal_tax() != null) {
+                    obj.put("Total_Tax_Amt", product_list.get(i).getTotal_tax());
+                } else {
+                    obj.put("Total_Tax_Amt", String.valueOf(0));
+                }
+                if (product_list.get(i).getCgst() != null) {
+                    obj.put("Total_CGST", df2.format(Float.parseFloat(product_list.get(i).getCgst())));
+                    total_cgst = total_cgst + Float.parseFloat(product_list.get(i).getCgst());
+                } else {
+                    obj.put("Total_CGST", String.valueOf(0));
+                }
+                if (product_list.get(i).getSgst() != null) {
+                    obj.put("Total_SGST", df2.format(Float.parseFloat(product_list.get(i).getSgst())));
+                    total_sgst = total_sgst + Float.parseFloat(product_list.get(i).getSgst());
+                } else {
+                    obj.put("Total_SGST", String.valueOf(0));
+                }
+                if (product_list.get(i).getBasic_price() != null && product_list.get(i).getSelected_qty() != null) {
+                    float total_basic_price = Float.parseFloat(product_list.get(i).getBasic_price()) * Integer.parseInt(product_list.get(i).getSelected_qty()) - Float.parseFloat(product_list.get(i).getTotal_discount_amount());
+                    obj.put("Total_Basic_price", String.valueOf(df2.format(total_basic_price)));
+                } else {
+                    obj.put("Total_Basic_price", String.valueOf(0));
+                }
+                if (net_payable_tv.getText().toString() != null) {
+                    float final_price = (Integer.parseInt(product_list.get(i).getSelected_qty()) * Float.parseFloat(product_list.get(i).getBasic_price()) + Float.parseFloat(product_list.get(i).getTotal_tax())) - Float.parseFloat(product_list.get(i).getTotal_discount_amount());
+                    obj.put("Final_Price", String.valueOf(final_price));
+                } else {
+                    obj.put("Final_Price", String.valueOf(0));
+                }
+                if (product_list.get(i).getTax_percent() != null) {
+                    obj.put("SingleTaxRatePer", product_list.get(i).getTax_percent());
+                } else {
+                    obj.put("SingleTaxRatePer", String.valueOf(0));
+                }
+                if (product_list.get(i).getSingle_discount_amount() != null) {
+                    obj.put("SingleDiscountAmt", df2.format(Float.parseFloat(product_list.get(i).getSingle_discount_amount())));
+                } else {
+                    obj.put("SingleDiscountAmt", String.valueOf(0));
+                }
+                if (product_list.get(i).getDiscount_percentage() != null) {
+                    obj.put("SingleDiscountPer", product_list.get(i).getDiscount_percentage());
+                } else {
+                    obj.put("SingleDiscountPer", String.valueOf(0));
+                }
+                array.put(obj);
+                i++;
+            }
+            Log.e("json_array", array.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        final ProgressDialog mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setMessage("Please Wait...");
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setOnCancelListener(new Dialog.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // DO SOME STUFF HERE
+            }
+        });
+        mProgressDialog.show();
+        apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
+//        Log.e("request_data", PrefsHelper.getString(context, "username") + "," + PrefsHelper.getString(context, "password") + "," + customer_mobile_et.getText().toString() + "," + customer_name_tv.getText().toString() + "," + customer_id + "," + String.valueOf(payment_mode_spinner.getSelectedItemPosition() + 1) + "," + invoice_date_tv.getText().toString() +
+//                ", " + array.toString() + "," + discount_amount_tv.getText().toString() + "," + taxable_amount_tv.getText().toString());
+        Call<CreateBillModel> loginCall = apiHelper.EditOutletBill(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), bill_id, customer_mobile_et.getText().toString(), customer_name_tv.getText().toString(), customer_id, String.valueOf(payment_mode_spinner.getSelectedItemPosition()), invoice_date_tv.getText().toString(), array.toString()
+                , discount_amount_tv.getText().toString(), taxable_amount_tv.getText().toString(), round_off_tv.getText().toString(), net_payable_tv.getText().toString(), String.valueOf(total_cgst), String.valueOf(total_sgst)
+                , net_payable_tv.getText().toString()
+        );
+        loginCall.enqueue(new Callback<CreateBillModel>() {
+            @Override
+            public void onResponse(@NonNull Call<CreateBillModel> call,
+                                   @NonNull Response<CreateBillModel> response) {
+                progressbar.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+                    mProgressDialog.hide();
+                    if (response != null) {
+                        CreateBillModel m = response.body();
+                        if (m.getStatus().equalsIgnoreCase("success")) {
+                            downloadPdfByVolley(m.getData().getId());
                             Toast.makeText(CreateBillActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
                             finish();
                         } else {
@@ -712,6 +897,22 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
             String y = m.getBarcode();
             boolean z = x.equals(y);
             if (m.getBarcode().equals(barcode)) {
+                b = false;
+                return b;
+            }
+            i++;
+        }
+        return b;
+    }
+
+    boolean checkBatchPrice() {
+        boolean b = true;
+        int i = 0;
+        while (i < product_list.size()) {
+            ProductListModel m = product_list.get(i);
+            float sale_price = Float.parseFloat(m.getSale_price());
+            if (sale_price > 0) {
+            } else {
                 b = false;
                 return b;
             }
@@ -888,21 +1089,31 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                     if (response != null) {
                         GetEditDataOutletBill m = response.body();
                         if (m.getStatus().equalsIgnoreCase("success")) {
-                            ArrayList<ProductByBarcode.Inventory> inventory_list;
-
+//                            ArrayList<ProductByBarcode.Inventory> inventory_list;
+                            ArrayList<ProductListModel.Batch> batch_list;
                             for (int i = 0; i < m.getData().size(); i++) {
-                                inventory_list = new ArrayList<>();
+//                                inventory_list = new ArrayList<>();
                                 ProductByBarcode.Inventory inventory_model;
                                 edit_tem_list.get(i).setProduct_Name(m.getData().get(i).getProduct());
                                 edit_tem_list.get(i).setBarcode(m.getData().get(i).getBarcode());
+//                                for (int j = 0; j < m.getData().get(i).getInventory().size(); j++) {
+//                                    inventory_model = new ProductByBarcode.Inventory();
+//                                    inventory_model.setOutlet_id(m.getData().get(i).getInventory().get(j).getOutlet_id());
+//                                    inventory_model.setPrice(m.getData().get(i).getInventory().get(j).getPrice());
+//                                    inventory_model.setQty(m.getData().get(i).getInventory().get(j).getQty());
+//                                    inventory_list.add(inventory_model);
+//                                }
+                                ProductListModel.Batch b;
+                                batch_list = new ArrayList<>();
                                 for (int j = 0; j < m.getData().get(i).getInventory().size(); j++) {
-                                    inventory_model = new ProductByBarcode.Inventory();
-                                    inventory_model.setOutlet_id(m.getData().get(i).getInventory().get(j).getOutlet_id());
-                                    inventory_model.setPrice(m.getData().get(i).getInventory().get(j).getPrice());
-                                    inventory_model.setQty(m.getData().get(i).getInventory().get(j).getQty());
-                                    inventory_list.add(inventory_model);
+                                    b = new ProductListModel.Batch();
+                                    b.setPrice(m.getData().get(i).getInventory().get(j).getPrice());
+                                    b.setQty(String.valueOf(m.getData().get(i).getInventory().get(j).getQty()));
+                                    batch_list.add(b);
                                 }
-                                edit_tem_list.get(i).setInventory(inventory_list);
+//                                model.setBatch_list(batch_list);
+//                                product_list.add(model);
+                                edit_tem_list.get(i).setInventory(batch_list);
                             }
                             setEditList();
                         } else {
@@ -944,7 +1155,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
 //          model.setPurchase_price(d.getP);
             model.setTax_percent(d.getSingleTaxRatePer());
             model.setTotal_tax(d.getTotal_Tax_Amt());
-//            model.setProduct_pic(m.getData().getProduct_details().getProduct_pic());
+//          model.setProduct_pic(m.getData().getProduct_details().getProduct_pic());
             model.setStr_product(d.getProduct_Name());
             model.setBasic_price(d.getSingle_Basic_Price());
             model.setTotal_discount_amount(d.getSingleDiscountAmt());
@@ -953,6 +1164,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
             model.setSingle_discount_amount(d.getSingleDiscountAmt());
             model.setSingle_tax(d.getSingle_Tax_Amt());
             model.setDiscount_percentage(d.getSingleDiscountPer());
+            model.setBatch_list(d.getInventory());
             product_list.add(model);
             i++;
         }
@@ -960,7 +1172,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         mLayoutManager = new LinearLayoutManager(context);
         item_list_recyclerview.setLayoutManager(mLayoutManager);
         item_list_recyclerview.setAdapter(mAdapter);
-
+        Log.e("list", product_list + "");
         dicount_relative.setVisibility(View.VISIBLE);
         cgst_relative.setVisibility(View.VISIBLE);
         sgst_relative.setVisibility(View.VISIBLE);
@@ -968,5 +1180,67 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         round_off_relative.setVisibility(View.VISIBLE);
         total_relative.setVisibility(View.VISIBLE);
         taxable_relative.setVisibility(View.VISIBLE);
+        payment_mode_spinner.setVisibility(View.VISIBLE);
+    }
+
+    private File pdfFile;
+
+    public void downloadPdfByVolley(String bill_id) {
+        //our custom volley request
+        ByteVolleyRequest volleyMultipartRequest = new ByteVolleyRequest(Request.Method.POST, "http://pos.radianceedu.com/Api/billinvoice",
+                new com.android.volley.Response.Listener<byte[]>() {
+                    @Override
+                    public void onResponse(byte[] response) {
+                        try {
+                            if (response != null) {
+                                String state = "";
+                                state = Environment.getExternalStorageState();
+                                if (Environment.MEDIA_MOUNTED.equals(state)) {
+                                    File direct = new File(Environment.getExternalStorageDirectory()
+                                            + "/RwtBills");
+//                                    File direct = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                                    if (!direct.exists()) {
+                                        direct.mkdirs();
+                                    }
+                                    File myFile = new File(direct, bill_id + ".pdf");
+                                    FileOutputStream fstream = new FileOutputStream(myFile);
+                                    fstream.write(response);
+                                    fstream.close();
+                                    Toast.makeText(CreateBillActivity.this, "Invoice Saved", Toast.LENGTH_LONG).show();
+
+                                } else {
+                                    Toast.makeText(CreateBillActivity.this, "External Storage Not Found", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("username", PrefsHelper.getString(context, "username"));
+                params.put("password", PrefsHelper.getString(context, "password"));
+                params.put("bill_id", bill_id);
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                return params;
+            }
+        };
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(10 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
+        //adding the request to volley
+        Volley.newRequestQueue(CreateBillActivity.this).add(volleyMultipartRequest);
     }
 }

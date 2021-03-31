@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -48,8 +51,9 @@ public class BillListActivity extends AppCompatActivity {
     private ApiHelper apiHelper;
     ArrayList<OrderListModel> order_list = new ArrayList<>();
     TextView sale_tv;
-    ImageView back_arrow;
+    ImageView back_arrow, close_imageview;
     CardView create_new_bill_card;
+    EditText search_edittext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,8 @@ public class BillListActivity extends AppCompatActivity {
         sale_tv = findViewById(R.id.sale_tv);
         back_arrow = findViewById(R.id.back_arrow);
         create_new_bill_card = findViewById(R.id.create_new_bill_card);
+        search_edittext = findViewById(R.id.search_edittext);
+        close_imageview = findViewById(R.id.close_imageview);
 
         back_arrow.setOnClickListener(
                 new View.OnClickListener() {
@@ -87,7 +93,47 @@ public class BillListActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        search_edittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString().isEmpty()) {
+                    close_imageview.setVisibility(View.GONE);
+                } else {
+                    close_imageview.setVisibility(View.VISIBLE);
+                }
+                filter(editable.toString());
+            }
+        });
+        close_imageview.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        search_edittext.setText("");
+                    }
+                }
+        );
         getOrderList();
+    }
+
+    private void filter(String text) {
+        ArrayList<OrderListModel> filteredList = new ArrayList<>();
+        for (OrderListModel item : order_list) {
+            if (item.getBill_no().toLowerCase().contains(text.toLowerCase()) || item.getBill_date().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+        mAdapter.filterList(filteredList);
     }
 
 //    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -105,7 +151,7 @@ public class BillListActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response != null) {
                         BillListModel m = response.body();
-                        if (m.getStatus().equalsIgnoreCase("success")) {
+                        if (m!=null && m.getStatus().equalsIgnoreCase("success")) {
                             OrderListModel model;
                             ArrayList<Products> array_list;
                             Products d;

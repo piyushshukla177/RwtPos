@@ -48,8 +48,17 @@ public class CreateBillModel {
         private String product_data;
         private String bill_date;
         private String bill_no;
+        private String id;
         private String customer_id;
         private String outlet_id;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public int getIntStatus() {
             return intStatus;

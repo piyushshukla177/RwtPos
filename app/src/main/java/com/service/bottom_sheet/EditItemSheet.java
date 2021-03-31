@@ -61,7 +61,6 @@ public class EditItemSheet extends BottomSheetDialogFragment {
                 }
         );
         ArrayList x = new ArrayList();
-
         x.add("-- Select Batch --");
         for (int j = 0; j < batch_list.size(); j++) {
             ProductListModel.Batch b = batch_list.get(j);

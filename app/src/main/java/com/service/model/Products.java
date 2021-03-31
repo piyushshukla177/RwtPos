@@ -24,7 +24,7 @@ public class Products implements Serializable {
     private String Product_Id;
     private String Product_Name;
     private String barcode;
-    private ArrayList<ProductByBarcode.Inventory> inventory;
+    private ArrayList<ProductListModel.Batch> inventory;
 
     public String getBarcode() {
         return barcode;
@@ -34,11 +34,11 @@ public class Products implements Serializable {
         this.barcode = barcode;
     }
 
-    public ArrayList<ProductByBarcode.Inventory> getInventory() {
+    public ArrayList<ProductListModel.Batch> getInventory() {
         return inventory;
     }
 
-    public void setInventory(ArrayList<ProductByBarcode.Inventory> inventory) {
+    public void setInventory(ArrayList<ProductListModel.Batch> inventory) {
         this.inventory = inventory;
     }
 

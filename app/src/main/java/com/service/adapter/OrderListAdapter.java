@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.service.model.OrderListModel;
+import com.service.response_model.BillListModel;
 import com.service.rwtpos.BillDetailsAcitvity;
 import com.service.rwtpos.CreateBillActivity;
 import com.service.rwtpos.OrderListActivity;
@@ -125,5 +126,11 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     @Override
     public int getItemCount() {
         return category_list.size();
+    }
+
+
+    public void filterList(ArrayList<OrderListModel> filteredList) {
+        category_list = filteredList;
+        notifyDataSetChanged();
     }
 }

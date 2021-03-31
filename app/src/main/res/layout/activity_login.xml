@@ -224,4 +224,3 @@
         android:background="@drawable/progressbar_background"
         android:visibility="gone" />
 </RelativeLayout>
-

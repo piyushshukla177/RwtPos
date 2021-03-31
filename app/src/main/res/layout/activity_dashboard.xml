@@ -389,6 +389,7 @@
                     android:layout_toRightOf="@id/icon_bill_list"
                     android:text="Bill List"
                     android:textColor="#202020"
+
                     android:textSize="@dimen/_15sdp"></TextView>
 
                 <ImageView

@@ -55,10 +55,20 @@ public interface ApiHelper {
                                      @Field("net_payable") String net_payable
     );
 
+
+    @FormUrlEncoded
+    @POST("updateoutlet_bill")
+    Call<CreateBillModel> EditOutletBill(@Field("username") String username, @Field("password") String password, @Field("edit_id") String edit_id, @Field("cust_mobile") String cust_mobile,
+                                         @Field("cust_name") String cust_name, @Field("cust_id") String cust_id, @Field("pay_mode") String pay_mode,
+                                         @Field("bill_date") String bill_date, @Field("product_list") String product_list, @Field("dis_amt") String dis_amt,
+                                         @Field("taxable_amt") String taxable_amt, @Field("round_off") String round_off, @Field("total") String total, @Field("cgst") String cgst,
+                                         @Field("sgst") String sgst,
+                                         @Field("net_payable") String net_payable
+    );
+
     @FormUrlEncoded
     @POST("adddemand")
     Call<CreateDemandModel> addDemand(@Field("username") String username, @Field("password") String password, @Field("product_list") String product_list);
-
 
     @FormUrlEncoded
     @POST("getoutletcustomerbymobile")
@@ -97,7 +107,7 @@ public interface ApiHelper {
     @POST("editdataoutletbill")
     Call<GetEditDataOutletBill> geteditdataoutletbill(@Field("username") String username, @Field("password") String password, @Field("view_id") String pro_id);
 
-    @FormUrlEncoded
-    @POST("editoutletbill")
-    Call<GetEditDataOutletBill> editInvoice(@Field("username") String username, @Field("password") String password, @Field("edit_id") String pro_id);
+//    @FormUrlEncoded
+//    @POST("billinvoice")
+//    Call<GetEditDataOutletBill> getInvoice(@Field("username") String username, @Field("password") String password, @Field("bill_id") String bill_id);
 }

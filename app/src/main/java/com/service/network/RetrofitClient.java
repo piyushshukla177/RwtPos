@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
     private static Retrofit retrofit = null;
-    private static String BASE_URL ="http://192.168.29.191/rwtpos/Api/";
+    private static String BASE_URL ="http://pos.radianceedu.com/Api/";
 
     public  static Retrofit getInstance()
     {
