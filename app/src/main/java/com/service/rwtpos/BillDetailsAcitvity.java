@@ -146,6 +146,7 @@ public class BillDetailsAcitvity extends AppCompatActivity {
                     progressbar.setVisibility(View.GONE);
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<ViewOutletBillModel> call,
                                   @NonNull Throwable t) {

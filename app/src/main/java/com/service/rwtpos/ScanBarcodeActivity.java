@@ -49,7 +49,6 @@ public class ScanBarcodeActivity extends AppCompatActivity {
         btnAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (intentData.length() > 0) {
                     if (isEmail)
 //                      startActivity(new Intent(MainActivity.this, EmailActivity.class).putExtra("email_address", intentData));
@@ -89,7 +88,6 @@ public class ScanBarcodeActivity extends AppCompatActivity {
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             }
-
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
                 cameraSource.stop();
@@ -109,10 +107,12 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             isEmail = false;
-                            btnAction.setText("LAUNCH URL");
+//                          btnAction.setText("LAUNCH URL");
+//                          Toast.makeText(ScanBarcodeActivity.this, "In Scanned", Toast.LENGTH_LONG);
                             intentData = barcodes.valueAt(0).displayValue;
                             txtBarcodeValue.setText(intentData);
                             CreateBillActivity.cbb.getProductBybarcode(String.valueOf(intentData));
+                            barcodes.clear();
                             finish();
                         }
                     });

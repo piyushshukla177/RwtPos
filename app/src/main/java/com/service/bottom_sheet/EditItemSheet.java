@@ -94,8 +94,8 @@ public class EditItemSheet extends BottomSheetDialogFragment {
         });
 //        int indexOfDecimal = price_txt.indexOf(".");
 //        String stringForm= price_txt.substring(0, indexOfDecimal);
-//        int spinnerPosition = spinner_adapter.getPosition(stringForm);
-//        select_batch_spinner.setSelection(spinnerPosition);
+       int spinnerPosition = spinner_adapter.getPosition(price_txt);
+       select_batch_spinner.setSelection(spinnerPosition);
         return v;
     }
 

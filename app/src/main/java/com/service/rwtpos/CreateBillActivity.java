@@ -63,7 +63,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -235,7 +234,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                 R.layout.spinner_layout, paymentMode_list);
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_layout);
         payment_mode_spinner.setAdapter(adapter);
-
+        payment_mode_spinner.setSelection(1);
         payment_mode_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -337,99 +336,102 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
 
     @Override
     public void onBarcodeAdded(String barcode) {
-        if (checkBarcodeAlready(barcode)) {
-            getProductBybarcode(barcode);
-        } else {
-            Toast.makeText(CreateBillActivity.this, "Product Already Added", Toast.LENGTH_SHORT).show();
-        }
+        getProductBybarcode(barcode);
     }
 
     public void getProductBybarcode(String barcode) {
-        progressbar.setVisibility(View.VISIBLE);
-        apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
-        Call<ProductByBarcode> loginCall = apiHelper.getProductByBarcode(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), barcode);
-        loginCall.enqueue(new Callback<ProductByBarcode>() {
-            @Override
-            public void onResponse(@NonNull Call<ProductByBarcode> call,
-                                   @NonNull Response<ProductByBarcode> response) {
-                progressbar.setVisibility(View.GONE);
-                if (response.isSuccessful()) {
-                    if (response != null) {
-                        ProductByBarcode m = response.body();
-                        if (m.getStatus().equalsIgnoreCase("success")) {
-                            ProductListModel model = null;
-                            try {
-                                model = new ProductListModel();
-                            } catch (Exception ex) {
-                                Toast.makeText(context, "Product Not Found", Toast.LENGTH_SHORT).show();
-                                ex.printStackTrace();
-                            }
-                            model.setBarcode(m.getData().getProduct_details().getBarcode());
-                            model.setCgst(m.getData().getProduct_details().getCgst());
-                            model.setSgst(m.getData().getProduct_details().getSgst());
-                            model.setHsn(m.getData().getProduct_details().getHsn());
-                            model.setId(m.getData().getProduct_details().getId());
-                            model.setGst(m.getData().getProduct_details().getGst());
-                            model.setIntStock(m.getData().getProduct_details().getIntStock());
-                            model.setMinmum_stock(m.getData().getProduct_details().getMinmum_stock());
-                            model.setPro_print_name(m.getData().getProduct_details().getPro_print_name());
-                            model.setSale_price(String.valueOf(0));
-                            model.setPurchase_price(m.getData().getProduct_details().getPurchase_price());
-                            model.setTax_percent(m.getData().getProduct_details().getTax_percent());
-                            model.setTotal_tax(m.getData().getProduct_details().getTotal_tax());
-                            model.setProduct_pic(m.getData().getProduct_details().getProduct_pic());
-                            model.setStr_product(m.getData().getProduct_details().getStr_product());
-                            model.setBasic_price(m.getData().getProduct_details().getBasic_price());
-                            model.setTotal_discount_amount(String.valueOf(0));
-                            model.setSelected_batch(m.getData().getProduct_details().getSale_price());
-                            model.setSelected_qty(String.valueOf(1));
-                            model.setSingle_discount_amount(String.valueOf(0));
-                            model.setSingle_tax(m.getData().getProduct_details().getTotal_tax());
-                            model.setDiscount_percentage(String.valueOf(0));
-
-                            ProductListModel.Batch b;
-                            ArrayList<ProductListModel.Batch> batch_list = new ArrayList<>();
-                            for (int i = 0; i < m.getData().getInventory().size(); i++) {
-                                b = new ProductListModel.Batch();
-                                b.setPrice(m.getData().getInventory().get(i).getPrice());
-                                b.setQty(String.valueOf(m.getData().getInventory().get(i).getQty()));
-                                batch_list.add(b);
-                            }
-                            model.setBatch_list(batch_list);
-                            product_list.add(model);
-                            if (product_list.size() > 0) {
-                                payment_mode_spinner.setVisibility(View.VISIBLE);
-                                add_items_btn.setVisibility(View.GONE);
-                                add_product_tv.setVisibility(View.VISIBLE);
-                                total_items_tv.setText("ITEMS ( " + product_list.size() + " )");
-                            }
-                            if (product_list.size() == 1) {
-                                item_list_recyclerview.setHasFixedSize(true);
-                                mLayoutManager = new LinearLayoutManager(context);
-                                item_list_recyclerview.setLayoutManager(mLayoutManager);
-                                item_list_recyclerview.setAdapter(mAdapter);
-                            } else {
-                                mAdapter.notifyDataSetChanged();
-                            }
-//                            calculate_Total();
-                        } else {
-                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } else {
+        if (checkBarcodeAlready(barcode)) {
+            progressbar.setVisibility(View.VISIBLE);
+            apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
+            Call<ProductByBarcode> loginCall = apiHelper.getProductByBarcode(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), barcode);
+            loginCall.enqueue(new Callback<ProductByBarcode>() {
+                @Override
+                public void onResponse(@NonNull Call<ProductByBarcode> call,
+                                       @NonNull Response<ProductByBarcode> response) {
                     progressbar.setVisibility(View.GONE);
-                }
-            }
+                    if (response.isSuccessful()) {
+                        if (response != null) {
+                            ProductByBarcode m = response.body();
+                            if (m.getStatus().equalsIgnoreCase("success")) {
+                                ProductListModel model = null;
+                                try {
+                                    model = new ProductListModel();
+                                } catch (Exception ex) {
+                                    Toast.makeText(context, "Product Not Found", Toast.LENGTH_SHORT).show();
+                                    ex.printStackTrace();
+                                }
+                                model.setBarcode(m.getData().getProduct_details().getBarcode());
+                                model.setCgst(m.getData().getProduct_details().getCgst());
+                                model.setSgst(m.getData().getProduct_details().getSgst());
+                                model.setHsn(m.getData().getProduct_details().getHsn());
+                                model.setId(m.getData().getProduct_details().getId());
+                                model.setGst(m.getData().getProduct_details().getGst());
+                                model.setIntStock(m.getData().getProduct_details().getIntStock());
+                                model.setMinmum_stock(m.getData().getProduct_details().getMinmum_stock());
+                                model.setPro_print_name(m.getData().getProduct_details().getPro_print_name());
+                                model.setSale_price(String.valueOf(0));
+                                model.setPurchase_price(m.getData().getProduct_details().getPurchase_price());
+                                model.setTax_percent(m.getData().getProduct_details().getTax_percent());
+                                model.setTotal_tax(m.getData().getProduct_details().getTotal_tax());
+                                model.setProduct_pic(m.getData().getProduct_details().getProduct_pic());
+                                model.setStr_product(m.getData().getProduct_details().getStr_product());
+                                model.setBasic_price(m.getData().getProduct_details().getBasic_price());
+                                model.setTotal_discount_amount(String.valueOf(0));
+                                model.setSelected_batch(m.getData().getProduct_details().getSale_price());
+                                model.setSelected_qty(String.valueOf(1));
+                                model.setSingle_discount_amount(String.valueOf(0));
+                                model.setSingle_tax(m.getData().getProduct_details().getTotal_tax());
+                                model.setDiscount_percentage(String.valueOf(0));
 
-            @Override
-            public void onFailure(@NonNull Call<ProductByBarcode> call,
-                                  @NonNull Throwable t) {
-                progressbar.setVisibility(View.GONE);
-                if (!call.isCanceled()) {
+                                ProductListModel.Batch b;
+                                ArrayList<ProductListModel.Batch> batch_list = new ArrayList<>();
+
+                                for (int i = 0; i < m.getData().getInventory().size(); i++) {
+                                    b = new ProductListModel.Batch();
+                                    b.setPrice(m.getData().getInventory().get(i).getPrice());
+                                    b.setQty(String.valueOf(m.getData().getInventory().get(i).getQty()));
+                                    batch_list.add(b);
+                                }
+                                model.setBatch_list(batch_list);
+                                if (checkBarcodeAlready(barcode)) {
+                                    product_list.add(model);
+                                }
+                                if (product_list.size() > 0) {
+                                    payment_mode_spinner.setVisibility(View.VISIBLE);
+                                    add_items_btn.setVisibility(View.GONE);
+                                    add_product_tv.setVisibility(View.VISIBLE);
+                                    total_items_tv.setText("ITEMS ( " + product_list.size() + " )");
+                                }
+                                if (product_list.size() == 1) {
+                                    item_list_recyclerview.setHasFixedSize(true);
+                                    mLayoutManager = new LinearLayoutManager(context);
+                                    item_list_recyclerview.setLayoutManager(mLayoutManager);
+                                    item_list_recyclerview.setAdapter(mAdapter);
+                                } else {
+                                    mAdapter.notifyDataSetChanged();
+                                }
+//                            calculate_Total();
+                            } else {
+                                Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    } else {
+                        progressbar.setVisibility(View.GONE);
+                    }
                 }
-                t.printStackTrace();
-            }
-        });
+
+                @Override
+                public void onFailure(@NonNull Call<ProductByBarcode> call,
+                                      @NonNull Throwable t) {
+                    progressbar.setVisibility(View.GONE);
+                    if (!call.isCanceled()) {
+                    }
+                    t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(CreateBillActivity.this, "Product Already Added", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -924,35 +926,41 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
     NumberFormat formatter = new DecimalFormat("##.00");
 
     void calculate_Total() {
-        dicount_relative.setVisibility(View.VISIBLE);
-        cgst_relative.setVisibility(View.VISIBLE);
-        sgst_relative.setVisibility(View.VISIBLE);
-        net_payable_relative.setVisibility(View.VISIBLE);
-        round_off_relative.setVisibility(View.VISIBLE);
-        total_relative.setVisibility(View.VISIBLE);
-        taxable_relative.setVisibility(View.VISIBLE);
+        try {
+            if (product_list.size() > 0) {
+                dicount_relative.setVisibility(View.VISIBLE);
+                cgst_relative.setVisibility(View.VISIBLE);
+                sgst_relative.setVisibility(View.VISIBLE);
+                net_payable_relative.setVisibility(View.VISIBLE);
+                round_off_relative.setVisibility(View.VISIBLE);
+                total_relative.setVisibility(View.VISIBLE);
+                taxable_relative.setVisibility(View.VISIBLE);
+            }
 
-        float sum_discount_amount = 0;
-        float sum_taxable = 0;
-        float tax_total = 0;
-        float net_payable = 0;
-        int i = 0;
-        while (i < product_list.size()) {
-            sum_discount_amount = sum_discount_amount + Float.parseFloat(product_list.get(i).getTotal_discount_amount());
-            sum_taxable = sum_taxable + ((Float.parseFloat(product_list.get(i).getBasic_price())) * Integer.parseInt(product_list.get(i).getSelected_qty()));
-            tax_total = tax_total + Float.parseFloat(product_list.get(i).getTotal_tax());
-            i++;
+            float sum_discount_amount = 0;
+            float sum_taxable = 0;
+            float tax_total = 0;
+            float net_payable = 0;
+            int i = 0;
+            while (i < product_list.size()) {
+                sum_discount_amount = sum_discount_amount + Float.parseFloat(product_list.get(i).getTotal_discount_amount());
+                sum_taxable = sum_taxable + ((Float.parseFloat(product_list.get(i).getBasic_price())) * Integer.parseInt(product_list.get(i).getSelected_qty()));
+                tax_total = tax_total + Float.parseFloat(product_list.get(i).getTotal_tax());
+                i++;
+            }
+            sum_taxable = sum_taxable - sum_discount_amount;
+            net_payable = (sum_taxable) + tax_total;
+            float round_off = Float.parseFloat(String.valueOf(Math.round(net_payable))) - Float.parseFloat(formatter.format(net_payable));
+            discount_amount_tv.setText(String.valueOf(df2.format(sum_discount_amount)));
+            cgst_tv.setText(String.valueOf(df2.format(tax_total / 2)));
+            sgst_tv.setText(String.valueOf(df2.format(tax_total / 2)));
+            total_amt_tv.setText(String.valueOf(formatter.format(net_payable)));
+            net_payable_tv.setText(String.valueOf(Math.round(net_payable)));
+            taxable_amount_tv.setText(String.valueOf(df2.format(sum_taxable)));
+            round_off_tv.setText(String.valueOf(round_off));
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        sum_taxable = sum_taxable - sum_discount_amount;
-        net_payable = (sum_taxable) + tax_total;
-        float round_off = Float.parseFloat(String.valueOf(Math.round(net_payable))) - Float.parseFloat(formatter.format(net_payable));
-        discount_amount_tv.setText(String.valueOf(df2.format(sum_discount_amount)));
-        cgst_tv.setText(String.valueOf(df2.format(tax_total / 2)));
-        sgst_tv.setText(String.valueOf(df2.format(tax_total / 2)));
-        total_amt_tv.setText(String.valueOf(formatter.format(net_payable)));
-        net_payable_tv.setText(String.valueOf(Math.round(net_payable)));
-        taxable_amount_tv.setText(String.valueOf(df2.format(sum_taxable)));
-        round_off_tv.setText(String.valueOf(round_off));
     }
 
     boolean check() {
@@ -997,6 +1005,10 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         } else if (customer_name_tv.getText().toString().isEmpty()) {
             b = false;
             Toast.makeText(context, "Enter Registered Mobile", Toast.LENGTH_SHORT).show();
+            return b;
+        } else if (product_list.size() < 1) {
+            b = false;
+            Toast.makeText(context, "Add Product", Toast.LENGTH_SHORT).show();
             return b;
         }
         return b;

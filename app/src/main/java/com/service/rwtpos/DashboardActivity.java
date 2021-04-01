@@ -197,7 +197,7 @@ public class DashboardActivity extends AppCompatActivity {
                 getDashboarddata();
             }
         });
-
+        getDashboarddata();
     }
 
     private void getDashboarddata() {
@@ -231,6 +231,7 @@ public class DashboardActivity extends AppCompatActivity {
                     progressbar.setVisibility(View.GONE);
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<DashboardModel> call,
                                   @NonNull Throwable t) {
@@ -241,8 +242,6 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
     }
-
-
   /*  void getBillPdf() {
         progressbar.setVisibility(View.VISIBLE);
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, "http://192.168.29.191/rwtpos/Api/billinvoice",
