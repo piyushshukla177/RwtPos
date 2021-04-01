@@ -60,9 +60,15 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         final ProductListModel currentItem = product_list.get(i);
         holder.product_name_tv.setText(currentItem.getPro_print_name());
 
-
-        holder.total_tv.setText("₹ " + Float.parseFloat(currentItem.getSale_price()) * Integer.parseInt(currentItem.getSelected_qty()));
-        holder.unit_tv.setText("Rate " + currentItem.getSelected_qty() + " X " + currentItem.getSale_price());
+        if (context instanceof CreateDemandActivity) {
+//            holder.total_tv.setText("₹ " + Float.parseFloat(currentItem.getSale_price()) * Integer.parseInt(currentItem.getSelected_qty()));
+            holder.unit_tv.setText("Quantity : " + currentItem.getSelected_qty());
+        } else {
+            holder.total_tv.setText("₹ " + Float.parseFloat(currentItem.getSale_price()) * Integer.parseInt(currentItem.getSelected_qty()));
+            holder.unit_tv.setText("Rate " + currentItem.getSelected_qty() + " X " + currentItem.getSale_price());
+        }
+//        holder.total_tv.setText("₹ " + Float.parseFloat(currentItem.getSale_price()) * Integer.parseInt(currentItem.getSelected_qty()));
+//        holder.unit_tv.setText("Rate " + currentItem.getSelected_qty() + " X " + currentItem.getSale_price());
         holder.menu_imageview.setOnClickListener(
                 new View.OnClickListener() {
                     @Override

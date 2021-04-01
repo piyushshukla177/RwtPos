@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.content.Intent;
@@ -54,6 +55,7 @@ public class BillListActivity extends AppCompatActivity {
     ImageView back_arrow, close_imageview;
     CardView create_new_bill_card;
     EditText search_edittext;
+    SwipeRefreshLayout swipe_refresh_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,7 @@ public class BillListActivity extends AppCompatActivity {
         create_new_bill_card = findViewById(R.id.create_new_bill_card);
         search_edittext = findViewById(R.id.search_edittext);
         close_imageview = findViewById(R.id.close_imageview);
+        swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
 
         back_arrow.setOnClickListener(
                 new View.OnClickListener() {
@@ -123,6 +126,12 @@ public class BillListActivity extends AppCompatActivity {
                     }
                 }
         );
+        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getOrderList();
+            }
+        });
         getOrderList();
     }
 
@@ -140,6 +149,8 @@ public class BillListActivity extends AppCompatActivity {
 //    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     private void getOrderList() {
+        order_list.clear();
+        swipe_refresh_layout.setRefreshing(false);
         progressbar.setVisibility(View.VISIBLE);
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         Call<BillListModel> loginCall = apiHelper.getBillingList(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"));
@@ -151,7 +162,7 @@ public class BillListActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response != null) {
                         BillListModel m = response.body();
-                        if (m!=null && m.getStatus().equalsIgnoreCase("success")) {
+                        if (m != null && m.getStatus().equalsIgnoreCase("success")) {
                             OrderListModel model;
                             ArrayList<Products> array_list;
                             Products d;
@@ -208,6 +219,7 @@ public class BillListActivity extends AppCompatActivity {
                         mAdapter = new OrderListAdapter(context, order_list);
                         bill_list_recyclerview.setLayoutManager(mLayoutManager);
                         bill_list_recyclerview.setAdapter(mAdapter);
+                        Log.e("list_size", order_list.size() + "");
                     }
                 } else {
                     progressbar.setVisibility(View.GONE);

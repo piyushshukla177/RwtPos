@@ -71,7 +71,6 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                 .setRequestedPreviewSize(1920, 1080)
                 .setAutoFocusEnabled(true) //you should add this feature
                 .build();
-
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
@@ -82,7 +81,6 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                         ActivityCompat.requestPermissions(ScanBarcodeActivity.this, new
                                 String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -135,4 +133,3 @@ public class ScanBarcodeActivity extends AppCompatActivity {
         initialiseDetectorsAndSources();
     }
 }
-

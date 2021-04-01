@@ -121,6 +121,7 @@ public class BillDetailsAcitvity extends AppCompatActivity {
     }
 
     private void GetBIllById(String id) {
+        progressbar.setVisibility(View.VISIBLE);
         Call<ViewOutletBillModel> loginCall = apiHelper.ViewOutletBill(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), id);
         loginCall.enqueue(new Callback<ViewOutletBillModel>() {
             @Override

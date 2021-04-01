@@ -1,27 +1,35 @@
 package com.service.adapter;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.service.model.OrderListModel;
 import com.service.response_model.BillListModel;
 import com.service.rwtpos.BillDetailsAcitvity;
 import com.service.rwtpos.CreateBillActivity;
 import com.service.rwtpos.OrderListActivity;
 import com.service.rwtpos.R;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.OrderListViewHolder> {
 
     private ArrayList<OrderListModel> category_list;
     private Context context;
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public class OrderListViewHolder extends RecyclerView.ViewHolder {
         public TextView bill_number_tv, date_tv, total_tv, payment_mode_tv, edit_bill_tv, view_detail_tv;
@@ -58,14 +66,19 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         holder.payment_mode_tv.setText(currentItem.getPayment_type() + "");
         holder.total_tv.setText(currentItem.getNet_payable() + "");
 
-        LocalDate date1 = LocalDate.parse(currentItem.getBill_date(), dtf);
-        if (date1.equals(LocalDate.now())) {
+//        LocalDate date1 = LocalDate.parse(currentItem.getBill_date(), dtf);
+        Date date1 = null;
+        try {
+            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(currentItem.getBill_date());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (isToday(date1)) {
             holder.edit_bill_tv.setVisibility(View.VISIBLE);
         } else {
             holder.edit_bill_tv.setVisibility(View.GONE);
         }
-//      if () {
-//      }
+
         if (context instanceof OrderListActivity) {
             holder.edit_bill_tv.setVisibility(View.GONE);
             holder.view_detail_tv.setVisibility(View.GONE);
@@ -115,8 +128,6 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                         intent.putExtra("total", currentItem.getTotal());
                         intent.putExtra("round_off", currentItem.getRound_off());
                         intent.putExtra("net_payable", currentItem.getNet_payable());
-
-
                         context.startActivity(intent);
                     }
                 }
@@ -132,5 +143,9 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     public void filterList(ArrayList<OrderListModel> filteredList) {
         category_list = filteredList;
         notifyDataSetChanged();
+    }
+
+    public static boolean isToday(Date date) {
+        return org.apache.commons.lang3.time.DateUtils.isSameDay(Calendar.getInstance().getTime(), date);
     }
 }

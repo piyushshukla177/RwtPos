@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DemandListActivity"
-    android:background="@color/light_gray3">
+    android:background="@color/light_gray3"
+    tools:context=".DemandListActivity">
 
     <RelativeLayout
         android:id="@+id/linear_toolbar"
@@ -42,13 +42,20 @@
         android:layout_below="@+id/linear_toolbar"
         android:background="@color/light_gray" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/demand_list_recyclerview"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/create_new_demand_card"
-        android:layout_below="@+id/view"
-        android:layout_marginTop="@dimen/_10sdp" />
+        android:layout_below="@+id/view">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/demand_list_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/create_new_demand_card"
+            android:layout_below="@+id/view"
+            android:layout_marginTop="@dimen/_10sdp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/progressbar"

@@ -2,6 +2,7 @@ package com.service.rwtpos;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -54,6 +55,7 @@ public class DashboardActivity extends AppCompatActivity {
     TextView monthly_order_tv, today_order_tv, total_order_tv, total_demand_tv, total_challan_tv, monthly_business_tv, total_business_tv, today_business;
     RelativeLayout create_bill_relative, settings_relative, create_demand_relative, challan_list_relative, bill_list_relative;
     LinearLayout today_business_linear, monthly_business_linear, total_business_linear;
+    SwipeRefreshLayout swipe_refresh_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class DashboardActivity extends AppCompatActivity {
         create_demand_relative = findViewById(R.id.create_demand_relative);
         challan_list_relative = findViewById(R.id.challan_list_relative);
         bill_list_relative = findViewById(R.id.bill_list_relative);
+        swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
         logout_imageview.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -188,10 +191,17 @@ public class DashboardActivity extends AppCompatActivity {
                 }
         );
 //      getBillPdf();
-        getDashboarddata();
+        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDashboarddata();
+            }
+        });
+
     }
 
     private void getDashboarddata() {
+        swipe_refresh_layout.setRefreshing(false);
         progressbar.setVisibility(View.VISIBLE);
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         Call<DashboardModel> loginCall = apiHelper.getDashboardData(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"));
@@ -221,7 +231,6 @@ public class DashboardActivity extends AppCompatActivity {
                     progressbar.setVisibility(View.GONE);
                 }
             }
-
             @Override
             public void onFailure(@NonNull Call<DashboardModel> call,
                                   @NonNull Throwable t) {

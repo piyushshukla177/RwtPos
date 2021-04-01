@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.content.Intent;
@@ -51,6 +52,7 @@ public class DemandListActivity extends AppCompatActivity {
     ImageView back_arrow;
     String store_name, outlet_name;
     CardView create_new_demand_card;
+    SwipeRefreshLayout swipe_refresh_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class DemandListActivity extends AppCompatActivity {
         demand_list_recyclerview = findViewById(R.id.demand_list_recyclerview);
         back_arrow = findViewById(R.id.back_arrow);
         create_new_demand_card = findViewById(R.id.create_new_demand_card);
+        swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
 
         back_arrow.setOnClickListener(
                 new View.OnClickListener() {
@@ -85,10 +88,18 @@ public class DemandListActivity extends AppCompatActivity {
                     }
                 }
         );
+        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getSettings();
+            }
+        });
         getSettings();
     }
 
     private void getDemandList() {
+        demand_list.clear();
+        swipe_refresh_layout.setRefreshing(false);
         progressbar.setVisibility(View.VISIBLE);
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         Call<DemandListModel> loginCall = apiHelper.getDemandList(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"));

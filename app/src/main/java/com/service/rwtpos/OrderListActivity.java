@@ -5,12 +5,14 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -39,6 +41,7 @@ import retrofit2.Response;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class OrderListActivity extends AppCompatActivity {
+    SwipeRefreshLayout swipeContainer;
 
     Context context;
     RecyclerView order_list_recyclerview;
@@ -68,6 +71,7 @@ public class OrderListActivity extends AppCompatActivity {
         order_list_recyclerview = findViewById(R.id.order_list_recyclerview);
         sale_tv = findViewById(R.id.sale_tv);
         back_arrow = findViewById(R.id.back_arrow);
+        swipeContainer = findViewById(R.id.swipe_refresh_layout);
 
         Intent intent = getIntent();
         sale_type = intent.getStringExtra("sale");
@@ -86,13 +90,23 @@ public class OrderListActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getOrderList();
+            }
+        });
+
         getOrderList();
     }
 
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    //    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     private void getOrderList() {
+        order_list.clear();
+        swipeContainer.setRefreshing(false);
         progressbar.setVisibility(View.VISIBLE);
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         Call<BillListModel> loginCall = apiHelper.getBillingList(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"));
@@ -101,6 +115,7 @@ public class OrderListActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<BillListModel> call,
                                    @NonNull Response<BillListModel> response) {
                 progressbar.setVisibility(View.GONE);
+
                 if (response.isSuccessful()) {
                     if (response != null) {
                         BillListModel m = response.body();
@@ -121,8 +136,15 @@ public class OrderListActivity extends AppCompatActivity {
                                 model.setOutlet_id(m.getData().get(i).getOutlet_id());
                                 if (sale_type.equals("today")) {
                                     //filter daily data
-                                    LocalDate date1 = LocalDate.parse(m.getData().get(i).getBill_date(), dtf);
-                                    if (date1.equals(LocalDate.now())) {
+//                                    LocalDate date1 = LocalDate.parse(m.getData().get(i).getBill_date(), dtf);
+                                    Date date1 = null;
+                                    try {
+                                        date1 = new SimpleDateFormat("yyyy-MM-dd").parse(m.getData().get(i).getBill_date());
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Log.e("isToday", isToday(date1) + "");
+                                    if (isToday(date1)) {
                                         order_list.add(model);
                                     }
                                 } else if (sale_type.equals("monthly")) {
@@ -164,16 +186,23 @@ public class OrderListActivity extends AppCompatActivity {
                     }
                 } else {
                     progressbar.setVisibility(View.GONE);
+                    swipeContainer.setRefreshing(false);
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<BillListModel> call,
                                   @NonNull Throwable t) {
                 progressbar.setVisibility(View.GONE);
+                swipeContainer.setRefreshing(false);
                 if (!call.isCanceled()) {
                 }
                 t.printStackTrace();
             }
         });
+    }
+
+    public static boolean isToday(Date date) {
+        return org.apache.commons.lang3.time.DateUtils.isSameDay(Calendar.getInstance().getTime(), date);
     }
 }
