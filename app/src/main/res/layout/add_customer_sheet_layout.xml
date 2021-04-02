@@ -20,7 +20,7 @@
                 android:id="@+id/customer_name_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Customer Name"
+                android:hint="@string/Customer_Name"
                 android:textSize="@dimen/_10sdp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -34,7 +34,7 @@
                 android:id="@+id/customer_mobile_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mobile"
+                android:hint="@string/Mobile"
                 android:inputType="number"
                 android:maxLength="10"
                 android:textSize="@dimen/_10sdp" />
@@ -50,7 +50,7 @@
                 android:id="@+id/email_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
+                android:hint="@string/Email"
                 android:inputType="textEmailAddress"
                 android:textSize="@dimen/_10sdp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -65,7 +65,7 @@
                 android:id="@+id/address_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Address"
+                android:hint="@string/Address"
                 android:textSize="@dimen/_10sdp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/round_btn_shape"
-            android:text="Add Customer"
+            android:text="@string/Add_Customer"
             android:textAllCaps="false" />
 
     </LinearLayout>

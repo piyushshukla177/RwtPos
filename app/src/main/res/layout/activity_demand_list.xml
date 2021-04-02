@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_toRightOf="@+id/back_arrow"
-            android:text="Demand List"
+            android:text="@string/Demand_List"
             android:textColor="@color/black"
             android:textSize="@dimen/_15sdp" />
     </RelativeLayout>
@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:text="Add Demand"
+                    android:text="@string/Add_Demand"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp" />
             </LinearLayout>

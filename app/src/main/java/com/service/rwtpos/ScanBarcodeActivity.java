@@ -42,6 +42,8 @@ public class ScanBarcodeActivity extends AppCompatActivity {
         initViews();
     }
 
+    String from_activity;
+
     private void initViews() {
         txtBarcodeValue = findViewById(R.id.txtBarcodeValue);
         surfaceView = findViewById(R.id.surfaceView);
@@ -56,6 +58,9 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                 }
             }
         });
+        Intent intent = getIntent();
+        from_activity = intent.getStringExtra("from_activity");
+
     }
 
     private void initialiseDetectorsAndSources() {
@@ -88,6 +93,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             }
+
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
                 cameraSource.stop();
@@ -111,7 +117,11 @@ public class ScanBarcodeActivity extends AppCompatActivity {
 //                          Toast.makeText(ScanBarcodeActivity.this, "In Scanned", Toast.LENGTH_LONG);
                             intentData = barcodes.valueAt(0).displayValue;
                             txtBarcodeValue.setText(intentData);
-                            CreateBillActivity.cbb.getProductBybarcode(String.valueOf(intentData));
+                            if (from_activity.equals("CreateBillActivity")) {
+                                CreateBillActivity.cbb.getProductBybarcode(String.valueOf(intentData));
+                            } else if (from_activity.equals("CreateDemandActivity")) {
+                                CreateDemandActivity.cdd.getProductBybarcode(String.valueOf(intentData));
+                            }
                             barcodes.clear();
                             finish();
                         }

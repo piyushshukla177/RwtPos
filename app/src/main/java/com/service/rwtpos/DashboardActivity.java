@@ -2,13 +2,17 @@ package com.service.rwtpos;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,7 +43,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -197,6 +203,7 @@ public class DashboardActivity extends AppCompatActivity {
                 getDashboarddata();
             }
         });
+        checkPermissions();
         getDashboarddata();
     }
 
@@ -242,45 +249,26 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
     }
-  /*  void getBillPdf() {
-        progressbar.setVisibility(View.VISIBLE);
-        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, "http://192.168.29.191/rwtpos/Api/billinvoice",
-                new com.android.volley.Response.Listener<NetworkResponse>() {
-                    @Override
-                    public void onResponse(NetworkResponse response) {
-                        try {
-                            progressbar.setVisibility(View.GONE);
-                            Log.e("response",response.toString());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new com.android.volley.Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        progressbar.setVisibility(View.GONE);
-                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
 
-                Map<String, String> params = new HashMap<>();
-                params.put("username", "RPO424843");
-                params.put("password", "972739");
-                params.put("bill_id", String.valueOf(45));
-                return params;
-            }
+    String[] appPermissions = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-            @Override
-            protected Map<String, DataPart> getByteData() {
-                Map<String, DataPart> params = new HashMap<>();
-                return params;
+    public int PERMISSION_CODE = 100;
+
+    public boolean checkPermissions() {
+
+        List<String> lsitPermissionsNeeded = new ArrayList<>();
+        for (String perm : appPermissions) {
+
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+                lsitPermissionsNeeded.add(perm);
             }
-        };
-        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(10 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
-        //adding the request to volley
-        Volley.newRequestQueue(context).add(volleyMultipartRequest);
-    }*/
+        }
+        //check for non granted permissions
+        if (!lsitPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, lsitPermissionsNeeded.toArray(new String[lsitPermissionsNeeded.size()]), PERMISSION_CODE);
+            return false;
+        }
+        //app have all permissions proceed ahead
+        return true;
+    }
 }

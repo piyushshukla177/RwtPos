@@ -98,6 +98,7 @@ public class ChallanListActivity extends AppCompatActivity {
                                 model.setRound_off(m.getData().get(i).getRound_off());
                                 model.setTaxable_amt(m.getData().get(i).getTaxable_amt());
                                 model.setTotal(m.getData().get(i).getTotal());
+                                model.setId(m.getData().get(i).getId());
                                 challan_list.add(model);
                             }
 //                          Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();

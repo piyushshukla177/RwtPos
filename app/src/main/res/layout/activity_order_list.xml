@@ -31,7 +31,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_toRightOf="@+id/back_arrow"
-            android:text="Sale"
+            android:text="@string/Sale"
             android:textColor="@color/black"
             android:textSize="@dimen/_15sdp" />
     </RelativeLayout>

@@ -41,7 +41,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:text="# 000001" />
+                        android:text="" />
 
                     <ImageView
                         android:layout_width="0dp"
@@ -56,7 +56,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:text="22-004-2020" />
+                        android:text="" />
 
                 </LinearLayout>
 
@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:text="Rs 6000" />
+                        android:text="" />
 
                     <ImageView
                         android:layout_width="0dp"
@@ -95,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:text="Cash" />
+                        android:text="" />
 
                 </LinearLayout>
 
@@ -110,7 +110,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:text="Edit Bill"
+                        android:text="@string/Edit_Bill"
                         android:textColor="@color/green" />
 
                     <TextView
@@ -119,7 +119,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="right"
-                        android:text="view detail"
+                        android:text="@string/view_detail"
                         android:textColor="@color/green" />
                 </RelativeLayout>
 

@@ -21,7 +21,7 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:text="Dashboard"
+            android:text="@string/Dashboard"
             android:textColor="@color/black"
             android:textSize="@dimen/_15sdp" />
 
@@ -66,7 +66,7 @@
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_regular"
-                    android:text="Orders"
+                    android:text="@string/Orders"
                     android:textColor="#000000"
                     android:textSize="@dimen/_15sdp"></TextView>
 
@@ -101,7 +101,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
-                                android:text="Today"
+                                android:text="@string/Today"
                                 android:textColor="#919191"
                                 android:textSize="@dimen/_15sdp"></TextView>
 
@@ -128,7 +128,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
-                                android:text="Monthly"
+                                android:text="@string/Monthly"
                                 android:textColor="#919191"
                                 android:textSize="@dimen/_15sdp"></TextView>
 
@@ -156,7 +156,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
-                                android:text="Total"
+                                android:text="@string/Total"
                                 android:textColor="#919191"
                                 android:textSize="@dimen/_15sdp"></TextView>
 
@@ -182,7 +182,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
-                                android:text="Demand"
+                                android:text="@string/Demand"
                                 android:textColor="#919191"
                                 android:textSize="@dimen/_15sdp"></TextView>
 
@@ -224,7 +224,7 @@
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:fontFamily="@font/roboto_regular"
-                    android:text="Sale"
+                    android:text="@string/Sale"
                     android:textColor="#000000"
                     android:textSize="@dimen/_15sdp"></TextView>
 
@@ -241,7 +241,7 @@
 
                         <LinearLayout
                             android:id="@+id/today_business_linear"
-                            android:layout_width="@dimen/_110sdp"
+                            android:layout_width="@dimen/_120sdp"
                             android:layout_height="80dp"
                             android:layout_marginLeft="@dimen/_20sdp"
                             android:layout_weight="1"
@@ -271,7 +271,7 @@
 
                         <LinearLayout
                             android:id="@+id/monthly_business_linear"
-                            android:layout_width="@dimen/_110sdp"
+                            android:layout_width="@dimen/_120sdp"
                             android:layout_height="80dp"
                             android:layout_marginLeft="@dimen/_20sdp"
                             android:layout_weight="1"
@@ -302,7 +302,7 @@
 
                         <LinearLayout
                             android:id="@+id/total_business_linear"
-                            android:layout_width="@dimen/_110sdp"
+                            android:layout_width="@dimen/_120sdp"
                             android:layout_height="80dp"
                             android:layout_marginLeft="@dimen/_20sdp"
                             android:layout_weight="1"
@@ -393,7 +393,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="16dp"
                         android:layout_toRightOf="@id/icon_bill_list"
-                        android:text="Bill List"
+                        android:text="@string/Bill_List"
                         android:textColor="#202020"
 
                         android:textSize="@dimen/_15sdp"></TextView>
@@ -431,7 +431,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="16dp"
                         android:layout_toRightOf="@id/icon_create_demand"
-                        android:text="Demand List"
+                        android:text="@string/Demand_List"
                         android:textColor="#202020"
                         android:textSize="@dimen/_15sdp"></TextView>
 
@@ -456,9 +456,9 @@
 
                     <ImageView
                         android:id="@+id/icon_challan_list"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/demand">
+                        android:layout_width="15dp"
+                        android:layout_height="21dp"
+                        android:src="@drawable/receipt">
 
                     </ImageView>
 
@@ -468,7 +468,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="16dp"
                         android:layout_toRightOf="@id/icon_challan_list"
-                        android:text="Challan List"
+                        android:text="@string/Challan_List"
                         android:textColor="#202020"
                         android:textSize="@dimen/_15sdp"></TextView>
 
@@ -504,7 +504,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="16dp"
                         android:layout_toRightOf="@id/icon_settings"
-                        android:text="Settings"
+                        android:text="@string/Settings"
                         android:textColor="#202020"
                         android:textSize="@dimen/_15sdp"></TextView>
 

@@ -41,7 +41,7 @@
                 android:id="@+id/sale_price_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Sale Price"
+                android:hint="@string/Sale_Price"
                 android:inputType="numberDecimal"
                 android:maxLength="10"
                 android:textSize="@dimen/_10sdp" />
@@ -63,7 +63,7 @@
                     android:id="@+id/qty_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Quantity"
+                    android:hint="@string/Quantity"
                     android:inputType="number"
                     android:maxLength="3"
                     android:textSize="@dimen/_10sdp" />
@@ -90,7 +90,7 @@
                 android:id="@+id/discont_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Discount %"
+                android:hint="@string/Discount_Per"
                 android:inputType="numberDecimal"
                 android:maxLength="3"
                 android:textSize="@dimen/_10sdp" />
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/round_btn_shape"
-            android:text="Edit Item" />
+            android:text="@string/Edit_Item" />
 
     </LinearLayout>
 </RelativeLayout>

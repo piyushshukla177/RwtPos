@@ -1,6 +1,7 @@
 package com.service.network;
 
 import com.service.response_model.AddCustomerResponse;
+import com.service.response_model.ChallanDetailModel;
 import com.service.response_model.GetEditDataOutletBill;
 import com.service.response_model.ViewOutletBillModel;
 import com.service.response_model.BillListModel;
@@ -52,7 +53,7 @@ public interface ApiHelper {
                                      @Field("bill_date") String bill_date, @Field("product_list") String product_list, @Field("dis_amt") String dis_amt,
                                      @Field("taxable_amt") String taxable_amt, @Field("round_off") String round_off, @Field("total") String total, @Field("cgst") String cgst,
                                      @Field("sgst") String sgst,
-                                     @Field("net_payable") String net_payable
+                                     @Field("net_payable") String net_payable, @Field("trans_date") String trans_date, @Field("trans_no") String trans_no, @Field("wallet") String wallet
     );
 
 
@@ -63,7 +64,7 @@ public interface ApiHelper {
                                          @Field("bill_date") String bill_date, @Field("product_list") String product_list, @Field("dis_amt") String dis_amt,
                                          @Field("taxable_amt") String taxable_amt, @Field("round_off") String round_off, @Field("total") String total, @Field("cgst") String cgst,
                                          @Field("sgst") String sgst,
-                                         @Field("net_payable") String net_payable
+                                         @Field("net_payable") String net_payable, @Field("trans_date") String trans_date, @Field("trans_no") String trans_no, @Field("wallet") String wallet
     );
 
     @FormUrlEncoded
@@ -107,7 +108,7 @@ public interface ApiHelper {
     @POST("editdataoutletbill")
     Call<GetEditDataOutletBill> geteditdataoutletbill(@Field("username") String username, @Field("password") String password, @Field("view_id") String pro_id);
 
-//    @FormUrlEncoded
-//    @POST("billinvoice")
-//    Call<GetEditDataOutletBill> getInvoice(@Field("username") String username, @Field("password") String password, @Field("bill_id") String bill_id);
+    @FormUrlEncoded
+    @POST("challandetailsdata")
+    Call<ChallanDetailModel> getChallanDetails(@Field("username") String username, @Field("password") String password, @Field("challan_id") String challan_id);
 }

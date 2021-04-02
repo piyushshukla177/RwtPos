@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.service.rwtpos.BillDetailsAcitvity">
+    tools:context=".ChallanDetailsActivity">
 
     <RelativeLayout
         android:id="@+id/linear_toolbar"
@@ -29,7 +29,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_toRightOf="@+id/back_arrow"
-            android:text="@string/Bill_Detail"
+            android:text="Challan Detail"
             android:textColor="@color/black"
             android:textSize="@dimen/_15sdp" />
     </RelativeLayout>
@@ -60,12 +60,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Bill_No"
+                    android:text="Challan No :"
                     android:textColor="@color/teal_200"
                     android:textSize="@dimen/_10sdp" />
 
                 <TextView
-                    android:id="@+id/bill_no_tv"
+                    android:id="@+id/challan_number_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
@@ -82,12 +82,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Bill_Date"
+                    android:text="Challan Date"
                     android:textColor="@color/teal_200"
                     android:textSize="@dimen/_10sdp" />
 
                 <TextView
-                    android:id="@+id/bill_date_tv"
+                    android:id="@+id/challan_date_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
@@ -95,55 +95,55 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_10sdp">
+        <!--        <RelativeLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="@dimen/_10sdp"-->
+        <!--            android:layout_marginTop="@dimen/_5sdp"-->
+        <!--            android:layout_marginRight="@dimen/_10sdp">-->
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:orientation="horizontal">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/Name"
-                    android:textColor="@color/teal_200"
-                    android:textSize="@dimen/_10sdp" />
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:text="@string/Name"-->
+        <!--                    android:textColor="@color/teal_200"-->
+        <!--                    android:textSize="@dimen/_10sdp" />-->
 
-                <TextView
-                    android:id="@+id/customer_name_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:text=""
-                    android:textSize="@dimen/_10sdp" />
-            </LinearLayout>
+        <!--                <TextView-->
+        <!--                    android:id="@+id/customer_name_tv"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginLeft="@dimen/_10sdp"-->
+        <!--                    android:text=""-->
+        <!--                    android:textSize="@dimen/_10sdp" />-->
+        <!--            </LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:orientation="horizontal">
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_alignParentRight="true"-->
+        <!--                android:orientation="horizontal">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/Mobile_Column"
-                    android:textColor="@color/teal_200"
-                    android:textSize="@dimen/_10sdp" />
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:text="@string/Mobile_Column"-->
+        <!--                    android:textColor="@color/teal_200"-->
+        <!--                    android:textSize="@dimen/_10sdp" />-->
 
-                <TextView
-                    android:id="@+id/customer_mobile_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:text="" />
-            </LinearLayout>
-        </RelativeLayout>
+        <!--                <TextView-->
+        <!--                    android:id="@+id/customer_mobile_tv"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginLeft="@dimen/_10sdp"-->
+        <!--                    android:text="" />-->
+        <!--            </LinearLayout>-->
+        <!--        </RelativeLayout>-->
 
         <View
             android:layout_width="match_parent"
@@ -163,7 +163,7 @@
             android:textSize="@dimen/_10sdp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/bill_detail_recyclerview"
+            android:id="@+id/challan_detail_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
@@ -191,7 +191,7 @@
                 android:layout_below="@+id/view_1"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_15sdp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"

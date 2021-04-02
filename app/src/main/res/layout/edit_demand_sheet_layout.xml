@@ -26,7 +26,7 @@
                     android:id="@+id/qty_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Quantity"
+                    android:hint="@string/Quantity"
                     android:inputType="number"
                     android:maxLength="3"
                     android:textSize="@dimen/_10sdp" />
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/round_btn_shape"
-            android:text="Edit Item" />
+            android:text="@string/Edit_Item" />
 
     </LinearLayout>
 </RelativeLayout>

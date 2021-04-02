@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/product_name_tv"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="Kg"
+        android:text=""
         android:textSize="@dimen/_10sdp" />
 
     <ImageView

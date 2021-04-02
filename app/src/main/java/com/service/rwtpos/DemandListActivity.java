@@ -118,7 +118,7 @@ public class DemandListActivity extends AppCompatActivity {
                                 model.setOutlet_name(outlet_name);
                                 model.setOwner_name(store_name);
                                 model.setOn_date(m.getData().get(i).getOndate());
-                                model.setIntStatus(m.getData().get(i).getIntStatus());
+                                model.setIntStatus(m.getData().get(i).getDelivery_status());
                                 model.setId(m.getData().get(i).getId());
                                 model.setOutlet_id(m.getData().get(i).getOutlet_id());
                                 demand_list.add(model);

@@ -272,6 +272,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(CreateBillActivity.this, ScanBarcodeActivity.class);
+                        intent.putExtra("from_activity", "CreateBillActivity");
                         startActivity(intent);
                     }
                 }
@@ -681,7 +682,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
 //                ", " + array.toString() + "," + discount_amount_tv.getText().toString() + "," + taxable_amount_tv.getText().toString());
         Call<CreateBillModel> loginCall = apiHelper.CreateBill(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), customer_mobile_et.getText().toString(), customer_name_tv.getText().toString(), customer_id, String.valueOf(payment_mode_spinner.getSelectedItemPosition()), invoice_date_tv.getText().toString(), array.toString()
                 , discount_amount_tv.getText().toString(), taxable_amount_tv.getText().toString(), round_off_tv.getText().toString(), net_payable_tv.getText().toString(), String.valueOf(total_cgst), String.valueOf(total_sgst)
-                , net_payable_tv.getText().toString()
+                , net_payable_tv.getText().toString(), transaction_date_et.getText().toString(), transaction_id_et.getText().toString(), wallet_name_et.getText().toString()
         );
         loginCall.enqueue(new Callback<CreateBillModel>() {
             @Override
@@ -819,7 +820,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
 //                ", " + array.toString() + "," + discount_amount_tv.getText().toString() + "," + taxable_amount_tv.getText().toString());
         Call<CreateBillModel> loginCall = apiHelper.EditOutletBill(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), bill_id, customer_mobile_et.getText().toString(), customer_name_tv.getText().toString(), customer_id, String.valueOf(payment_mode_spinner.getSelectedItemPosition()), invoice_date_tv.getText().toString(), array.toString()
                 , discount_amount_tv.getText().toString(), taxable_amount_tv.getText().toString(), round_off_tv.getText().toString(), net_payable_tv.getText().toString(), String.valueOf(total_cgst), String.valueOf(total_sgst)
-                , net_payable_tv.getText().toString()
+                , net_payable_tv.getText().toString(), transaction_date_et.getText().toString(), transaction_id_et.getText().toString(), wallet_name_et.getText().toString()
         );
         loginCall.enqueue(new Callback<CreateBillModel>() {
             @Override

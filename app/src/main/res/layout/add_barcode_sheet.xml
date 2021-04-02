@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:text="Add Barcode"
+                android:text="@string/Add_Barcode"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
 
@@ -61,15 +61,13 @@
                 android:textSize="@dimen/_12sdp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
         <Button
-
             android:id="@+id/add_barcode_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_15sdp"
             android:background="@drawable/corner_round_btn_shape"
-            android:text="Add to Bill"
+            android:text="@string/Add_to_Bill"
             android:textAllCaps="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />

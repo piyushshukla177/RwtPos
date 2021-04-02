@@ -17,7 +17,7 @@
             android:layout_alignParentLeft="true"
             android:layout_gravity="center"
             android:layout_margin="@dimen/_15sdp"
-            android:text="Your Changes will be discarded"
+            android:text="@string/Your_Changes_will_be_discarded"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp"
             android:textStyle="bold" />
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/corner_round_btn_shape"
-            android:text="Continue editing"
+            android:text="@string/Continue_editing"
             android:textAllCaps="false"
             android:textColor="@color/white"
             app:backgroundTint="@null" />
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/corner_round_white_background_btn_shape"
-            android:text="Discard Changes"
+            android:text="@string/Discard_Changes"
             android:textAllCaps="false"
             android:textColor="@color/black"
             app:backgroundTint="@null" />

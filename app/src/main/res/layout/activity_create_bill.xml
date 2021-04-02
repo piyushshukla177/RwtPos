@@ -31,7 +31,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/_15sdp"
             android:layout_toRightOf="@+id/back_image"
-            android:text="Create Bill"
+            android:text="@string/Create_Bill"
             android:textColor="@color/black"
             android:textSize="@dimen/_15sdp" />
 
@@ -111,7 +111,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Customer Mobile *"
+                    android:text="@string/Customer_Mobile"
                     android:textColor="@color/black" />
 
                 <LinearLayout
@@ -183,7 +183,7 @@
                             android:id="@+id/total_items_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="ITEMS"
+                            android:text="@string/ITEMS"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_10sdp" />
 
@@ -205,7 +205,7 @@
                         android:layout_height="@dimen/_30sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="@color/light_blue"
-                        android:text="Add Items"
+                        android:text="@string/Add_Items"
                         android:textAllCaps="false"
                         android:textColor="@color/teal_200"
                         android:textSize="@dimen/_10sdp"
@@ -525,7 +525,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Save"
+                    android:text="@string/Save"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_11sdp"
                     android:textStyle="bold" />

@@ -15,6 +15,15 @@ public class ChallanList {
     private String round_off;
     private String net_payable;
     private String intStatus;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getChallan_invoice() {
         return challan_invoice;

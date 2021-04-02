@@ -29,7 +29,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_toRightOf="@+id/back_arrow"
-            android:text="Challan List"
+            android:text="@string/Challan_List"
             android:textColor="@color/black"
             android:textSize="@dimen/_15sdp" />
     </RelativeLayout>

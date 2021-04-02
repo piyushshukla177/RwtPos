@@ -18,13 +18,20 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
         <activity
+            android:name=".ChallanDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme.RwtPos" />
+        <activity
             android:name=".BillDetailsAcitvity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme.RwtPos" />
         <activity
             android:name=".BillListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme.RwtPos" />
         <activity
             android:name=".ChallanListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme.RwtPos" />
         <activity
             android:name=".DemandListActivity"
