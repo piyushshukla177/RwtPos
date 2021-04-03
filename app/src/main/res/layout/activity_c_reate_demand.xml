@@ -33,7 +33,7 @@
             android:layout_toRightOf="@+id/back_image"
             android:text="@string/Create_Demand"
             android:textColor="@color/black"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_14sdp" />
 
         <ImageView
             android:id="@+id/scan_barcode_imageview"

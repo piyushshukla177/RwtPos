@@ -61,14 +61,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.product_name_tv.setText(currentItem.getPro_print_name());
 
         if (context instanceof CreateDemandActivity) {
-//            holder.total_tv.setText("₹ " + Float.parseFloat(currentItem.getSale_price()) * Integer.parseInt(currentItem.getSelected_qty()));
+//          holder.total_tv.setText("₹ " + Float.parseFloat(currentItem.getSale_price()) * Integer.parseInt(currentItem.getSelected_qty()));
             holder.unit_tv.setText("Quantity : " + currentItem.getSelected_qty());
         } else {
             holder.total_tv.setText("₹ " + Float.parseFloat(currentItem.getSale_price()) * Integer.parseInt(currentItem.getSelected_qty()));
             holder.unit_tv.setText("Rate " + currentItem.getSelected_qty() + " X " + currentItem.getSale_price());
         }
-//        holder.total_tv.setText("₹ " + Float.parseFloat(currentItem.getSale_price()) * Integer.parseInt(currentItem.getSelected_qty()));
-//        holder.unit_tv.setText("Rate " + currentItem.getSelected_qty() + " X " + currentItem.getSale_price());
+//      holder.total_tv.setText("₹ " + Float.parseFloat(currentItem.getSale_price()) * Integer.parseInt(currentItem.getSelected_qty()));
+//      holder.unit_tv.setText("Rate " + currentItem.getSelected_qty() + " X " + currentItem.getSale_price());
         holder.menu_imageview.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -118,7 +118,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             } else if (context instanceof CreateDemandActivity) {
                 ((CreateDemandActivity) context).hideAdditionalFields();
             }
-
         }
     }
 

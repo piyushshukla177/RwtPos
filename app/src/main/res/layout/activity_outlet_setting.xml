@@ -32,7 +32,7 @@
             android:layout_toRightOf="@+id/back_arrow"
             android:text="@string/Outlet_Settings"
             android:textColor="@color/black"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_14sdp" />
     </RelativeLayout>
 
     <View

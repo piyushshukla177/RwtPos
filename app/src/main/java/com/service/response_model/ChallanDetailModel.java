@@ -143,7 +143,16 @@ public class ChallanDetailModel {
         private String Total_CGST;
         private String Quantity;
         private String Product_Name;
+        private String Sale_Price;
         private String Product_Id;
+
+        public String getSale_Price() {
+            return Sale_Price;
+        }
+
+        public void setSale_Price(String sale_Price) {
+            Sale_Price = sale_Price;
+        }
 
         public String getFinal_Price() {
             return Final_Price;

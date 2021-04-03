@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -23,7 +22,6 @@ import com.service.model.Products;
 import com.service.network.ApiHelper;
 import com.service.network.RetrofitClient;
 import com.service.response_model.ChallanDetailModel;
-import com.service.response_model.ViewOutletBillModel;
 import com.service.util.PrefsHelper;
 
 import java.util.ArrayList;
@@ -33,7 +31,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChallanDetailsActivity extends AppCompatActivity {
-
 
     Context context;
     public ArrayList<Products> products_list = new ArrayList();
@@ -48,12 +45,10 @@ public class ChallanDetailsActivity extends AppCompatActivity {
     TextView net_payable_tv, round_off_tv, total_amt_tv, sgst_tv, cgst_tv, taxable_amount_tv, discount_amount_tv;
     private ApiHelper apiHelper;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_challan_details);
-
         init();
     }
 
@@ -96,29 +91,6 @@ public class ChallanDetailsActivity extends AppCompatActivity {
         GetChallanById(intent.getStringExtra("id"));
     }
 
-    void setData() {
-        int i = 0;
-        total_linear.setVisibility(View.VISIBLE);
-        total_items_tv.setText("ITEMS(" + products_list.size() + ")");
-        ProductDetailModel m;
-        while (i < products_list.size()) {
-            m = new ProductDetailModel();
-            Products d = products_list.get(i);
-            m.setProduct_name(d.getProduct_Name());
-            m.setSale_price(d.getSale_Price());
-            m.setQuantity(d.getQuantity());
-            float total = Integer.parseInt(d.getQuantity()) * Float.parseFloat(d.getSale_Price());
-            m.setTotal(String.valueOf(total));
-            list.add(m);
-            i++;
-        }
-        challan_detail_recyclerview.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(context);
-        mAdapter = new BillDetailAdapter(context, list);
-        challan_detail_recyclerview.setLayoutManager(mLayoutManager);
-        challan_detail_recyclerview.setAdapter(mAdapter);
-    }
-
     private void GetChallanById(String id) {
         progressbar.setVisibility(View.VISIBLE);
         Call<ChallanDetailModel> loginCall = apiHelper.getChallanDetails(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), id);
@@ -136,10 +108,10 @@ public class ChallanDetailsActivity extends AppCompatActivity {
                                 ProductDetailModel model;
                                 for (int j = 0; j < m.getData().get(i).getProduct_data().size(); j++) {
                                     model = new ProductDetailModel();
-                                    model.setProduct_name(m.getData().get(i).getProduct_data().get(i).getProduct_Name());
-                                    model.setQuantity(m.getData().get(i).getProduct_data().get(i).getQuantity());
-                                    model.setSale_price(m.getData().get(i).getProduct_data().get(i).getTotal_Basic_price());
-                                    model.setTotal(m.getData().get(i).getProduct_data().get(i).getFinal_Price());
+                                    model.setProduct_name(m.getData().get(i).getProduct_data().get(j).getProduct_Name());
+                                    model.setQuantity(m.getData().get(i).getProduct_data().get(j).getQuantity());
+                                    model.setSale_price(m.getData().get(i).getProduct_data().get(j).getSale_Price());
+                                    model.setTotal(m.getData().get(i).getProduct_data().get(j).getFinal_Price());
                                     list.add(model);
                                 }
                             }
@@ -148,6 +120,7 @@ public class ChallanDetailsActivity extends AppCompatActivity {
                             mAdapter = new BillDetailAdapter(context, list);
                             challan_detail_recyclerview.setLayoutManager(mLayoutManager);
                             challan_detail_recyclerview.setAdapter(mAdapter);
+                            total_linear.setVisibility(View.VISIBLE);
                         } else {
                             Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
                         }

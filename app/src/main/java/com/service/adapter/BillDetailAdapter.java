@@ -26,7 +26,6 @@ public class BillDetailAdapter extends RecyclerView.Adapter<BillDetailAdapter.Bi
             product_name_tv = itemView.findViewById(R.id.product_name_tv);
             unit_tv = itemView.findViewById(R.id.unit_tv);
             total_tv = itemView.findViewById(R.id.total_tv);
-
         }
     }
 
@@ -47,8 +46,8 @@ public class BillDetailAdapter extends RecyclerView.Adapter<BillDetailAdapter.Bi
     public void onBindViewHolder(@NonNull final BillDetailViewHolder holder, int i) {
         final ProductDetailModel currentItem = product_list.get(i);
         holder.product_name_tv.setText(currentItem.getProduct_name());
-        holder.unit_tv.setText(currentItem.getSale_price() + " X " + currentItem.getQuantity());
-        holder.total_tv.setText(currentItem.getTotal());
+        holder.unit_tv.setText("Rate " + currentItem.getQuantity() + " X " + currentItem.getSale_price());
+        holder.total_tv.setText("₹ " + currentItem.getTotal());
     }
 
     @Override

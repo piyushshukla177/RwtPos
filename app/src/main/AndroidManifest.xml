@@ -18,6 +18,14 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
         <activity
+            android:name=".CustomerBillDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme.RwtPos"></activity>
+        <activity
+            android:name=".CustomerListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme.RwtPos" />
+        <activity
             android:name=".ChallanDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme.RwtPos" />

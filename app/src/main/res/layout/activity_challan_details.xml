@@ -31,7 +31,7 @@
             android:layout_toRightOf="@+id/back_arrow"
             android:text="Challan Detail"
             android:textColor="@color/black"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_14sdp" />
     </RelativeLayout>
 
     <View
@@ -182,7 +182,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            >
 
             <RelativeLayout
                 android:id="@+id/dicount_relative"
@@ -191,7 +192,8 @@
                 android:layout_below="@+id/view_1"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_15sdp"
-                android:visibility="gone">
+                android:visibility="gone"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -220,8 +222,7 @@
                 android:layout_below="@+id/view_1"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:visibility="visible">
+                android:layout_marginRight="@dimen/_15sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -250,8 +251,7 @@
                 android:layout_below="@+id/view_1"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:visibility="visible">
+                android:layout_marginRight="@dimen/_15sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -280,8 +280,7 @@
                 android:layout_below="@+id/view_1"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:visibility="visible">
+                android:layout_marginRight="@dimen/_15sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -310,8 +309,7 @@
                 android:layout_below="@+id/view_1"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:visibility="visible">
+                android:layout_marginRight="@dimen/_15sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -340,8 +338,7 @@
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_15sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:visibility="visible">
+                android:layout_marginBottom="@dimen/_10sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -370,8 +367,7 @@
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_15sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:visibility="visible">
+                android:layout_marginBottom="@dimen/_10sdp">
 
                 <TextView
                     android:layout_width="wrap_content"

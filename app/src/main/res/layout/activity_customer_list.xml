@@ -5,35 +5,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_gray3"
-    tools:context=".DemandListActivity">
+    tools:context=".CustomerListActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/linear_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/back_arrow"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/back" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/back_arrow"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/back" />
+
+            <TextView
+                android:id="@+id/customer_list_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/back_arrow"
+                android:text="Customers"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_toRightOf="@+id/back_arrow"
-            android:text="@string/Demand_List"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_14sdp" />
-    </RelativeLayout>
+            android:layout_margin="@dimen/_5sdp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/search_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:background="@drawable/searchview_background"
+                android:drawableLeft="@drawable/ic_search"
+                android:hint="Search Customer"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+            <ImageView
+                android:id="@+id/close_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="-20dp"
+                android:src="@drawable/icon_ionic_ios_close_circle"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
 
     <View
         android:id="@+id/view"
@@ -49,11 +87,9 @@
         android:layout_below="@+id/view">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/demand_list_recyclerview"
+            android:id="@+id/customer_list_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/create_new_demand_card"
-            android:layout_below="@+id/view"
             android:layout_marginTop="@dimen/_10sdp" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -65,7 +101,7 @@
         android:visibility="gone" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/create_new_demand_card"
+        android:id="@+id/add_new_customer_card"
         android:layout_width="@dimen/_120sdp"
         android:layout_height="@dimen/_30sdp"
         android:layout_alignParentBottom="true"
@@ -94,7 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:text="@string/Add_Demand"
+                    android:text="Add New Customer"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp" />
             </LinearLayout>

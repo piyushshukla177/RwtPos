@@ -55,15 +55,16 @@ public class AddCustomerSheet extends BottomSheetDialogFragment {
             Toast.makeText(getActivity(), "Enter Customer Mobile", Toast.LENGTH_SHORT).show();
             b = false;
             return b;
-        } else if (email_et.getText().toString().isEmpty()) {
-            Toast.makeText(getActivity(), "Enter Emial Id", Toast.LENGTH_SHORT).show();
-            b = false;
-            return b;
-        }else if (address_et.getText().toString().isEmpty()) {
-            Toast.makeText(getActivity(), "Enter Address", Toast.LENGTH_SHORT).show();
-            b = false;
-            return b;
         }
+//        else if (email_et.getText().toString().isEmpty()) {
+//            Toast.makeText(getActivity(), "Enter Emial Id", Toast.LENGTH_SHORT).show();
+//            b = false;
+//            return b;
+//        }else if (address_et.getText().toString().isEmpty()) {
+//            Toast.makeText(getActivity(), "Enter Address", Toast.LENGTH_SHORT).show();
+//            b = false;
+//            return b;
+//        }
         return b;
     }
 

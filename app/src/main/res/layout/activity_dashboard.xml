@@ -383,6 +383,7 @@
                         android:id="@+id/icon_bill_list"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
+                        android:layout_centerVertical="true"
                         android:src="@drawable/choices">
 
                     </ImageView>
@@ -420,6 +421,7 @@
                         android:id="@+id/icon_create_demand"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
+                        android:layout_centerVertical="true"
                         android:src="@drawable/demand"
                         app:tint="@color/green">
 
@@ -456,8 +458,9 @@
 
                     <ImageView
                         android:id="@+id/icon_challan_list"
-                        android:layout_width="15dp"
-                        android:layout_height="21dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
                         android:src="@drawable/receipt">
 
                     </ImageView>
@@ -483,20 +486,58 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/customer_list_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/icon_customer_list"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/target">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_toRightOf="@id/icon_customer_list"
+                        android:text="Customer List"
+                        android:textColor="#202020"
+                        android:textSize="@dimen/_15sdp"></TextView>
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/arrow_dark">
+
+                    </ImageView>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/settings_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_30sdp"
-                    android:layout_marginRight="@dimen/_10sdp">
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_30sdp">
 
                     <ImageView
                         android:id="@+id/icon_settings"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/settings">
-
-                    </ImageView>
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/settings"></ImageView>
 
                     <TextView
                         android:layout_width="wrap_content"
