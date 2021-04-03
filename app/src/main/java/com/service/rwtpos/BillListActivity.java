@@ -56,6 +56,7 @@ public class BillListActivity extends AppCompatActivity {
     CardView create_new_bill_card;
     EditText search_edittext;
     SwipeRefreshLayout swipe_refresh_layout;
+    String customer_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class BillListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bill_list);
         init();
     }
+
 
     void init() {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -129,10 +131,22 @@ public class BillListActivity extends AppCompatActivity {
         swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getOrderList();
+                if (!customer_id.isEmpty()) {
+                    getCustomerBills();
+                } else {
+                    getOrderList();
+                }
             }
         });
-        getOrderList();
+        Intent intent = getIntent();
+        if (intent.hasExtra("customer_id")) {
+            customer_id = intent.getStringExtra("customer_id");
+        }
+        if (!customer_id.isEmpty()) {
+            getCustomerBills();
+        } else {
+            getOrderList();
+        }
     }
 
     private void filter(String text) {
@@ -155,6 +169,95 @@ public class BillListActivity extends AppCompatActivity {
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         Call<BillListModel> loginCall = apiHelper.getBillingList(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"));
         loginCall.enqueue(new Callback<BillListModel>() {
+            @Override
+            public void onResponse(@NonNull Call<BillListModel> call,
+                                   @NonNull Response<BillListModel> response) {
+                progressbar.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+                    if (response != null) {
+                        BillListModel m = response.body();
+                        if (m != null && m.getStatus().equalsIgnoreCase("success")) {
+                            OrderListModel model;
+                            ArrayList<Products> array_list;
+                            Products d;
+                            for (int i = 0; i < m.getData().size(); i++) {
+                                array_list = new ArrayList<>();
+                                model = new OrderListModel();
+                                model.setBill_no(m.getData().get(i).getBill_no());
+                                model.setBill_date(m.getData().get(i).getBill_date());
+                                model.setCustomer_name(m.getData().get(i).getCustomer_name());
+                                model.setCustomer_mobile(m.getData().get(i).getCustomer_mobile());
+                                model.setCgst(m.getData().get(i).getCgst());
+                                model.setSgst(m.getData().get(i).getSgst());
+                                model.setNet_payable(m.getData().get(i).getNet_payable());
+                                model.setTotal(m.getData().get(i).getTotal());
+                                model.setPayment_mode(m.getData().get(i).getPayment_mode());
+                                model.setPayment_type(m.getData().get(i).getPayment_type());
+                                model.setCustomer_id(m.getData().get(i).getCustomer_id());
+                                model.setOutlet_id(m.getData().get(i).getOutlet_id());
+                                model.setRound_off(m.getData().get(i).getRound_off());
+                                model.setTaxable(m.getData().get(i).getTaxable_amt());
+                                model.setTotal_discount(m.getData().get(i).getDiscount_amt());
+                                model.setId(m.getData().get(i).getId());
+
+                                for (int j = 0; j < m.getData().get(i).getProduct_data().size(); j++) {
+                                    BillListModel.Product_data p = m.getData().get(i).getProduct_data().get(j);
+                                    d = new Products();
+                                    d.setBatch(p.getBatch());
+                                    d.setSingleDiscountAmt(p.getSingleDiscountAmt());
+                                    d.setSingleDiscountPer(p.getSingleDiscountPer());
+                                    d.setSingleTaxRatePer(p.getSingleTaxRatePer());
+                                    d.setFinal_Price(p.getFinal_Price());
+                                    d.setTotal_Basic_price(p.getTotal_Basic_price());
+                                    d.setTotal_CGST(p.getTotal_CGST());
+                                    d.setTotal_SGST(p.getTotal_SGST());
+                                    d.setTotal_Tax_Amt(p.getTotal_Tax_Amt());
+                                    d.setSingle_Basic_Price(p.getSingle_Basic_Price());
+                                    d.setSingle_CGST(p.getSingle_CGST());
+                                    d.setSingle_SGST(p.getSingle_SGST());
+                                    d.setSingle_Tax_Amt(p.getSingle_Tax_Amt());
+                                    d.setQuantity(p.getQuantity());
+                                    d.setSale_Price(p.getSale_Price());
+                                    d.setProduct_Id(p.getProduct_Id());
+                                    array_list.add(d);
+                                }
+                                Log.e("size", array_list.size() + "");
+                                model.setProduct_list(array_list);
+                                order_list.add(model);
+                            }
+                        } else {
+                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        bill_list_recyclerview.setHasFixedSize(true);
+                        mLayoutManager = new LinearLayoutManager(context);
+                        mAdapter = new OrderListAdapter(context, order_list);
+                        bill_list_recyclerview.setLayoutManager(mLayoutManager);
+                        bill_list_recyclerview.setAdapter(mAdapter);
+                        Log.e("list_size", order_list.size() + "");
+                    }
+                } else {
+                    progressbar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BillListModel> call,
+                                  @NonNull Throwable t) {
+                progressbar.setVisibility(View.GONE);
+                if (!call.isCanceled()) {
+                }
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void getCustomerBills() {
+        order_list.clear();
+        swipe_refresh_layout.setRefreshing(false);
+        progressbar.setVisibility(View.VISIBLE);
+        apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
+        Call<BillListModel> customerBillsCall = apiHelper.getCustomerBills(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), customer_id);
+        customerBillsCall.enqueue(new Callback<BillListModel>() {
             @Override
             public void onResponse(@NonNull Call<BillListModel> call,
                                    @NonNull Response<BillListModel> response) {

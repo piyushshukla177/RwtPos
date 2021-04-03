@@ -1,6 +1,7 @@
 package com.service.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.service.model.CustomerList;
+import com.service.rwtpos.BillListActivity;
 import com.service.rwtpos.R;
 
 import java.util.ArrayList;
@@ -55,7 +57,9 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Intent intent = new Intent(context, BillListActivity.class);
+                        intent.putExtra("customer_id", currentItem.getCustomer_id());
+                        context.startActivity(intent);
                     }
                 }
         );

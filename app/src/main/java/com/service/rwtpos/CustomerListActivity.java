@@ -242,6 +242,7 @@ public class CustomerListActivity extends AppCompatActivity implements AddCustom
                     mProgressDialog.hide();
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<AddCustomerResponse> call,
                                   @NonNull Throwable t) {

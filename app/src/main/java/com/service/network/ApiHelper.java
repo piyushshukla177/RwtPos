@@ -115,4 +115,8 @@ public interface ApiHelper {
     @FormUrlEncoded
     @POST("customer_list")
     Call<CustomerListModel> getCustomerList(@Field("username") String username, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("ouletcustomerbillinglist")
+    Call<BillListModel> getCustomerBills(@Field("username") String username, @Field("password") String password,@Field("customer_id") String customer_id);
 }

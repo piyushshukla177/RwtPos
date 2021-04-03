@@ -66,7 +66,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         holder.payment_mode_tv.setText(currentItem.getPayment_type() + "");
         holder.total_tv.setText(currentItem.getNet_payable() + "");
 
-//        LocalDate date1 = LocalDate.parse(currentItem.getBill_date(), dtf);
+//      LocalDate date1 = LocalDate.parse(currentItem.getBill_date(), dtf);
         Date date1 = null;
         try {
             date1 = new SimpleDateFormat("yyyy-MM-dd").parse(currentItem.getBill_date());
