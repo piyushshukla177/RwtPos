@@ -65,7 +65,6 @@ public class BillListActivity extends AppCompatActivity {
         init();
     }
 
-
     void init() {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = this;
@@ -131,7 +130,7 @@ public class BillListActivity extends AppCompatActivity {
         swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (!customer_id.isEmpty()) {
+                if (customer_id != null && !customer_id.isEmpty()) {
                     getCustomerBills();
                 } else {
                     getOrderList();
@@ -142,7 +141,7 @@ public class BillListActivity extends AppCompatActivity {
         if (intent.hasExtra("customer_id")) {
             customer_id = intent.getStringExtra("customer_id");
         }
-        if (!customer_id.isEmpty()) {
+        if (customer_id != null && !customer_id.isEmpty()) {
             getCustomerBills();
         } else {
             getOrderList();

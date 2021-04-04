@@ -35,11 +35,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
 import com.service.adapter.ProductListAdapter;
 import com.service.bottom_sheet.AddCustomerSheet;
@@ -55,7 +50,6 @@ import com.service.response_model.CreateBillModel;
 import com.service.response_model.GetCustomerModel;
 import com.service.response_model.GetEditDataOutletBill;
 import com.service.response_model.ProductByBarcode;
-import com.service.util.ByteVolleyRequest;
 import com.service.util.PrefsHelper;
 
 import org.json.JSONArray;
@@ -63,6 +57,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -73,6 +68,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -115,13 +111,16 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_bill);
         cbb = this;
+
         init();
+//        downloadInvoiceByRetrofit();
     }
 
     AddCustomerSheet customerSheet;
 
     void init() {
         context = this;
+        apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         invoice_date_tv = findViewById(R.id.invoice_date_tv);
         back_image = findViewById(R.id.back_image);
@@ -343,7 +342,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
     public void getProductBybarcode(String barcode) {
         if (checkBarcodeAlready(barcode)) {
             progressbar.setVisibility(View.VISIBLE);
-            apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
+
             Call<ProductByBarcode> loginCall = apiHelper.getProductByBarcode(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), barcode);
             loginCall.enqueue(new Callback<ProductByBarcode>() {
                 @Override
@@ -694,7 +693,8 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                     if (response != null) {
                         CreateBillModel m = response.body();
                         if (m.getStatus().equalsIgnoreCase("success")) {
-                            downloadPdfByVolley(m.getData().getId());
+                            downloadInvoiceByRetrofit(m.getData().getId());
+//                            downloadPdfByVolley(m.getData().getId());
                             Toast.makeText(CreateBillActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
                             finish();
                         } else {
@@ -832,7 +832,8 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                     if (response != null) {
                         CreateBillModel m = response.body();
                         if (m.getStatus().equalsIgnoreCase("success")) {
-                            downloadPdfByVolley(m.getData().getId());
+//                            downloadPdfByVolley(m.getData().getId());
+                            downloadInvoiceByRetrofit(m.getData().getId());
                             Toast.makeText(CreateBillActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
                             finish();
                         } else {
@@ -1198,7 +1199,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
 
     private File pdfFile;
 
-    public void downloadPdfByVolley(String bill_id) {
+   /* public void downloadPdfByVolley(String bill_id) {
         //our custom volley request
         ByteVolleyRequest volleyMultipartRequest = new ByteVolleyRequest(Request.Method.POST, "http://pos.radianceedu.com/Api/billinvoice",
                 new com.android.volley.Response.Listener<byte[]>() {
@@ -1255,5 +1256,57 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(10 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
         //adding the request to volley
         Volley.newRequestQueue(CreateBillActivity.this).add(volleyMultipartRequest);
+    }*/
+
+    private void downloadInvoiceByRetrofit(String bill_id) {
+        Call<ResponseBody> loginCall = apiHelper.downloadInvoice(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), "2");
+        loginCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call,
+                                   @NonNull Response<ResponseBody> response) {
+                progressbar.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+                    ResponseBody body = response.body();
+                    try {
+                        downloadImage(body,bill_id);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    progressbar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call,
+                                  @NonNull Throwable t) {
+                progressbar.setVisibility(View.GONE);
+                if (!call.isCanceled()) {
+                }
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void downloadImage(ResponseBody body,String bill_id) throws IOException {
+        if (body != null) {
+            String state = "";
+            state = Environment.getExternalStorageState();
+            if (Environment.MEDIA_MOUNTED.equals(state)) {
+                File direct = new File(Environment.getExternalStorageDirectory()
+                        + "/RwtBills");
+                if (!direct.exists()) {
+                    direct.mkdirs();
+                }
+                File myFile = new File(direct, bill_id + ".pdf");
+                FileOutputStream fstream = new FileOutputStream(myFile);
+                fstream.write(body.bytes());
+                fstream.close();
+                Toast.makeText(CreateBillActivity.this, "Invoice Saved", Toast.LENGTH_LONG).show();
+
+            } else {
+                Toast.makeText(CreateBillActivity.this, "External Storage Not Found", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

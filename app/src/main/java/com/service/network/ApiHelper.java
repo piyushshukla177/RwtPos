@@ -18,10 +18,12 @@ import com.service.response_model.LoginModel;
 import com.service.response_model.OutletSettingModel;
 import com.service.response_model.ProductByBarcode;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
+import retrofit2.http.Streaming;
 
 public interface ApiHelper {
 
@@ -118,5 +120,10 @@ public interface ApiHelper {
 
     @FormUrlEncoded
     @POST("ouletcustomerbillinglist")
-    Call<BillListModel> getCustomerBills(@Field("username") String username, @Field("password") String password,@Field("customer_id") String customer_id);
+    Call<BillListModel> getCustomerBills(@Field("username") String username, @Field("password") String password, @Field("customer_id") String customer_id);
+
+    @Streaming
+    @FormUrlEncoded
+    @POST("billinvoice")
+    Call<ResponseBody> downloadInvoice(@Field("username") String username, @Field("password") String password, @Field("bill_id") String bill_id);
 }
