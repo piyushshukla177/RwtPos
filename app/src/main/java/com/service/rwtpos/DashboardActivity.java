@@ -1,16 +1,20 @@
 package com.service.rwtpos;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -19,17 +23,26 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.service.bottom_sheet.AddCustomerSheet;
+import com.service.bottom_sheet.PreviewInvoiceSheet;
 import com.service.network.ApiHelper;
 import com.service.network.RetrofitClient;
 import com.service.response_model.DashboardModel;
 import com.service.util.PrefsHelper;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements PreviewInvoiceSheet.PreviewInvoiceSheetListener {
 
     ImageView logout_imageview;
     Context context;
@@ -39,6 +52,7 @@ public class DashboardActivity extends AppCompatActivity {
     RelativeLayout create_bill_relative, settings_relative, create_demand_relative, challan_list_relative, bill_list_relative, customer_list_relative;
     LinearLayout today_business_linear, monthly_business_linear, total_business_linear;
     SwipeRefreshLayout swipe_refresh_layout;
+    public static DashboardActivity ddd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +62,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     void init() {
+        ddd = this;
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = this;
         progressbar = findViewById(R.id.progressbar);
@@ -258,4 +273,99 @@ public class DashboardActivity extends AppCompatActivity {
         //app have all permissions proceed ahead
         return true;
     }
+
+
+    String bill_id_txt;
+
+    public void downloadInvoiceByRetrofit(String bill_id) {
+        bill_id_txt = bill_id;
+        Call<ResponseBody> loginCall = apiHelper.downloadInvoice(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), "2");
+        loginCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call,
+                                   @NonNull Response<ResponseBody> response) {
+                progressbar.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+                    ResponseBody body = response.body();
+                    try {
+                        downloadImage(body, bill_id);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    progressbar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call,
+                                  @NonNull Throwable t) {
+                progressbar.setVisibility(View.GONE);
+                if (!call.isCanceled()) {
+                }
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void downloadImage(ResponseBody body, String bill_id) throws IOException {
+        if (body != null) {
+            String state = "";
+            state = Environment.getExternalStorageState();
+            if (Environment.MEDIA_MOUNTED.equals(state)) {
+                File direct = new File(Environment.getExternalStorageDirectory()
+                        + "/RwtBills");
+                if (!direct.exists()) {
+                    direct.mkdirs();
+                }
+                File myFile = new File(direct, bill_id + ".pdf");
+                FileOutputStream fstream = new FileOutputStream(myFile);
+                fstream.write(body.bytes());
+                fstream.close();
+
+//                PreviewInvoiceSheet preview_sheet = new PreviewInvoiceSheet();
+//                preview_sheet.show(getSupportFragmentManager(), "exampleBottomSheet");
+//                Toast.makeText(context, "Invoice Saved", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, "External Storage Not Found", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onInvoicePreview(String text) {
+        if (text.equals("whatsapp")) {
+            File outputFile = new File(Environment.getExternalStoragePublicDirectory
+                    (Environment.getExternalStorageDirectory() + "/RwtBills/"), bill_id_txt + ".pdf");
+//          Uri uri = Uri.fromFile(pdfFile);
+            Uri uri = Uri.fromFile(outputFile);
+            Intent share = new Intent();
+            share.setAction(Intent.ACTION_SEND);
+            share.setType("application/pdf");
+            share.putExtra(Intent.EXTRA_STREAM, uri);
+            share.setPackage("com.whatsapp");
+            startActivity(share);
+        } else if (text.equals("open")) {
+            previewPdf();
+        }
+    }
+
+    private void previewPdf() {
+        File outputFile = new File(Environment.getExternalStoragePublicDirectory
+                (Environment.getExternalStorageDirectory() + "/RwtBills/"), bill_id_txt + ".pdf");
+//          Uri uri = Uri.fromFile(pdfFile);
+        Uri uri = Uri.fromFile(outputFile);
+
+        PackageManager packageManager = context.getPackageManager();
+        Intent testIntent = new Intent(Intent.ACTION_VIEW);
+        testIntent.setType("application/pdf");
+        List list = packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY);
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+//        Uri uri = Uri.fromFile(pdfFile);
+        intent.setDataAndType(uri, "application/pdf");
+        context.startActivity(intent);
+        Toast.makeText(context, "Download a PDF Viewer to see the generated PDF", Toast.LENGTH_SHORT).show();
+    }
+
 }

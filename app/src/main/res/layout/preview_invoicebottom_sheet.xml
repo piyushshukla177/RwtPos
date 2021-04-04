@@ -1,6 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/green"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/share_btn"
+        android:layout_width="@dimen/_160sdp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/_10sdp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/whatsapp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:text="Share on What's app" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/preview_invoice_btn"
+        android:layout_width="@dimen/_160sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/_10sdp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pdf" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:text="Genrate Invoice" />
+    </LinearLayout>
+
+
+</LinearLayout>

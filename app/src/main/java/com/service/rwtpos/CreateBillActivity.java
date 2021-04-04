@@ -693,7 +693,8 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                     if (response != null) {
                         CreateBillModel m = response.body();
                         if (m.getStatus().equalsIgnoreCase("success")) {
-                            downloadInvoiceByRetrofit(m.getData().getId());
+                            DashboardActivity.ddd.downloadInvoiceByRetrofit(m.getData().getId());
+
 //                            downloadPdfByVolley(m.getData().getId());
                             Toast.makeText(CreateBillActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
                             finish();
@@ -833,7 +834,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                         CreateBillModel m = response.body();
                         if (m.getStatus().equalsIgnoreCase("success")) {
 //                            downloadPdfByVolley(m.getData().getId());
-                            downloadInvoiceByRetrofit(m.getData().getId());
+                            DashboardActivity.ddd.downloadInvoiceByRetrofit(m.getData().getId());
                             Toast.makeText(CreateBillActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
                             finish();
                         } else {
@@ -1258,7 +1259,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         Volley.newRequestQueue(CreateBillActivity.this).add(volleyMultipartRequest);
     }*/
 
-    private void downloadInvoiceByRetrofit(String bill_id) {
+    /*private void downloadInvoiceByRetrofit(String bill_id) {
         Call<ResponseBody> loginCall = apiHelper.downloadInvoice(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), "2");
         loginCall.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1268,7 +1269,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                 if (response.isSuccessful()) {
                     ResponseBody body = response.body();
                     try {
-                        downloadImage(body,bill_id);
+                        downloadImage(body, bill_id);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -1288,7 +1289,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         });
     }
 
-    private void downloadImage(ResponseBody body,String bill_id) throws IOException {
+    private void downloadImage(ResponseBody body, String bill_id) throws IOException {
         if (body != null) {
             String state = "";
             state = Environment.getExternalStorageState();
@@ -1308,5 +1309,5 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                 Toast.makeText(CreateBillActivity.this, "External Storage Not Found", Toast.LENGTH_SHORT).show();
             }
         }
-    }
+    }*/
 }
