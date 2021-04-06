@@ -9,8 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -39,9 +42,12 @@ import com.service.response_model.ViewOutletBillModel;
 import com.service.util.PrefsHelper;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -124,7 +130,8 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startImageDownload(bill_id);
+//                        startImageDownload(bill_id);
+                        downloadInvoiceByRetrofit(bill_id);
                     }
                 }
         );
@@ -235,7 +242,7 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
         startService(intent);
     }
 
-    @Override
+   /* @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
@@ -248,7 +255,7 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
                 }
                 break;
         }
-    }
+    }*/
 
     @Override
     public void onInvoicePreview(String text) {
@@ -295,6 +302,77 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
+        }
+    }
+
+    public void downloadInvoiceByRetrofit(String bill_id) {
+        final ProgressDialog mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setMessage("Please Wait...");
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setOnCancelListener(new Dialog.OnCancelListener() {
+
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // DO SOME STUFF HERE
+            }
+        });
+        mProgressDialog.show();
+
+        Call<ResponseBody> loginCall = apiHelper.downloadInvoice(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), "2");
+        loginCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call,
+                                   @NonNull Response<ResponseBody> response) {
+                progressbar.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+                    ResponseBody body = response.body();
+                    try {
+                        mProgressDialog.hide();
+                        downloadImage(body, bill_id);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    mProgressDialog.hide();
+//                    progressbar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call,
+                                  @NonNull Throwable t) {
+                mProgressDialog.hide();
+                progressbar.setVisibility(View.GONE);
+                if (!call.isCanceled()) {
+                }
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void downloadImage(ResponseBody body, String bill_id) throws IOException {
+        if (body != null) {
+            String state = "";
+            state = Environment.getExternalStorageState();
+            if (Environment.MEDIA_MOUNTED.equals(state)) {
+                File direct = new File(Environment.getExternalStorageDirectory()
+                        + "/RwtBills");
+                if (!direct.exists()) {
+                    direct.mkdirs();
+                }
+                File myFile = new File(direct, bill_id + ".pdf");
+                FileOutputStream fstream = new FileOutputStream(myFile);
+                fstream.write(body.bytes());
+                fstream.close();
+
+                PreviewInvoiceSheet preview_sheet = new PreviewInvoiceSheet();
+                preview_sheet.show(getSupportFragmentManager(), "exampleBottomSheet");
+//                Toast.makeText(context, "Invoice Saved", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, "External Storage Not Found", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

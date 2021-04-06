@@ -347,40 +347,9 @@ public class DashboardActivity extends AppCompatActivity implements PreviewInvoi
             share.setPackage("com.whatsapp");
             startActivity(share);
         } else if (text.equals("open")) {
-            previewPdf();
+//            previewPdf();
         }
     }
 
-    private void previewPdf() {
-        PackageManager packageManager = context.getPackageManager();
-        Intent testIntent = new Intent(Intent.ACTION_VIEW);
-        testIntent.setType("application/pdf");
-        List list = packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY);
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        File outputFile = new File(Environment.getExternalStoragePublicDirectory
-                (Environment.getExternalStorageDirectory() + "/RwtBills/"), bill_id_txt + ".pdf");
-        Uri uri = Uri.fromFile(outputFile);
-        Log.e("uriiiii", "output file" + outputFile + " , uri " + uri + "");
-        intent.setDataAndType(uri, "application/pdf");
-        context.startActivity(intent);
-        Toast.makeText(context, "Download a PDF Viewer to see the generated PDF", Toast.LENGTH_SHORT).show();
-    }
-/*
-    private void previewPdf() {
-        File outputFile = new File(Environment.getExternalStoragePublicDirectory
-                (Environment.getExternalStorageDirectory() + "/RwtBills/"), bill_id_txt + ".pdf");
-//          Uri uri = Uri.fromFile(pdfFile);
-        Uri uri = Uri.fromFile(outputFile);
-        PackageManager packageManager = context.getPackageManager();
-        Intent testIntent = new Intent(Intent.ACTION_VIEW);
-        testIntent.setType("application/pdf");
-//        List list = packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY);
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-//        Uri uri = Uri.fromFile(pdfFile);
-        intent.setDataAndType(uri, "application/pdf");
-        context.startActivity(intent);
-        Toast.makeText(context, "Download a PDF Viewer to see the generated PDF", Toast.LENGTH_SHORT).show();
-    }*/
+
 }
