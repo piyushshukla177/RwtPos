@@ -41,7 +41,6 @@ public class PreviewInvoiceSheet extends BottomSheetDialogFragment {
                 dismiss();
             }
         });
-
         return v;
     }
 

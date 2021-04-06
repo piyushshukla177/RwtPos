@@ -62,7 +62,7 @@ public class DemandListActivity extends AppCompatActivity {
     }
 
     void init() {
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = this;
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         progressbar = findViewById(R.id.progressbar);

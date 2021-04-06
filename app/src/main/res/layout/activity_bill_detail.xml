@@ -32,6 +32,15 @@
             android:text="@string/Bill_Detail"
             android:textColor="@color/black"
             android:textSize="@dimen/_14sdp" />
+
+        <ImageView
+            android:id="@+id/download_invoice_imageview"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:src="@drawable/download_pdf" />
     </RelativeLayout>
 
     <View

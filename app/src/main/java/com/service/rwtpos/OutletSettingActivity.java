@@ -47,7 +47,7 @@ public class OutletSettingActivity extends AppCompatActivity {
     }
 
     void init() {
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = this;
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         owner_name_et = findViewById(R.id.owner_name_et);

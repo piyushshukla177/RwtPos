@@ -18,9 +18,13 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
         <activity
-            android:name=".CustomerBillDetailActivity"
+            android:name=".SalesReturnActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme.RwtPos"></activity>
+        <activity
+            android:name=".CustomerBillDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme.RwtPos" />
         <activity
             android:name=".CustomerListActivity"
             android:screenOrientation="portrait"
@@ -83,6 +87,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name="com.service.background_services.BackgroundNotificationService" />
     </application>
-
 </manifest>

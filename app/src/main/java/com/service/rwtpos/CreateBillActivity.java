@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -111,7 +112,9 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_bill);
         cbb = this;
-
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
         init();
 //        downloadInvoiceByRetrofit();
     }

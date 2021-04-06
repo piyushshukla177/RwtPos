@@ -54,7 +54,7 @@ public class ChallanDetailsActivity extends AppCompatActivity {
 
     void init() {
         context = this;
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         progressbar = findViewById(R.id.progressbar);
         challan_detail_recyclerview = findViewById(R.id.challan_detail_recyclerview);

@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green"
+    android:background="@color/teal_200"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="16dp">
@@ -46,8 +46,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:text="Genrate Invoice" />
+            android:text="View Invoice" />
     </LinearLayout>
-
-
 </LinearLayout>

@@ -66,7 +66,7 @@ public class CreateDemandActivity extends AppCompatActivity implements AddProduc
     void init() {
         cdd = this;
         context = this;
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         add_items_btn = findViewById(R.id.add_items_btn);
         progressbar = findViewById(R.id.progressbar);
         add_product_tv = findViewById(R.id.add_product_tv);
