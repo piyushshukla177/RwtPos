@@ -111,6 +111,22 @@ public class SalesReturnActivity extends AppCompatActivity {
                         for (int i = 0; i < m.getData().getProduct_data().size(); i++) {
                             model = new ReturnProductListModel();
                             model.setBatch(m.getData().getProduct_data().get(i).getBatch());
+                            model.setFinal_Price(m.getData().getProduct_data().get(i).getFinal_Price());
+                            model.setProduct(m.getData().getProduct_data().get(i).getProduct());
+                            model.setQuantity(m.getData().getProduct_data().get(i).getQuantity());
+                            model.setSale_Price(m.getData().getProduct_data().get(i).getSale_Price());
+                            model.setSingle_Basic_Price(m.getData().getProduct_data().get(i).getSingle_Basic_Price());
+                            model.setSingle_CGST(m.getData().getProduct_data().get(i).getSingle_CGST());
+                            model.setSingle_SGST(m.getData().getProduct_data().get(i).getSingle_SGST());
+                            model.setSingle_Tax_Amt(m.getData().getProduct_data().get(i).getSingle_Tax_Amt());
+                            model.setSingleDiscountAmt(m.getData().getProduct_data().get(i).getSingleDiscountAmt());
+                            model.setSingleDiscountPer(m.getData().getProduct_data().get(i).getSingleDiscountPer());
+                            model.setSingleTaxRatePer(m.getData().getProduct_data().get(i).getSingleTaxRatePer());
+                            model.setTotal_Basic_price(m.getData().getProduct_data().get(i).getTotal_Basic_price());
+                            model.setTotal_CGST(m.getData().getProduct_data().get(i).getTotal_CGST());
+                            model.setTotal_SGST(m.getData().getProduct_data().get(i).getTotal_SGST());
+                            model.setTotal_Tax_Amt(m.getData().getProduct_data().get(i).getTotal_Tax_Amt());
+                            return_product_list.add(model);
                         }
                     }
                 } else {
