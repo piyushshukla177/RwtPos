@@ -17,6 +17,7 @@
     <string name="Challan_List">Challan List</string>
     <string name="Settings">Settings</string>
     <string name="Create_New_Bill">Create New Bill</string>
+    <string name="Create_New_Return">Create New Return</string>
     <string name="Search_Invoice">Search Invoice</string>
     <string name="Create_Bill">Create Bill</string>
     <string name="Customer_Mobile">Customer Mobile *</string>
@@ -52,5 +53,8 @@
     <string name="Add_Customer">Add Customer</string>
     <string name="Add_Barcode">Add Barcode</string>
     <string name="Add_to_Bill">Add to Bill</string>
+    <string name="Return_List">Return List</string>
+    <string name="Search">Search</string>
+    <string name="Enter_Invoice_Number">Enter Invoice Number</string>
 
 </resources>

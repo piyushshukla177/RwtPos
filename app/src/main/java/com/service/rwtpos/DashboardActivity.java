@@ -50,7 +50,7 @@ public class DashboardActivity extends AppCompatActivity implements PreviewInvoi
     private ApiHelper apiHelper;
     ProgressBar progressbar;
     TextView monthly_order_tv, today_order_tv, total_order_tv, total_demand_tv, total_challan_tv, monthly_business_tv, total_business_tv, today_business;
-    RelativeLayout create_bill_relative, settings_relative, create_demand_relative, challan_list_relative, bill_list_relative, customer_list_relative;
+    RelativeLayout create_bill_relative, settings_relative, create_demand_relative, challan_list_relative, bill_list_relative, customer_list_relative, return_list_relative;
     LinearLayout today_business_linear, monthly_business_linear, total_business_linear;
     SwipeRefreshLayout swipe_refresh_layout;
     public static DashboardActivity ddd;
@@ -64,7 +64,7 @@ public class DashboardActivity extends AppCompatActivity implements PreviewInvoi
 
     void init() {
         ddd = this;
-//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//      this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = this;
         progressbar = findViewById(R.id.progressbar);
         monthly_order_tv = findViewById(R.id.monthly_order_tv);
@@ -85,6 +85,7 @@ public class DashboardActivity extends AppCompatActivity implements PreviewInvoi
         challan_list_relative = findViewById(R.id.challan_list_relative);
         bill_list_relative = findViewById(R.id.bill_list_relative);
         customer_list_relative = findViewById(R.id.customer_list_relative);
+        return_list_relative = findViewById(R.id.return_list_relative);
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
         logout_imageview.setOnClickListener(
                 new View.OnClickListener() {
@@ -195,6 +196,15 @@ public class DashboardActivity extends AppCompatActivity implements PreviewInvoi
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(DashboardActivity.this, CustomerListActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+        return_list_relative.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(DashboardActivity.this, ReturnListActivity.class);
                         startActivity(intent);
                     }
                 }
@@ -326,7 +336,7 @@ public class DashboardActivity extends AppCompatActivity implements PreviewInvoi
 
 //                PreviewInvoiceSheet preview_sheet = new PreviewInvoiceSheet();
 //                preview_sheet.show(getSupportFragmentManager(), "exampleBottomSheet");
-//                Toast.makeText(context, "Invoice Saved", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Invoice Saved", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(context, "External Storage Not Found", Toast.LENGTH_SHORT).show();
             }
@@ -350,6 +360,4 @@ public class DashboardActivity extends AppCompatActivity implements PreviewInvoi
 //            previewPdf();
         }
     }
-
-
 }

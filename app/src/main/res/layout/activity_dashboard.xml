@@ -522,6 +522,44 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/return_list_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/icon_return_list"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/returning">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_toRightOf="@id/icon_return_list"
+                        android:text="Return List"
+                        android:textColor="#202020"
+                        android:textSize="@dimen/_14sdp"></TextView>
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/arrow_dark">
+
+                    </ImageView>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/settings_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

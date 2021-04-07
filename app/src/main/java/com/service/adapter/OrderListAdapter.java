@@ -78,10 +78,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         } else {
             holder.edit_bill_tv.setVisibility(View.GONE);
         }
-
         if (context instanceof OrderListActivity) {
             holder.edit_bill_tv.setVisibility(View.GONE);
-            holder.view_detail_tv.setVisibility(View.GONE);
         }
         holder.view_detail_tv.setOnClickListener(
                 new View.OnClickListener() {

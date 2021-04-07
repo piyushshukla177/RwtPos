@@ -84,7 +84,7 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
 
     void init() {
         context = this;
-//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//      this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         progressbar = findViewById(R.id.progressbar);
         bill_detail_recyclerview = findViewById(R.id.bill_detail_recyclerview);
@@ -205,12 +205,10 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
     }
 
     private void registerReceiver() {
-
         LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(this);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(PROGRESS_UPDATE);
         bManager.registerReceiver(mBroadcastReceiver, intentFilter);
-
     }
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -230,7 +228,6 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
 //                    File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + File.separator +
 //                            "journaldev-image-downloaded.jpg");
 //                    Picasso.get().load(file).into(imageView);
-
                 }
             }
         }
@@ -366,7 +363,6 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
                 FileOutputStream fstream = new FileOutputStream(myFile);
                 fstream.write(body.bytes());
                 fstream.close();
-
                 PreviewInvoiceSheet preview_sheet = new PreviewInvoiceSheet();
                 preview_sheet.show(getSupportFragmentManager(), "exampleBottomSheet");
 //                Toast.makeText(context, "Invoice Saved", Toast.LENGTH_LONG).show();

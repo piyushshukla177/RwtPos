@@ -66,7 +66,7 @@ public class BillListActivity extends AppCompatActivity {
     }
 
     void init() {
-//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//      this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = this;
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
         progressbar = findViewById(R.id.progressbar);
@@ -130,6 +130,7 @@ public class BillListActivity extends AppCompatActivity {
         swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
                 if (customer_id != null && !customer_id.isEmpty()) {
                     getCustomerBills();
                 } else {

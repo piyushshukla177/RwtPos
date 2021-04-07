@@ -18,9 +18,17 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
         <activity
-            android:name=".SalesReturnActivity"
+            android:name=".InventoryListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme.RwtPos"></activity>
+        <activity
+            android:name=".ReturnListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme.RwtPos" />
+        <activity
+            android:name=".SalesReturnActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme.RwtPos" />
         <activity
             android:name=".CustomerBillDetailActivity"
             android:screenOrientation="portrait"

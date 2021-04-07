@@ -1,9 +1,11 @@
 package com.service.network;
 
 import com.service.response_model.AddCustomerResponse;
+import com.service.response_model.BillByBillNoModel;
 import com.service.response_model.ChallanDetailModel;
 import com.service.response_model.CustomerListModel;
 import com.service.response_model.GetEditDataOutletBill;
+import com.service.response_model.GetInventoryResponse;
 import com.service.response_model.ViewOutletBillModel;
 import com.service.response_model.BillListModel;
 import com.service.response_model.ChallanListModel;
@@ -126,4 +128,12 @@ public interface ApiHelper {
     @FormUrlEncoded
     @POST("billinvoice")
     Call<ResponseBody> downloadInvoice(@Field("username") String username, @Field("password") String password, @Field("bill_id") String bill_id);
+
+    @FormUrlEncoded
+    @POST("getbilldetailsbybillno")
+    Call<BillByBillNoModel> getBillByBillNo(@Field("username") String username, @Field("password") String password, @Field("invoice_no") String invoice_no);
+
+    @FormUrlEncoded
+    @POST("outletinventory")
+    Call<GetInventoryResponse> getInventory(@Field("username") String username, @Field("password") String password);
 }
