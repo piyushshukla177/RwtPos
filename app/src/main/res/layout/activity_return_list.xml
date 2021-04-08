@@ -86,18 +86,11 @@
         android:layout_below="@+id/view">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/bill_list_recyclerview"
+            android:id="@+id/return_list_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <ProgressBar
-        android:id="@+id/progressbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/create_new_return_card"
@@ -135,4 +128,12 @@
             </LinearLayout>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
 </RelativeLayout>

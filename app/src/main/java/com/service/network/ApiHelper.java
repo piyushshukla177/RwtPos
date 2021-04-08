@@ -6,6 +6,8 @@ import com.service.response_model.ChallanDetailModel;
 import com.service.response_model.CustomerListModel;
 import com.service.response_model.GetEditDataOutletBill;
 import com.service.response_model.GetInventoryResponse;
+import com.service.response_model.ReturnBillDetailResponse;
+import com.service.response_model.ReturnBillListResponse;
 import com.service.response_model.SaleReturnResponse;
 import com.service.response_model.ViewOutletBillModel;
 import com.service.response_model.BillListModel;
@@ -139,9 +141,8 @@ public interface ApiHelper {
     Call<GetInventoryResponse> getInventory(@Field("username") String username, @Field("password") String password);
 
     @FormUrlEncoded
-    @POST("outletinventory")
+    @POST("returnoutletbill")
     Call<ResponseBody> saleReturn(@Field("username") String username, @Field("password") String password, @Field("bill_id") String bill_id, @Field("cust_id") String cust_id, @Field("dis_amt") String dis_amt
-
             , @Field("taxable_amt") String taxable_amt
             , @Field("cgst") String cgst
             , @Field("sgst") String sgst
@@ -152,4 +153,13 @@ public interface ApiHelper {
             , @Field("product_list") String product_list
 
     );
+
+    @FormUrlEncoded
+    @POST("ouletbillingreturnlist")
+    Call<ReturnBillListResponse> getReturnBillList(@Field("username") String username, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("ouletbillingreturnview")
+    Call<ReturnBillDetailResponse> getReturnBillDetail(@Field("username") String username, @Field("password") String password, @Field("return_id") String return_id);
+
 }

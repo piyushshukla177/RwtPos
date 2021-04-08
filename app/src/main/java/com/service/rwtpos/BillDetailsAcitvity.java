@@ -130,7 +130,7 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        startImageDownload(bill_id);
+//                      startImageDownload(bill_id);
                         downloadInvoiceByRetrofit(bill_id);
                     }
                 }

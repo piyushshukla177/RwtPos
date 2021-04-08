@@ -16,7 +16,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.service.adapter.DemandListAdapter;
+import com.service.adapter.InventoryListAdapter;
 import com.service.model.DemandList;
+import com.service.model.InventoryModel;
 import com.service.network.ApiHelper;
 import com.service.network.RetrofitClient;
 import com.service.response_model.DemandListModel;
@@ -33,12 +35,12 @@ public class InventoryListActivity extends AppCompatActivity {
 
     Context context;
     RecyclerView inventory_list_recyclerview;
-    private DemandListAdapter mAdapter;
+    private InventoryListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     ProgressBar progressbar;
     private ApiHelper apiHelper;
-    ArrayList<DemandList> inventory_list = new ArrayList<>();
+    ArrayList<InventoryModel> inventory_list = new ArrayList<>();
 
     ImageView back_arrow;
     String store_name, outlet_name;
@@ -94,11 +96,26 @@ public class InventoryListActivity extends AppCompatActivity {
                     if (response != null) {
                         GetInventoryResponse m = response.body();
                         if (m.getStatus().equalsIgnoreCase("success")) {
-                            DemandList model;
+                            InventoryModel model;
                             for (int i = 0; i < m.getData().size(); i++) {
-                                model = new DemandList();
-                                model.setOutlet_name(outlet_name);
-                                model.setOwner_name(store_name);
+                                model = new InventoryModel();
+                                model.setStr_product(m.getData().get(i).getStr_product());
+
+                                model.setAvailablestock(String.valueOf(m.getData().get(i).getAvailablestock()));
+                                model.setStr_product(String.valueOf(m.getData().get(i).getSale_price()));
+                                model.setPurchase_price(String.valueOf(m.getData().get(i).getPurchase_price()));
+                                model.setProduct_pic(String.valueOf(m.getData().get(i).getProduct_pic()));
+                                model.setBarcode(String.valueOf(m.getData().get(i).getBarcode()));
+                                model.setCategory_name(String.valueOf(m.getData().get(i).getCategory_name()));
+                                model.setGroupname(String.valueOf(m.getData().get(i).getGroupname()));
+                                model.setGst(String.valueOf(m.getData().get(i).getGst()));
+                                model.setHsn(String.valueOf(m.getData().get(i).getHsn()));
+                                model.setProduct_description(String.valueOf(m.getData().get(i).getProduct_description()));
+                                model.setSku(String.valueOf(m.getData().get(i).getSku()));
+                                model.setGst(String.valueOf(m.getData().get(i).getGst()));
+                                model.setTax_percent(String.valueOf(m.getData().get(i).getTax_percent()));
+                                model.setMinmum_stock(m.getData().get(i).getMinmum_stock());
+                                model.setSale_price(m.getData().get(i).getSale_price());
                                 inventory_list.add(model);
                             }
                         } else {
@@ -106,7 +123,7 @@ public class InventoryListActivity extends AppCompatActivity {
                         }
                         inventory_list_recyclerview.setHasFixedSize(true);
                         mLayoutManager = new LinearLayoutManager(context);
-                        mAdapter = new DemandListAdapter(context, inventory_list);
+                        mAdapter = new InventoryListAdapter(context, inventory_list);
                         inventory_list_recyclerview.setLayoutManager(mLayoutManager);
                         inventory_list_recyclerview.setAdapter(mAdapter);
                     }
@@ -114,6 +131,7 @@ public class InventoryListActivity extends AppCompatActivity {
                     progressbar.setVisibility(View.GONE);
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<GetInventoryResponse> call,
                                   @NonNull Throwable t) {
