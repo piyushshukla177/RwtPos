@@ -6,6 +6,7 @@ import com.service.response_model.ChallanDetailModel;
 import com.service.response_model.CustomerListModel;
 import com.service.response_model.GetEditDataOutletBill;
 import com.service.response_model.GetInventoryResponse;
+import com.service.response_model.SaleReturnResponse;
 import com.service.response_model.ViewOutletBillModel;
 import com.service.response_model.BillListModel;
 import com.service.response_model.ChallanListModel;
@@ -18,7 +19,7 @@ import com.service.response_model.GetCustomerModel;
 import com.service.response_model.GetOutLetSettings;
 import com.service.response_model.LoginModel;
 import com.service.response_model.OutletSettingModel;
-import com.service.response_model.ProductByBarcode;
+import com.service.response_model.ProductByBarcodeResponse;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -43,7 +44,7 @@ public interface ApiHelper {
 
     @FormUrlEncoded
     @POST("getProductByBarcode")
-    Call<ProductByBarcode> getProductByBarcode(@Field("username") String username, @Field("password") String password, @Field("barcode") String barcode);
+    Call<ProductByBarcodeResponse> getProductByBarcode(@Field("username") String username, @Field("password") String password, @Field("barcode") String barcode);
 
     @FormUrlEncoded
     @POST("addcustomer")
@@ -136,4 +137,19 @@ public interface ApiHelper {
     @FormUrlEncoded
     @POST("outletinventory")
     Call<GetInventoryResponse> getInventory(@Field("username") String username, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("outletinventory")
+    Call<ResponseBody> saleReturn(@Field("username") String username, @Field("password") String password, @Field("bill_id") String bill_id, @Field("cust_id") String cust_id, @Field("dis_amt") String dis_amt
+
+            , @Field("taxable_amt") String taxable_amt
+            , @Field("cgst") String cgst
+            , @Field("sgst") String sgst
+            , @Field("total") String total
+            , @Field("round_off") String round_off
+            , @Field("net_payable") String net_payable
+            , @Field("returnqty") String returnqty
+            , @Field("product_list") String product_list
+
+    );
 }

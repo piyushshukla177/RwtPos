@@ -1,7 +1,5 @@
 package com.service.model;
 
-import com.service.response_model.ProductByBarcode;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 

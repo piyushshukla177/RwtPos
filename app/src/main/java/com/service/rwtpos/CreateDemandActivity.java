@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -28,7 +27,7 @@ import com.service.model.ProductListModel;
 import com.service.network.ApiHelper;
 import com.service.network.RetrofitClient;
 import com.service.response_model.CreateDemandModel;
-import com.service.response_model.ProductByBarcode;
+import com.service.response_model.ProductByBarcodeResponse;
 import com.service.util.PrefsHelper;
 
 import org.json.JSONArray;
@@ -137,15 +136,15 @@ public class CreateDemandActivity extends AppCompatActivity implements AddProduc
         if (checkBarcodeAlready(barcode)) {
             progressbar.setVisibility(View.VISIBLE);
             apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
-            Call<ProductByBarcode> loginCall = apiHelper.getProductByBarcode(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), barcode);
-            loginCall.enqueue(new Callback<ProductByBarcode>() {
+            Call<ProductByBarcodeResponse> loginCall = apiHelper.getProductByBarcode(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), barcode);
+            loginCall.enqueue(new Callback<ProductByBarcodeResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<ProductByBarcode> call,
-                                       @NonNull Response<ProductByBarcode> response) {
+                public void onResponse(@NonNull Call<ProductByBarcodeResponse> call,
+                                       @NonNull Response<ProductByBarcodeResponse> response) {
                     progressbar.setVisibility(View.GONE);
                     if (response.isSuccessful()) {
                         if (response != null) {
-                            ProductByBarcode m = response.body();
+                            ProductByBarcodeResponse m = response.body();
                             if (m.getStatus().equalsIgnoreCase("success")) {
                                 ProductListModel model = null;
                                 try {
@@ -212,7 +211,7 @@ public class CreateDemandActivity extends AppCompatActivity implements AddProduc
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<ProductByBarcode> call,
+                public void onFailure(@NonNull Call<ProductByBarcodeResponse> call,
                                       @NonNull Throwable t) {
                     progressbar.setVisibility(View.GONE);
                     if (!call.isCanceled()) {

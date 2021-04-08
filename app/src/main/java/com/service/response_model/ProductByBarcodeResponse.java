@@ -2,7 +2,7 @@ package com.service.response_model;
 
 import java.util.List;
 
-public class ProductByBarcode {
+public class ProductByBarcodeResponse {
 
     private Data data;
     private String message;

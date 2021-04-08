@@ -2,6 +2,7 @@ package com.service.model;
 
 public class ReturnProductListModel {
 
+    private String Product_Id;
     private String Product;
     private String Batch;
     private String Quantity;
@@ -18,7 +19,23 @@ public class ReturnProductListModel {
     private String SingleDiscountAmt;
     private String SingleDiscountPer;
     private String Final_Price;
+    private String selected_return_qty;
 
+    public String getProduct_Id() {
+        return Product_Id;
+    }
+
+    public void setProduct_Id(String product_Id) {
+        Product_Id = product_Id;
+    }
+
+    public String getSelected_return_qty() {
+        return selected_return_qty;
+    }
+
+    public void setSelected_return_qty(String selected_return_qty) {
+        this.selected_return_qty = selected_return_qty;
+    }
 
     public String getProduct() {
         return Product;

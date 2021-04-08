@@ -16,7 +16,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -50,15 +49,13 @@ import com.service.response_model.AddCustomerResponse;
 import com.service.response_model.CreateBillModel;
 import com.service.response_model.GetCustomerModel;
 import com.service.response_model.GetEditDataOutletBill;
-import com.service.response_model.ProductByBarcode;
+import com.service.response_model.ProductByBarcodeResponse;
 import com.service.util.PrefsHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -66,10 +63,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -116,7 +110,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
         init();
-//        downloadInvoiceByRetrofit();
+//      downloadInvoiceByRetrofit();
     }
 
     AddCustomerSheet customerSheet;
@@ -124,7 +118,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
     void init() {
         context = this;
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//      this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         invoice_date_tv = findViewById(R.id.invoice_date_tv);
         back_image = findViewById(R.id.back_image);
         add_product_tv = findViewById(R.id.add_product_tv);
@@ -346,15 +340,15 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
         if (checkBarcodeAlready(barcode)) {
             progressbar.setVisibility(View.VISIBLE);
 
-            Call<ProductByBarcode> loginCall = apiHelper.getProductByBarcode(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), barcode);
-            loginCall.enqueue(new Callback<ProductByBarcode>() {
+            Call<ProductByBarcodeResponse> loginCall = apiHelper.getProductByBarcode(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), barcode);
+            loginCall.enqueue(new Callback<ProductByBarcodeResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<ProductByBarcode> call,
-                                       @NonNull Response<ProductByBarcode> response) {
+                public void onResponse(@NonNull Call<ProductByBarcodeResponse> call,
+                                       @NonNull Response<ProductByBarcodeResponse> response) {
                     progressbar.setVisibility(View.GONE);
                     if (response.isSuccessful()) {
                         if (response != null) {
-                            ProductByBarcode m = response.body();
+                            ProductByBarcodeResponse m = response.body();
                             if (m.getStatus().equalsIgnoreCase("success")) {
                                 ProductListModel model = null;
                                 try {
@@ -424,7 +418,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<ProductByBarcode> call,
+                public void onFailure(@NonNull Call<ProductByBarcodeResponse> call,
                                       @NonNull Throwable t) {
                     progressbar.setVisibility(View.GONE);
                     if (!call.isCanceled()) {
@@ -1111,7 +1105,7 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                             ArrayList<ProductListModel.Batch> batch_list;
                             for (int i = 0; i < m.getData().size(); i++) {
 //                                inventory_list = new ArrayList<>();
-                                ProductByBarcode.Inventory inventory_model;
+                                ProductByBarcodeResponse.Inventory inventory_model;
                                 edit_tem_list.get(i).setProduct_Name(m.getData().get(i).getProduct());
                                 edit_tem_list.get(i).setBarcode(m.getData().get(i).getBarcode());
 //                                for (int j = 0; j < m.getData().get(i).getInventory().size(); j++) {

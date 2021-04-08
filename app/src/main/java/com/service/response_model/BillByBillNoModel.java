@@ -41,9 +41,18 @@ public class BillByBillNoModel {
         private String taxable_amt;
         private String discount_amt;
         private String bill_no;
+        private String bill_id;
         private String bill_date;
         private List<Product_data> product_data;
         private Customer_details customer_details;
+
+        public String getBill_id() {
+            return bill_id;
+        }
+
+        public void setBill_id(String bill_id) {
+            this.bill_id = bill_id;
+        }
 
         public String getNet_payable() {
             return net_payable;
@@ -135,6 +144,7 @@ public class BillByBillNoModel {
     }
 
     public static class Product_data {
+        private String Product_Id;
         private String SingleDiscountPer;
         private String SingleDiscountAmt;
         private String SingleTaxRatePer;
@@ -151,6 +161,14 @@ public class BillByBillNoModel {
         private String Quantity;
         private String Batch;
         private String Product;
+
+        public String getProduct_Id() {
+            return Product_Id;
+        }
+
+        public void setProduct_Id(String product_Id) {
+            Product_Id = product_Id;
+        }
 
         public String getSingleDiscountPer() {
             return SingleDiscountPer;
