@@ -61,12 +61,14 @@ public class DashboardActivity extends AppCompatActivity implements PreviewInvoi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         init();
     }
 
     void init() {
         ddd = this;
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
 //      this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = this;
         progressbar = findViewById(R.id.progressbar);
@@ -382,7 +384,7 @@ public class DashboardActivity extends AppCompatActivity implements PreviewInvoi
             share.setPackage("com.whatsapp");
             startActivity(share);
         } else if (text.equals("open")) {
-//            previewPdf();
+//       previewPdf();
         }
     }
 }
