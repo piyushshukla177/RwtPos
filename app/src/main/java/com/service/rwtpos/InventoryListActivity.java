@@ -10,7 +10,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -19,6 +22,7 @@ import com.service.adapter.DemandListAdapter;
 import com.service.adapter.InventoryListAdapter;
 import com.service.model.DemandList;
 import com.service.model.InventoryModel;
+import com.service.model.OrderListModel;
 import com.service.network.ApiHelper;
 import com.service.network.RetrofitClient;
 import com.service.response_model.DemandListModel;
@@ -42,9 +46,9 @@ public class InventoryListActivity extends AppCompatActivity {
     private ApiHelper apiHelper;
     ArrayList<InventoryModel> inventory_list = new ArrayList<>();
 
-    ImageView back_arrow;
-    String store_name, outlet_name;
+    ImageView back_arrow, close_imageview;
     SwipeRefreshLayout swipe_refresh_layout;
+    EditText search_edittext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,8 @@ public class InventoryListActivity extends AppCompatActivity {
         inventory_list_recyclerview = findViewById(R.id.inventory_list_recyclerview);
         back_arrow = findViewById(R.id.back_arrow);
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
+        search_edittext = findViewById(R.id.search_edittext);
+        close_imageview = findViewById(R.id.close_imageview);
 
         back_arrow.setOnClickListener(
                 new View.OnClickListener() {
@@ -72,6 +78,35 @@ public class InventoryListActivity extends AppCompatActivity {
                 }
         );
 
+        search_edittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString().isEmpty()) {
+                    close_imageview.setVisibility(View.GONE);
+                } else {
+                    close_imageview.setVisibility(View.VISIBLE);
+                }
+                filter(editable.toString());
+            }
+        });
+        close_imageview.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        search_edittext.setText("");
+                    }
+                }
+        );
         swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -79,6 +114,16 @@ public class InventoryListActivity extends AppCompatActivity {
             }
         });
         getInventoryList();
+    }
+
+    private void filter(String text) {
+        ArrayList<InventoryModel> filteredList = new ArrayList<>();
+        for (InventoryModel item : inventory_list) {
+            if (item.getStr_product().toLowerCase().contains(text.toLowerCase()) || item.getCategory_name().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+        mAdapter.filterList(filteredList);
     }
 
     private void getInventoryList() {
@@ -102,7 +147,7 @@ public class InventoryListActivity extends AppCompatActivity {
                                 model.setStr_product(m.getData().get(i).getStr_product());
 
                                 model.setAvailablestock(String.valueOf(m.getData().get(i).getAvailablestock()));
-                                model.setStr_product(String.valueOf(m.getData().get(i).getSale_price()));
+                                model.setStr_product(String.valueOf(m.getData().get(i).getStr_product()));
                                 model.setPurchase_price(String.valueOf(m.getData().get(i).getPurchase_price()));
                                 model.setProduct_pic(String.valueOf(m.getData().get(i).getProduct_pic()));
                                 model.setBarcode(String.valueOf(m.getData().get(i).getBarcode()));

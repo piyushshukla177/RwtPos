@@ -5,6 +5,7 @@
     android:layout_margin="@dimen/_5sdp">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

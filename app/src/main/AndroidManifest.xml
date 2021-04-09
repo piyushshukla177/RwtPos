@@ -20,7 +20,8 @@
         <activity
             android:name=".ProductDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme.RwtPos"></activity>
+            android:theme="@style/SplashTheme.RwtPos"
+            ></activity>
         <activity
             android:name=".ReturnBillDetailActivity"
             android:screenOrientation="portrait"

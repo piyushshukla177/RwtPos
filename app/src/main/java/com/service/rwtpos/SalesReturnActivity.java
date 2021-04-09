@@ -60,6 +60,7 @@ public class SalesReturnActivity extends AppCompatActivity {
     TextView bill_no_tv, bill_date_tv, customer_name_tv, customer_mobile_tv, discount_amount_tv, taxable_amount_tv, cgst_tv, sgst_tv, total_amt_tv, round_off_tv, net_payable_tv;
     RelativeLayout bill_no_relative, customer_name_relative;
     LinearLayout total_linear;
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,8 +207,6 @@ public class SalesReturnActivity extends AppCompatActivity {
         });
     }
 
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
-
     NumberFormat formatter = new DecimalFormat("##.00");
 
     public void setTotal(float sum_discount_amount, float tax_total, float sum_taxable, float round_off, float net_payable) {
@@ -217,7 +216,7 @@ public class SalesReturnActivity extends AppCompatActivity {
         total_amt_tv.setText(String.valueOf(formatter.format(net_payable)));
         net_payable_tv.setText(String.valueOf(Math.round(net_payable)));
         taxable_amount_tv.setText(String.valueOf(df2.format(sum_taxable)));
-        round_off_tv.setText(String.valueOf(round_off));
+        round_off_tv.setText(String.valueOf(df2.format(round_off)));
     }
 
     private void SaveReturn() {
@@ -257,13 +256,13 @@ public class SalesReturnActivity extends AppCompatActivity {
                     float total_taxable_amount = total_basic - discount_amount;
                     float total_tax_amount = (total_taxable_amount * Integer.parseInt(mAdapter.sale_return_list.get(i).getSingleTaxRatePer())) / 100;
 
-                    obj.put("Single_Return_Tax_Amt", total_tax_amount);
-                    obj.put("Single_Return_Total_CGST", (total_tax_amount / 2));
-                    obj.put("Single_Return_Total_SGST", (total_tax_amount / 2));
-                    obj.put("Single_Return_Total_Basic_price", total_basic);
-                    obj.put("Single_Return_Final_Price", (total_taxable_amount + total_tax_amount));
+                    obj.put("Single_Return_Tax_Amt", df2.format(total_tax_amount));
+                    obj.put("Single_Return_Total_CGST", df2.format(total_tax_amount / 2));
+                    obj.put("Single_Return_Total_SGST", df2.format(total_tax_amount / 2));
+                    obj.put("Single_Return_Total_Basic_price", df2.format(total_basic));
+                    obj.put("Single_Return_Final_Price", df2.format(total_taxable_amount + total_tax_amount));
                     obj.put("Single_Return_Quantity", mAdapter.sale_return_list.get(i).getSelected_return_qty());
-                    obj.put("Single_Return_Discount_Amt", discount_amount);
+                    obj.put("Single_Return_Discount_Amt", df2.format(discount_amount));
                     array.put(obj);
                 }
                 i++;

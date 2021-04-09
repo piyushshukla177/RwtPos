@@ -16,7 +16,7 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/_50sdp"
-            android:layout_weight="0.4"
+            android:layout_weight="0.5"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="@dimen/_5sdp"
-            android:layout_weight="0.6"
+            android:layout_weight="0.5"
             android:orientation="horizontal">
 
             <EditText
