@@ -2,6 +2,7 @@ package com.service.rwtpos;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +61,7 @@ public class DashboardActivity extends AppCompatActivity implements PreviewInvoi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         init();
     }
 
@@ -242,19 +245,23 @@ public class DashboardActivity extends AppCompatActivity implements PreviewInvoi
                 progressbar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     if (response != null) {
-                        DashboardModel m = response.body();
-                        if (m.getStatus().equalsIgnoreCase("success")) {
-                            monthly_order_tv.setText(m.getData().getMonthly_order() + "");
-                            today_order_tv.setText(m.getData().getToday_order() + "");
-                            total_order_tv.setText(m.getData().getTotal_order() + "");
-                            total_demand_tv.setText(m.getData().getTotal_demand() + "");
-                            total_challan_tv.setText(m.getData().getTotal_challan() + "");
-                            monthly_business_tv.setText("₹ " + m.getData().getMonthly_business() + "");
-                            total_business_tv.setText("₹ " + m.getData().getTotal_business() + "");
-                            today_business.setText("₹ " + m.getData().getToday_business() + "");
+                        try {
+                            DashboardModel m = response.body();
+                            if (m.getStatus().equalsIgnoreCase("success")) {
+                                monthly_order_tv.setText(m.getData().getMonthly_order() + "");
+                                today_order_tv.setText(m.getData().getToday_order() + "");
+                                total_order_tv.setText(m.getData().getTotal_order() + "");
+                                total_demand_tv.setText(m.getData().getTotal_demand() + "");
+                                total_challan_tv.setText(m.getData().getTotal_challan() + "");
+                                monthly_business_tv.setText("₹ " + m.getData().getMonthly_business() + "");
+                                total_business_tv.setText("₹ " + m.getData().getTotal_business() + "");
+                                today_business.setText("₹ " + m.getData().getToday_business() + "");
 //                          Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
                     }
                 } else {
@@ -305,16 +312,20 @@ public class DashboardActivity extends AppCompatActivity implements PreviewInvoi
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call,
                                    @NonNull Response<ResponseBody> response) {
-                progressbar.setVisibility(View.GONE);
-                if (response.isSuccessful()) {
-                    ResponseBody body = response.body();
-                    try {
-                        downloadImage(body, bill_id);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                } else {
+                try {
                     progressbar.setVisibility(View.GONE);
+                    if (response.isSuccessful()) {
+                        ResponseBody body = response.body();
+                        try {
+                            downloadImage(body, bill_id);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    } else {
+                        progressbar.setVisibility(View.GONE);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
 
@@ -330,26 +341,30 @@ public class DashboardActivity extends AppCompatActivity implements PreviewInvoi
     }
 
     private void downloadImage(ResponseBody body, String bill_id) throws IOException {
-        if (body != null) {
-            String state = "";
-            state = Environment.getExternalStorageState();
-            if (Environment.MEDIA_MOUNTED.equals(state)) {
-                File direct = new File(Environment.getExternalStorageDirectory()
-                        + "/RwtBills");
-                if (!direct.exists()) {
-                    direct.mkdirs();
-                }
-                File myFile = new File(direct, bill_id + ".pdf");
-                FileOutputStream fstream = new FileOutputStream(myFile);
-                fstream.write(body.bytes());
-                fstream.close();
+        try {
+            if (body != null) {
+                String state = "";
+                state = Environment.getExternalStorageState();
+                if (Environment.MEDIA_MOUNTED.equals(state)) {
+                    File direct = new File(Environment.getExternalStorageDirectory()
+                            + "/RwtBills");
+                    if (!direct.exists()) {
+                        direct.mkdirs();
+                    }
+                    File myFile = new File(direct, bill_id + ".pdf");
+                    FileOutputStream fstream = new FileOutputStream(myFile);
+                    fstream.write(body.bytes());
+                    fstream.close();
 
 //                PreviewInvoiceSheet preview_sheet = new PreviewInvoiceSheet();
 //                preview_sheet.show(getSupportFragmentManager(), "exampleBottomSheet");
-                Toast.makeText(context, "Invoice Saved", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(context, "External Storage Not Found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Invoice Saved", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, "External Storage Not Found", Toast.LENGTH_SHORT).show();
+                }
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

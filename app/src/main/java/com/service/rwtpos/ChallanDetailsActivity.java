@@ -100,30 +100,33 @@ public class ChallanDetailsActivity extends AppCompatActivity {
                                    @NonNull Response<ChallanDetailModel> response) {
                 progressbar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
-
-                    if (response != null) {
-                        ChallanDetailModel m = response.body();
-                        if (m.getStatus().equalsIgnoreCase("success")) {
-                            for (int i = 0; i < m.getData().size(); i++) {
-                                ProductDetailModel model;
-                                for (int j = 0; j < m.getData().get(i).getProduct_data().size(); j++) {
-                                    model = new ProductDetailModel();
-                                    model.setProduct_name(m.getData().get(i).getProduct_data().get(j).getProduct_Name());
-                                    model.setQuantity(m.getData().get(i).getProduct_data().get(j).getQuantity());
-                                    model.setSale_price(m.getData().get(i).getProduct_data().get(j).getSale_Price());
-                                    model.setTotal(m.getData().get(i).getProduct_data().get(j).getFinal_Price());
-                                    list.add(model);
+                    try {
+                        if (response != null) {
+                            ChallanDetailModel m = response.body();
+                            if (m.getStatus().equalsIgnoreCase("success")) {
+                                for (int i = 0; i < m.getData().size(); i++) {
+                                    ProductDetailModel model;
+                                    for (int j = 0; j < m.getData().get(i).getProduct_data().size(); j++) {
+                                        model = new ProductDetailModel();
+                                        model.setProduct_name(m.getData().get(i).getProduct_data().get(j).getProduct_Name());
+                                        model.setQuantity(m.getData().get(i).getProduct_data().get(j).getQuantity());
+                                        model.setSale_price(m.getData().get(i).getProduct_data().get(j).getSale_Price());
+                                        model.setTotal(m.getData().get(i).getProduct_data().get(j).getFinal_Price());
+                                        list.add(model);
+                                    }
                                 }
+                                challan_detail_recyclerview.setHasFixedSize(true);
+                                mLayoutManager = new LinearLayoutManager(context);
+                                mAdapter = new BillDetailAdapter(context, list);
+                                challan_detail_recyclerview.setLayoutManager(mLayoutManager);
+                                challan_detail_recyclerview.setAdapter(mAdapter);
+                                total_linear.setVisibility(View.VISIBLE);
+                            } else {
+                                Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                            challan_detail_recyclerview.setHasFixedSize(true);
-                            mLayoutManager = new LinearLayoutManager(context);
-                            mAdapter = new BillDetailAdapter(context, list);
-                            challan_detail_recyclerview.setLayoutManager(mLayoutManager);
-                            challan_detail_recyclerview.setAdapter(mAdapter);
-                            total_linear.setVisibility(View.VISIBLE);
-                        } else {
-                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                 } else {
                     progressbar.setVisibility(View.GONE);

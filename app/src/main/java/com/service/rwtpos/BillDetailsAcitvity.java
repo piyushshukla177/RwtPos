@@ -144,26 +144,30 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
     }
 
     void setData() {
-        int i = 0;
-        total_linear.setVisibility(View.VISIBLE);
-        total_items_tv.setText("ITEMS(" + products_list.size() + ")");
-        ProductDetailModel m;
-        while (i < products_list.size()) {
-            m = new ProductDetailModel();
-            Products d = products_list.get(i);
-            m.setProduct_name(d.getProduct_Name());
-            m.setSale_price(d.getSale_Price());
-            m.setQuantity(d.getQuantity());
-            float total = Integer.parseInt(d.getQuantity()) * Float.parseFloat(d.getSale_Price());
-            m.setTotal(String.valueOf(total));
-            list.add(m);
-            i++;
+        try {
+            int i = 0;
+            total_linear.setVisibility(View.VISIBLE);
+            total_items_tv.setText("ITEMS(" + products_list.size() + ")");
+            ProductDetailModel m;
+            while (i < products_list.size()) {
+                m = new ProductDetailModel();
+                Products d = products_list.get(i);
+                m.setProduct_name(d.getProduct_Name());
+                m.setSale_price(d.getSale_Price());
+                m.setQuantity(d.getQuantity());
+                float total = Integer.parseInt(d.getQuantity()) * Float.parseFloat(d.getSale_Price());
+                m.setTotal(String.valueOf(total));
+                list.add(m);
+                i++;
+            }
+            bill_detail_recyclerview.setHasFixedSize(true);
+            mLayoutManager = new LinearLayoutManager(context);
+            mAdapter = new BillDetailAdapter(context, list);
+            bill_detail_recyclerview.setLayoutManager(mLayoutManager);
+            bill_detail_recyclerview.setAdapter(mAdapter);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        bill_detail_recyclerview.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(context);
-        mAdapter = new BillDetailAdapter(context, list);
-        bill_detail_recyclerview.setLayoutManager(mLayoutManager);
-        bill_detail_recyclerview.setAdapter(mAdapter);
     }
 
     private void GetBIllById(String id) {
@@ -176,17 +180,21 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
                 progressbar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
 
-                    if (response != null) {
-                        ViewOutletBillModel m = response.body();
-                        if (m.getStatus().equalsIgnoreCase("success")) {
-                            Log.e("id", "list size " + products_list.size() + " id =" + id + " data szie " + m.getData().size());
-                            for (int j = 0; j < m.getData().size(); j++) {
-                                products_list.get(j).setProduct_Name(m.getData().get(j).getProduct());
+                    try {
+                        if (response != null) {
+                            ViewOutletBillModel m = response.body();
+                            if (m.getStatus().equalsIgnoreCase("success")) {
+                                Log.e("id", "list size " + products_list.size() + " id =" + id + " data szie " + m.getData().size());
+                                for (int j = 0; j < m.getData().size(); j++) {
+                                    products_list.get(j).setProduct_Name(m.getData().get(j).getProduct());
+                                }
+                                setData();
+                            } else {
+                                Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                            setData();
-                        } else {
-                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                 } else {
                     progressbar.setVisibility(View.GONE);
@@ -239,38 +247,27 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
         startService(intent);
     }
 
-   /* @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    startImageDownload(bill_id);
-                } else {
-
-                    Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
-    }*/
-
     @Override
     public void onInvoicePreview(String text) {
-        if (text.equals("whatsapp")) {
-            File docsFolder = new File(Environment.getExternalStorageDirectory() + "/RwtBills");
+        try {
+            if (text.equals("whatsapp")) {
+                File docsFolder = new File(Environment.getExternalStorageDirectory() + "/RwtBills");
 
-            String pdfname = bill_id + ".pdf";
-            pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
+                String pdfname = bill_id + ".pdf";
+                pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
 
-            Uri uri = Uri.fromFile(pdfFile);
-            Intent share = new Intent();
-            share.setAction(Intent.ACTION_SEND);
-            share.setType("application/pdf");
-            share.putExtra(Intent.EXTRA_STREAM, uri);
-            share.setPackage("com.whatsapp");
-            startActivity(share);
-        } else if (text.equals("open")) {
-            previewPdf();
+                Uri uri = Uri.fromFile(pdfFile);
+                Intent share = new Intent();
+                share.setAction(Intent.ACTION_SEND);
+                share.setType("application/pdf");
+                share.putExtra(Intent.EXTRA_STREAM, uri);
+                share.setPackage("com.whatsapp");
+                startActivity(share);
+            } else if (text.equals("open")) {
+                previewPdf();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -322,18 +319,22 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call,
                                    @NonNull Response<ResponseBody> response) {
-                progressbar.setVisibility(View.GONE);
-                if (response.isSuccessful()) {
-                    ResponseBody body = response.body();
-                    try {
+                try {
+                    progressbar.setVisibility(View.GONE);
+                    if (response.isSuccessful()) {
+                        ResponseBody body = response.body();
+                        try {
+                            mProgressDialog.hide();
+                            downloadImage(body, bill_id);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    } else {
                         mProgressDialog.hide();
-                        downloadImage(body, bill_id);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                } else {
-                    mProgressDialog.hide();
 //                    progressbar.setVisibility(View.GONE);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
 
@@ -350,25 +351,29 @@ public class BillDetailsAcitvity extends AppCompatActivity implements PreviewInv
     }
 
     private void downloadImage(ResponseBody body, String bill_id) throws IOException {
-        if (body != null) {
-            String state = "";
-            state = Environment.getExternalStorageState();
-            if (Environment.MEDIA_MOUNTED.equals(state)) {
-                File direct = new File(Environment.getExternalStorageDirectory()
-                        + "/RwtBills");
-                if (!direct.exists()) {
-                    direct.mkdirs();
-                }
-                File myFile = new File(direct, bill_id + ".pdf");
-                FileOutputStream fstream = new FileOutputStream(myFile);
-                fstream.write(body.bytes());
-                fstream.close();
-                PreviewInvoiceSheet preview_sheet = new PreviewInvoiceSheet();
-                preview_sheet.show(getSupportFragmentManager(), "exampleBottomSheet");
+        try {
+            if (body != null) {
+                String state = "";
+                state = Environment.getExternalStorageState();
+                if (Environment.MEDIA_MOUNTED.equals(state)) {
+                    File direct = new File(Environment.getExternalStorageDirectory()
+                            + "/RwtBills");
+                    if (!direct.exists()) {
+                        direct.mkdirs();
+                    }
+                    File myFile = new File(direct, bill_id + ".pdf");
+                    FileOutputStream fstream = new FileOutputStream(myFile);
+                    fstream.write(body.bytes());
+                    fstream.close();
+                    PreviewInvoiceSheet preview_sheet = new PreviewInvoiceSheet();
+                    preview_sheet.show(getSupportFragmentManager(), "exampleBottomSheet");
 //                Toast.makeText(context, "Invoice Saved", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(context, "External Storage Not Found", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "External Storage Not Found", Toast.LENGTH_SHORT).show();
+                }
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }

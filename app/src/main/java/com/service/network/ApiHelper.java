@@ -162,4 +162,9 @@ public interface ApiHelper {
     @POST("ouletbillingreturnview")
     Call<ReturnBillDetailResponse> getReturnBillDetail(@Field("username") String username, @Field("password") String password, @Field("return_id") String return_id);
 
+
+    @FormUrlEncoded
+    @POST("returnbillinvoice")
+    Call<ResponseBody> getDownloadReturnBill(@Field("username") String username, @Field("password") String password, @Field("return_id") String return_id);
+
 }

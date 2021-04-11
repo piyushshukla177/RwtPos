@@ -339,7 +339,6 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
     public void getProductBybarcode(String barcode) {
         if (checkBarcodeAlready(barcode)) {
             progressbar.setVisibility(View.VISIBLE);
-
             Call<ProductByBarcodeResponse> loginCall = apiHelper.getProductByBarcode(PrefsHelper.getString(context, "username"), PrefsHelper.getString(context, "password"), barcode);
             loginCall.enqueue(new Callback<ProductByBarcodeResponse>() {
                 @Override
@@ -347,70 +346,74 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                                        @NonNull Response<ProductByBarcodeResponse> response) {
                     progressbar.setVisibility(View.GONE);
                     if (response.isSuccessful()) {
-                        if (response != null) {
-                            ProductByBarcodeResponse m = response.body();
-                            if (m.getStatus().equalsIgnoreCase("success")) {
-                                ProductListModel model = null;
-                                try {
-                                    model = new ProductListModel();
-                                } catch (Exception ex) {
-                                    Toast.makeText(context, "Product Not Found", Toast.LENGTH_SHORT).show();
-                                    ex.printStackTrace();
-                                }
-                                model.setBarcode(m.getData().getProduct_details().getBarcode());
-                                model.setCgst(m.getData().getProduct_details().getCgst());
-                                model.setSgst(m.getData().getProduct_details().getSgst());
-                                model.setHsn(m.getData().getProduct_details().getHsn());
-                                model.setId(m.getData().getProduct_details().getId());
-                                model.setGst(m.getData().getProduct_details().getGst());
-                                model.setIntStock(m.getData().getProduct_details().getIntStock());
-                                model.setMinmum_stock(m.getData().getProduct_details().getMinmum_stock());
-                                model.setPro_print_name(m.getData().getProduct_details().getPro_print_name());
-                                model.setSale_price(String.valueOf(0));
-                                model.setPurchase_price(m.getData().getProduct_details().getPurchase_price());
-                                model.setTax_percent(m.getData().getProduct_details().getTax_percent());
-                                model.setTotal_tax(m.getData().getProduct_details().getTotal_tax());
-                                model.setProduct_pic(m.getData().getProduct_details().getProduct_pic());
-                                model.setStr_product(m.getData().getProduct_details().getStr_product());
-                                model.setBasic_price(m.getData().getProduct_details().getBasic_price());
-                                model.setTotal_discount_amount(String.valueOf(0));
-                                model.setSelected_batch(m.getData().getProduct_details().getSale_price());
-                                model.setSelected_qty(String.valueOf(1));
-                                model.setSingle_discount_amount(String.valueOf(0));
-                                model.setSingle_tax(m.getData().getProduct_details().getTotal_tax());
-                                model.setDiscount_percentage(String.valueOf(0));
+                        try {
+                            if (response != null) {
+                                ProductByBarcodeResponse m = response.body();
+                                if (m.getStatus().equalsIgnoreCase("success")) {
+                                    ProductListModel model = null;
+                                    try {
+                                        model = new ProductListModel();
+                                    } catch (Exception ex) {
+                                        Toast.makeText(context, "Product Not Found", Toast.LENGTH_SHORT).show();
+                                        ex.printStackTrace();
+                                    }
+                                    model.setBarcode(m.getData().getProduct_details().getBarcode());
+                                    model.setCgst(m.getData().getProduct_details().getCgst());
+                                    model.setSgst(m.getData().getProduct_details().getSgst());
+                                    model.setHsn(m.getData().getProduct_details().getHsn());
+                                    model.setId(m.getData().getProduct_details().getId());
+                                    model.setGst(m.getData().getProduct_details().getGst());
+                                    model.setIntStock(m.getData().getProduct_details().getIntStock());
+                                    model.setMinmum_stock(m.getData().getProduct_details().getMinmum_stock());
+                                    model.setPro_print_name(m.getData().getProduct_details().getPro_print_name());
+                                    model.setSale_price(String.valueOf(0));
+                                    model.setPurchase_price(m.getData().getProduct_details().getPurchase_price());
+                                    model.setTax_percent(m.getData().getProduct_details().getTax_percent());
+                                    model.setTotal_tax(m.getData().getProduct_details().getTotal_tax());
+                                    model.setProduct_pic(m.getData().getProduct_details().getProduct_pic());
+                                    model.setStr_product(m.getData().getProduct_details().getStr_product());
+                                    model.setBasic_price(m.getData().getProduct_details().getBasic_price());
+                                    model.setTotal_discount_amount(String.valueOf(0));
+                                    model.setSelected_batch(m.getData().getProduct_details().getSale_price());
+                                    model.setSelected_qty(String.valueOf(1));
+                                    model.setSingle_discount_amount(String.valueOf(0));
+                                    model.setSingle_tax(m.getData().getProduct_details().getTotal_tax());
+                                    model.setDiscount_percentage(String.valueOf(0));
 
-                                ProductListModel.Batch b;
-                                ArrayList<ProductListModel.Batch> batch_list = new ArrayList<>();
+                                    ProductListModel.Batch b;
+                                    ArrayList<ProductListModel.Batch> batch_list = new ArrayList<>();
 
-                                for (int i = 0; i < m.getData().getInventory().size(); i++) {
-                                    b = new ProductListModel.Batch();
-                                    b.setPrice(m.getData().getInventory().get(i).getPrice());
-                                    b.setQty(String.valueOf(m.getData().getInventory().get(i).getQty()));
-                                    batch_list.add(b);
-                                }
-                                model.setBatch_list(batch_list);
-                                if (checkBarcodeAlready(barcode)) {
-                                    product_list.add(model);
-                                }
-                                if (product_list.size() > 0) {
-                                    payment_mode_spinner.setVisibility(View.VISIBLE);
-                                    add_items_btn.setVisibility(View.GONE);
-                                    add_product_tv.setVisibility(View.VISIBLE);
-                                    total_items_tv.setText("ITEMS ( " + product_list.size() + " )");
-                                }
-                                if (product_list.size() == 1) {
-                                    item_list_recyclerview.setHasFixedSize(true);
-                                    mLayoutManager = new LinearLayoutManager(context);
-                                    item_list_recyclerview.setLayoutManager(mLayoutManager);
-                                    item_list_recyclerview.setAdapter(mAdapter);
-                                } else {
-                                    mAdapter.notifyDataSetChanged();
-                                }
+                                    for (int i = 0; i < m.getData().getInventory().size(); i++) {
+                                        b = new ProductListModel.Batch();
+                                        b.setPrice(m.getData().getInventory().get(i).getPrice());
+                                        b.setQty(String.valueOf(m.getData().getInventory().get(i).getQty()));
+                                        batch_list.add(b);
+                                    }
+                                    model.setBatch_list(batch_list);
+                                    if (checkBarcodeAlready(barcode)) {
+                                        product_list.add(model);
+                                    }
+                                    if (product_list.size() > 0) {
+                                        payment_mode_spinner.setVisibility(View.VISIBLE);
+                                        add_items_btn.setVisibility(View.GONE);
+                                        add_product_tv.setVisibility(View.VISIBLE);
+                                        total_items_tv.setText("ITEMS ( " + product_list.size() + " )");
+                                    }
+                                    if (product_list.size() == 1) {
+                                        item_list_recyclerview.setHasFixedSize(true);
+                                        mLayoutManager = new LinearLayoutManager(context);
+                                        item_list_recyclerview.setLayoutManager(mLayoutManager);
+                                        item_list_recyclerview.setAdapter(mAdapter);
+                                    } else {
+                                        mAdapter.notifyDataSetChanged();
+                                    }
 //                            calculate_Total();
-                            } else {
-                                Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
                     } else {
                         progressbar.setVisibility(View.GONE);
@@ -591,27 +594,27 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                 obj.put("Quantity", product_list.get(i).getSelected_qty());
                 obj.put("Sale_Price", product_list.get(i).getSelected_batch());
                 if (product_list.get(i).getSingle_tax() != null) {
-                    obj.put("Single_Tax_Amt", product_list.get(i).getSingle_tax());
+                    obj.put("Single_Tax_Amt", df2.format(Float.parseFloat(product_list.get(i).getSingle_tax())));
                 } else {
                     obj.put("Single_Tax_Amt", String.valueOf(0));
                 }
                 if (product_list.get(i).getSingle_tax() != null) {
-                    obj.put("Single_CGST", String.valueOf(Float.parseFloat(product_list.get(i).getSingle_tax()) / 2));
+                    obj.put("Single_CGST", String.valueOf(df2.format(Float.parseFloat(product_list.get(i).getSingle_tax()) / 2)));
                 } else {
                     obj.put("Single_CGST", String.valueOf(0));
                 }
                 if (product_list.get(i).getSingle_tax() != null) {
-                    obj.put("Single_SGST", String.valueOf(Float.parseFloat(product_list.get(i).getSingle_tax()) / 2));
+                    obj.put("Single_SGST", String.valueOf(df2.format(Float.parseFloat(product_list.get(i).getSingle_tax()) / 2)));
                 } else {
                     obj.put("Single_SGST", String.valueOf(0));
                 }
                 if (product_list.get(i).getBasic_price() != null) {
-                    obj.put("Single_Basic_Price", product_list.get(i).getBasic_price());
+                    obj.put("Single_Basic_Price", df2.format(Float.parseFloat(product_list.get(i).getBasic_price())));
                 } else {
                     obj.put("Single_Basic_Price", String.valueOf(0));
                 }
                 if (product_list.get(i).getTotal_tax() != null) {
-                    obj.put("Total_Tax_Amt", product_list.get(i).getTotal_tax());
+                    obj.put("Total_Tax_Amt", df2.format(Float.parseFloat(product_list.get(i).getTotal_tax())));
                 } else {
                     obj.put("Total_Tax_Amt", String.valueOf(0));
                 }
@@ -1099,15 +1102,16 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
                 if (response.isSuccessful()) {
 
                     if (response != null) {
-                        GetEditDataOutletBill m = response.body();
-                        if (m.getStatus().equalsIgnoreCase("success")) {
+                        try {
+                            GetEditDataOutletBill m = response.body();
+                            if (m.getStatus().equalsIgnoreCase("success")) {
 //                            ArrayList<ProductByBarcode.Inventory> inventory_list;
-                            ArrayList<ProductListModel.Batch> batch_list;
-                            for (int i = 0; i < m.getData().size(); i++) {
+                                ArrayList<ProductListModel.Batch> batch_list;
+                                for (int i = 0; i < m.getData().size(); i++) {
 //                                inventory_list = new ArrayList<>();
-                                ProductByBarcodeResponse.Inventory inventory_model;
-                                edit_tem_list.get(i).setProduct_Name(m.getData().get(i).getProduct());
-                                edit_tem_list.get(i).setBarcode(m.getData().get(i).getBarcode());
+                                    ProductByBarcodeResponse.Inventory inventory_model;
+                                    edit_tem_list.get(i).setProduct_Name(m.getData().get(i).getProduct());
+                                    edit_tem_list.get(i).setBarcode(m.getData().get(i).getBarcode());
 //                                for (int j = 0; j < m.getData().get(i).getInventory().size(); j++) {
 //                                    inventory_model = new ProductByBarcode.Inventory();
 //                                    inventory_model.setOutlet_id(m.getData().get(i).getInventory().get(j).getOutlet_id());
@@ -1115,21 +1119,24 @@ public class CreateBillActivity extends AppCompatActivity implements AddProductB
 //                                    inventory_model.setQty(m.getData().get(i).getInventory().get(j).getQty());
 //                                    inventory_list.add(inventory_model);
 //                                }
-                                ProductListModel.Batch b;
-                                batch_list = new ArrayList<>();
-                                for (int j = 0; j < m.getData().get(i).getInventory().size(); j++) {
-                                    b = new ProductListModel.Batch();
-                                    b.setPrice(m.getData().get(i).getInventory().get(j).getPrice());
-                                    b.setQty(String.valueOf(m.getData().get(i).getInventory().get(j).getQty()));
-                                    batch_list.add(b);
-                                }
+                                    ProductListModel.Batch b;
+                                    batch_list = new ArrayList<>();
+                                    for (int j = 0; j < m.getData().get(i).getInventory().size(); j++) {
+                                        b = new ProductListModel.Batch();
+                                        b.setPrice(m.getData().get(i).getInventory().get(j).getPrice());
+                                        b.setQty(String.valueOf(m.getData().get(i).getInventory().get(j).getQty()));
+                                        batch_list.add(b);
+                                    }
 //                                model.setBatch_list(batch_list);
 //                                product_list.add(model);
-                                edit_tem_list.get(i).setInventory(batch_list);
+                                    edit_tem_list.get(i).setInventory(batch_list);
+                                }
+                                setEditList();
+                            } else {
+                                Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                            setEditList();
-                        } else {
-                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
                     }
                 } else {

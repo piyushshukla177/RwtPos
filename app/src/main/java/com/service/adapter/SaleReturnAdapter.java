@@ -88,7 +88,6 @@ public class SaleReturnAdapter extends RecyclerView.Adapter<SaleReturnAdapter.Sa
                     }
                 }
         );
-
     }
 
     @Override
@@ -121,9 +120,9 @@ public class SaleReturnAdapter extends RecyclerView.Adapter<SaleReturnAdapter.Sa
                     float cgst = total_tax_amount / 2;
                     float sgst = total_tax_amount / 2;
 
-                    sum_discount_amount = sum_taxable + discount_amount;
-                    sum_taxable = sum_taxable +total_taxable_amount;
-                    tax_total=tax_total+total_tax_amount;
+                    sum_discount_amount = sum_discount_amount + discount_amount;
+                    sum_taxable = sum_taxable + total_taxable_amount;
+                    tax_total = tax_total + total_tax_amount;
 //                    sum_discount_amount = sum_discount_amount + (Float.parseFloat(sale_return_list.get(i).getSingleDiscountAmt()) * (Integer.parseInt(sale_return_list.get(i).getSelected_return_qty())));
 //                    sum_taxable = sum_taxable + ((Float.parseFloat(sale_return_list.get(i).getSingle_Basic_Price()) * Integer.parseInt(sale_return_list.get(i).getSelected_return_qty())));
 //                    tax_total = tax_total + (Float.parseFloat(sale_return_list.get(i).getSingle_Tax_Amt()) * (Integer.parseInt(sale_return_list.get(i).getSelected_return_qty())));

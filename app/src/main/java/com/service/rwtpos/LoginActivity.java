@@ -87,24 +87,27 @@ public class LoginActivity extends AppCompatActivity {
                 progressbar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
 
-                    if (response != null) {
-                        CommonModel<LoginModel> m = response.body();
-                        if (m.getStatus().equalsIgnoreCase("success")) {
-                            PrefsHelper.putString(context, "username", email_id_et.getText().toString());
-                            PrefsHelper.putString(context, "password", password_et.getText().toString());
-                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                            startActivity(intent);
-                            finish();
-                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+                    try {
+                        if (response != null) {
+                            CommonModel<LoginModel> m = response.body();
+                            if (m.getStatus().equalsIgnoreCase("success")) {
+                                PrefsHelper.putString(context, "username", email_id_et.getText().toString());
+                                PrefsHelper.putString(context, "password", password_et.getText().toString());
+                                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                                startActivity(intent);
+                                finish();
+                                Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, m.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                 } else {
                     progressbar.setVisibility(View.GONE);
                 }
             }
-
             @Override
             public void onFailure(@NonNull Call<CommonModel<LoginModel>> call,
                                   @NonNull Throwable t) {

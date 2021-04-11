@@ -213,7 +213,7 @@ public class SalesReturnActivity extends AppCompatActivity {
         discount_amount_tv.setText(String.valueOf(df2.format(sum_discount_amount)));
         cgst_tv.setText(String.valueOf(df2.format(tax_total / 2)));
         sgst_tv.setText(String.valueOf(df2.format(tax_total / 2)));
-        total_amt_tv.setText(String.valueOf(formatter.format(net_payable)));
+        total_amt_tv.setText(String.valueOf(df2.format(net_payable)));
         net_payable_tv.setText(String.valueOf(Math.round(net_payable)));
         taxable_amount_tv.setText(String.valueOf(df2.format(sum_taxable)));
         round_off_tv.setText(String.valueOf(df2.format(round_off)));

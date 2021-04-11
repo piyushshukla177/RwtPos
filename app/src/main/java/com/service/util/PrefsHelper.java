@@ -1,9 +1,12 @@
 package com.service.util;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 public class PrefsHelper {
-    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String MyPREFERENCES = "MyPrefs";
 
     public static void putInt(Context context, String key, int value) {
         SharedPreferences sharedpreferences
@@ -76,5 +79,11 @@ public class PrefsHelper {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.clear();
         editor.apply();
+    }
+
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
