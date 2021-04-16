@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void init() {
-//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        hideStatusBar();
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//      hideStatusBar();
         int SPLASH_TIME_OUT = 3000;
         Handler h = new Handler();
         h.postDelayed(new Runnable() {
@@ -41,10 +41,9 @@ public class MainActivity extends AppCompatActivity {
         }, SPLASH_TIME_OUT);
     }
 
-    void hideStatusBar() {
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-    }
-
+//    void hideStatusBar() {
+//        View decorView = getWindow().getDecorView();
+//        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+//        decorView.setSystemUiVisibility(uiOptions);
+//    }
 }
