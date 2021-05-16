@@ -29,7 +29,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_toRightOf="@+id/back_arrow"
-            android:text="Return Bill Detail"
+            android:text="@string/Return_Bill_Detail"
             android:textColor="@color/black"
             android:textSize="@dimen/_14sdp" />
 

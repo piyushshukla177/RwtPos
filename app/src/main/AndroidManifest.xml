@@ -108,5 +108,4 @@
 
         <service android:name="com.service.background_services.BackgroundNotificationService" />
     </application>
-
 </manifest>

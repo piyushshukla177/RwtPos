@@ -56,4 +56,18 @@
     <string name="Return_List">Return List</string>
     <string name="Search">Search</string>
     <string name="Enter_Invoice_Number">Enter Invoice Number</string>
+    <string name="Product_Detail">Product Detail</string>
+    <string name="Product_Name">Product Name</string>
+    <string name="Catgeory_Name">Catgeory Name</string>
+    <string name="Group">Group</string>
+    <string name="Product_SKU">Product SKU</string>
+    <string name="Purchase_Price">Purchase Price</string>
+    <string name="Available_Stock">Available Stock</string>
+    <string name="Minimum_Stock">Minimum Stock</string>
+    <string name="Tax_Percent">Tax Percent % </string>
+    <string name="Description">Description</string>
+    <string name="Return_Bill_Detail">Return Bill Detail</string>
+    <string name="Inventory">Inventory</string>
+    <string name="Search_Product">Search Product</string>
+    <string name="Return">Return</string>
 </resources>

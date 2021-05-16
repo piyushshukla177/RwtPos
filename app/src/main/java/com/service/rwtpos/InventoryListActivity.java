@@ -58,7 +58,6 @@ public class InventoryListActivity extends AppCompatActivity {
         init();
     }
 
-
     void init() {
         context = this;
         apiHelper = RetrofitClient.getInstance().create(ApiHelper.class);

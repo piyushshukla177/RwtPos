@@ -10,17 +10,6 @@
         android:layout_margin="@dimen/_10sdp"
         android:orientation="vertical">
 
-        <!--        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner-->
-        <!--            android:id="@+id/select_batch_spinner"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginLeft="@dimen/_10sdp"-->
-        <!--            android:layout_weight="0.5"-->
-        <!--            android:hint="Select Batch"-->
-        <!--            android:textSize="@dimen/_10sdp">-->
-
-        <!--        </com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner>-->
-
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/select_batch_spinner"
             android:layout_width="match_parent"

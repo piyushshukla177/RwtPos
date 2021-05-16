@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
 
     void init() {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//      hideStatusBar();
         int SPLASH_TIME_OUT = 3000;
         Handler h = new Handler();
         h.postDelayed(new Runnable() {

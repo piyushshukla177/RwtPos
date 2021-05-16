@@ -14,7 +14,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -28,15 +27,7 @@ import com.service.network.ApiHelper;
 import com.service.network.RetrofitClient;
 import com.service.response_model.BillListModel;
 import com.service.util.PrefsHelper;
-
-import java.lang.reflect.Array;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -328,7 +319,6 @@ public class BillListActivity extends AppCompatActivity {
                     progressbar.setVisibility(View.GONE);
                 }
             }
-
             @Override
             public void onFailure(@NonNull Call<BillListModel> call,
                                   @NonNull Throwable t) {

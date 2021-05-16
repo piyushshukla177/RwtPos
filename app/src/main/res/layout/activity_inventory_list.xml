@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/back_arrow"
-                android:text="Inventory"
+                android:text="@string/Inventory"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
 
@@ -53,7 +53,7 @@
                 android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/searchview_background"
                 android:drawableLeft="@drawable/ic_search"
-                android:hint="Search Product"
+                android:hint="@string/Search_Product"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textAlignment="center"
